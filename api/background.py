@@ -25,20 +25,55 @@ _scheduler: Optional[AsyncIOScheduler] = None
 async def run_daily_digest():
     """
     Daily digest workflow (AC-4.1).
-    Aggregates Slack + Jira + GitHub + market data → Notion + Slack summary.
+    Comprehensive PM briefing with internal + external intelligence, emailed to PM.
     """
     from src.graphs.main_graph import invoke_graph
+    from src.config import get_settings
+
+    settings = get_settings()
+    recipient = settings.email_recipient or "juanf@comet.com"
 
     thread_id = f"daily-digest-{uuid.uuid4().hex[:8]}"
-    query = (
-        "Generate the daily product management digest. "
-        "1) Check Slack channels for important discussions and action items from the last 24 hours. "
-        "2) Review Jira for new/updated high-priority tickets. "
-        "3) Check GitHub for new PRs, issues, and merged changes. "
-        "4) Do a quick market scan for competitor news. "
-        "5) Create a comprehensive summary report in Notion. "
-        "6) Post a highlight summary to the product Slack channel."
-    )
+    query = f"""Generate a comprehensive PM briefing report and email it to {recipient}.
+
+**INTERNAL INSIGHTS:**
+
+1. **Jira Analysis (OPIK project):**
+   - Top 10 highest priority issues with status and blockers
+   - Any critical bugs or customer-reported issues
+   - Issues that have been stuck or aging
+
+2. **GitHub Activity (comet-ml/opik):**
+   - Recent merged PRs (last 24 hours) - what shipped?
+   - Open PRs awaiting review
+   - New issues opened - any patterns?
+
+3. **Slack Highlights:**
+   - Key discussions from product and engineering channels
+   - Customer feedback or support escalations
+
+**EXTERNAL INTELLIGENCE:**
+
+4. **Competitor Updates:**
+   - LangSmith, Langfuse, Arize Phoenix, W&B Weave news
+   - Any new features, pricing changes, or announcements
+
+5. **LLM Provider News:**
+   - OpenAI, Anthropic, Google, Meta, Mistral updates
+   - New models or API changes
+
+6. **Market Trends:**
+   - Reddit/HN discussions about LLM observability
+   - Agent framework ecosystem updates
+
+**FORMAT:**
+Create a well-structured HTML email with:
+- Executive summary (3-5 key takeaways)
+- Sections for each area
+- Action items and recommendations
+- Links to sources
+
+Subject: [PM Briefing] Opik Daily Intelligence Report"""
     logger.info("scheduled_daily_digest_start", thread_id=thread_id)
     try:
         result = await invoke_graph(
