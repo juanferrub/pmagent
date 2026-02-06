@@ -11,6 +11,7 @@ from langchain.agents import create_agent as create_react_agent
 
 from src.config import get_llm
 from src.tools.research_tools import research_tools
+from src.tools.competitor_tools import competitor_tools
 
 MARKET_RESEARCH_SYSTEM_PROMPT = """You are the Market Research Agent, a specialist in competitive intelligence for the LLM/Agent observability space.
 
@@ -87,9 +88,11 @@ Compare everything against Opik's current capabilities and positioning."""
 def create_market_research_agent():
     """Create the Market Research agent with its tools."""
     llm = get_llm()
+    # Combine research tools with competitor monitoring tools
+    all_tools = research_tools + competitor_tools
     agent = create_react_agent(
         model=llm,
-        tools=research_tools,
+        tools=all_tools,
         system_prompt=MARKET_RESEARCH_SYSTEM_PROMPT,
         name="market_research_agent",
     )

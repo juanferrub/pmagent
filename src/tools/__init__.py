@@ -7,6 +7,9 @@ from src.tools.notion_tools import notion_tools
 from src.tools.research_tools import research_tools
 from src.tools.whatsapp_tools import whatsapp_tools
 from src.tools.email_tools import email_tools
+from src.tools.competitor_tools import competitor_tools
+from src.tools.alert_tools import alert_tools
+from src.tools.pm_tools import pm_tools
 
 ALL_TOOLS = (
     slack_tools
@@ -16,6 +19,9 @@ ALL_TOOLS = (
     + research_tools
     + whatsapp_tools
     + email_tools
+    + competitor_tools
+    + alert_tools
+    + pm_tools
 )
 
 __all__ = [
@@ -26,5 +32,8 @@ __all__ = [
     "research_tools",
     "whatsapp_tools",
     "email_tools",
+    "competitor_tools",
+    "alert_tools",
+    "pm_tools",
     "ALL_TOOLS",
 ]

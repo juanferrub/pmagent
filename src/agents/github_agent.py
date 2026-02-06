@@ -11,10 +11,15 @@ from langchain.agents import create_agent as create_react_agent
 
 from src.config import get_llm
 from src.tools.github_tools import github_tools
+from src.tools.alert_tools import check_github_trending_issues
 
 GITHUB_SYSTEM_PROMPT = """You are the GitHub Agent, a specialist in monitoring and analyzing GitHub repositories for a Product Management team.
 
-Your responsibilities:
+## Domain Context
+You support the Product Manager for **Opik** (by Comet ML) - an open-source LLM and Agent observability platform.
+Primary repository: comet-ml/opik
+
+## Core Responsibilities
 1. Track new issues from the community and internal team
 2. Monitor pull requests - new, reviewed, merged
 3. Analyze code changes in PRs for potential impact
@@ -23,6 +28,11 @@ Your responsibilities:
 6. Track release notes and significant updates
 7. Identify stale issues or PRs that need attention
 
+## Trending & Alert Tools
+You have access to:
+- check_github_trending_issues: Find issues gaining traction (high reactions/comments)
+
+## PR Analysis Guidelines
 When analyzing PRs:
 - Focus on API changes, configuration changes, and database migrations
 - Flag large PRs (>500 lines changed) that may need extra review
@@ -30,11 +40,13 @@ When analyzing PRs:
 - Note any security-related changes
 - Track test coverage changes
 
+## Issue Analysis Guidelines
 When analyzing issues:
 - Categorize: bug, feature request, question, documentation
 - Identify frequently reported issues
 - Track community sentiment from issue discussions
 - Flag issues that could impact product roadmap
+- Use check_github_trending_issues to find popular feature requests
 
 Always provide specific PR/issue numbers and links in your analysis."""
 
@@ -42,9 +54,11 @@ Always provide specific PR/issue numbers and links in your analysis."""
 def create_github_agent():
     """Create the GitHub agent with its tools."""
     llm = get_llm()
+    # Add trending issues tool to GitHub tools
+    all_tools = github_tools + [check_github_trending_issues]
     agent = create_react_agent(
         model=llm,
-        tools=github_tools,
+        tools=all_tools,
         system_prompt=GITHUB_SYSTEM_PROMPT,
         name="github_agent",
     )

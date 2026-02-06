@@ -318,6 +318,79 @@ async def github_webhook(request: Request):
     return {"ok": True}
 
 
+# ── Scheduled Job Triggers ────────────────────────────────
+
+@router.post("/trigger/{job_name}", dependencies=[Depends(verify_auth)])
+async def trigger_scheduled_job(job_name: str):
+    """
+    Manually trigger a scheduled job for testing.
+    
+    Available jobs:
+    - daily_digest: Full daily PM briefing
+    - weekly_market_scan: Competitor and market analysis
+    - hourly_check: Quick scan for urgent items
+    - critical_alert_check: P0/P1 alert scan
+    - weekly_customer_voice: Customer feedback aggregation
+    - weekly_status_update: Team status report
+    """
+    from api.background import (
+        run_daily_digest,
+        run_weekly_market_scan,
+        run_hourly_check,
+        run_critical_alert_check,
+        run_weekly_customer_voice,
+        run_weekly_status_update,
+    )
+    
+    jobs = {
+        "daily_digest": run_daily_digest,
+        "weekly_market_scan": run_weekly_market_scan,
+        "hourly_check": run_hourly_check,
+        "critical_alert_check": run_critical_alert_check,
+        "weekly_customer_voice": run_weekly_customer_voice,
+        "weekly_status_update": run_weekly_status_update,
+    }
+    
+    if job_name not in jobs:
+        raise HTTPException(
+            status_code=400, 
+            detail=f"Unknown job: {job_name}. Available: {list(jobs.keys())}"
+        )
+    
+    logger.info("manual_job_trigger", job=job_name)
+    
+    try:
+        result = await jobs[job_name]()
+        return {"ok": True, "job": job_name, "status": "completed"}
+    except Exception as e:
+        logger.error("manual_job_error", job=job_name, error=str(e))
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@router.get("/scheduler/status")
+async def scheduler_status():
+    """Get status of all scheduled jobs."""
+    from api.background import get_scheduler
+    
+    scheduler = get_scheduler()
+    if not scheduler:
+        return {"running": False, "jobs": []}
+    
+    jobs = []
+    for job in scheduler.get_jobs():
+        jobs.append({
+            "id": job.id,
+            "name": job.name,
+            "next_run": job.next_run_time.isoformat() if job.next_run_time else None,
+            "trigger": str(job.trigger),
+        })
+    
+    return {
+        "running": scheduler.running,
+        "jobs": jobs,
+    }
+
+
 # ── WhatsApp Webhooks ────────────────────────────────────
 
 @router.get("/webhooks/whatsapp")
