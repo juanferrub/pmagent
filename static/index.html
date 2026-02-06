@@ -1,0 +1,879 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<title>PM Agent</title>
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg: #0f0f13;
+  --bg-surface: #1a1a24;
+  --bg-surface-hover: #22222f;
+  --bg-input: #14141c;
+  --border: #2a2a3a;
+  --border-focus: #6366f1;
+  --text: #e4e4ed;
+  --text-muted: #8888a4;
+  --text-faint: #55556a;
+  --accent: #6366f1;
+  --accent-hover: #818cf8;
+  --accent-glow: rgba(99, 102, 241, 0.15);
+  --user-bubble: #6366f1;
+  --user-text: #ffffff;
+  --agent-bubble: #1e1e2e;
+  --agent-border: #2d2d42;
+  --success: #34d399;
+  --warning: #fbbf24;
+  --error: #f87171;
+  --radius: 12px;
+  --radius-lg: 16px;
+  --shadow: 0 2px 12px rgba(0,0,0,0.3);
+  --font: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+  --mono: 'JetBrains Mono', 'Fira Code', 'SF Mono', Consolas, monospace;
+}
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+html, body {
+  height: 100%; width: 100%;
+  font-family: var(--font);
+  background: var(--bg);
+  color: var(--text);
+  overflow: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ── Layout ─────────────────────────────────────────── */
+.app {
+  display: flex;
+  flex-direction: column;
+  height: 100dvh;
+  max-width: 860px;
+  margin: 0 auto;
+}
+
+/* ── Header ─────────────────────────────────────────── */
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 20px;
+  border-bottom: 1px solid var(--border);
+  background: var(--bg);
+  flex-shrink: 0;
+  z-index: 10;
+}
+
+.header-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.logo {
+  width: 36px; height: 36px;
+  background: linear-gradient(135deg, var(--accent), #a78bfa);
+  border-radius: 10px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 18px;
+  box-shadow: 0 2px 8px rgba(99,102,241,0.3);
+}
+
+.header h1 {
+  font-size: 17px; font-weight: 600;
+  letter-spacing: -0.01em;
+}
+
+.header .subtitle {
+  font-size: 12px; color: var(--text-muted);
+  font-weight: 400;
+}
+
+.status-dot {
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  background: var(--success);
+  box-shadow: 0 0 6px rgba(52,211,153,0.5);
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+.header-right {
+  display: flex; align-items: center; gap: 12px;
+}
+
+.thread-badge {
+  font-size: 11px;
+  color: var(--text-faint);
+  background: var(--bg-surface);
+  padding: 4px 10px;
+  border-radius: 20px;
+  border: 1px solid var(--border);
+  font-family: var(--mono);
+}
+
+.btn-icon {
+  width: 34px; height: 34px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--bg-surface);
+  color: var(--text-muted);
+  cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  transition: all 0.15s;
+  font-size: 16px;
+}
+.btn-icon:hover { background: var(--bg-surface-hover); color: var(--text); border-color: var(--border-focus); }
+
+/* ── Messages ───────────────────────────────────────── */
+.messages {
+  flex: 1;
+  overflow-y: auto;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  scroll-behavior: smooth;
+}
+
+.messages::-webkit-scrollbar { width: 6px; }
+.messages::-webkit-scrollbar-track { background: transparent; }
+.messages::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+
+.msg {
+  display: flex;
+  gap: 10px;
+  max-width: 85%;
+  animation: fadeIn 0.25s ease-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.msg.user { align-self: flex-end; flex-direction: row-reverse; }
+.msg.agent { align-self: flex-start; }
+
+.msg-avatar {
+  width: 30px; height: 30px;
+  border-radius: 8px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 14px;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.msg.user .msg-avatar {
+  background: var(--user-bubble);
+  color: white;
+}
+
+.msg.agent .msg-avatar {
+  background: linear-gradient(135deg, var(--accent), #a78bfa);
+  color: white;
+}
+
+.msg-content {
+  padding: 10px 14px;
+  border-radius: var(--radius);
+  line-height: 1.55;
+  font-size: 14px;
+  word-break: break-word;
+}
+
+.msg.user .msg-content {
+  background: var(--user-bubble);
+  color: var(--user-text);
+  border-bottom-right-radius: 4px;
+}
+
+.msg.agent .msg-content {
+  background: var(--agent-bubble);
+  border: 1px solid var(--agent-border);
+  border-bottom-left-radius: 4px;
+}
+
+.msg-content p { margin-bottom: 8px; }
+.msg-content p:last-child { margin-bottom: 0; }
+.msg-content strong { font-weight: 600; }
+.msg-content em { color: var(--text-muted); }
+
+.msg-content code {
+  font-family: var(--mono);
+  font-size: 12.5px;
+  background: rgba(99,102,241,0.12);
+  padding: 2px 6px;
+  border-radius: 4px;
+}
+
+.msg-content pre {
+  background: var(--bg-input);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 12px;
+  margin: 8px 0;
+  overflow-x: auto;
+  font-size: 12.5px;
+  font-family: var(--mono);
+  line-height: 1.5;
+}
+
+.msg-content ul, .msg-content ol {
+  padding-left: 20px;
+  margin: 6px 0;
+}
+
+.msg-content li { margin-bottom: 4px; }
+
+.msg-meta {
+  font-size: 11px;
+  color: var(--text-faint);
+  margin-top: 4px;
+  padding: 0 4px;
+}
+
+.msg.user .msg-meta { text-align: right; }
+
+/* Thinking indicator */
+.thinking {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 4px 0;
+  color: var(--text-muted);
+  font-size: 13px;
+}
+
+.thinking-spinner {
+  width: 16px; height: 16px;
+  border: 2px solid var(--border);
+  border-top-color: var(--accent);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+  flex-shrink: 0;
+}
+
+.thinking-label {
+  animation: fadeInText 0.3s ease-out;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+@keyframes fadeInText {
+  from { opacity: 0; transform: translateX(-4px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+/* Welcome */
+.welcome {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  flex: 1;
+  gap: 16px;
+  padding: 40px 20px;
+  text-align: center;
+}
+
+.welcome-icon {
+  width: 64px; height: 64px;
+  background: linear-gradient(135deg, var(--accent), #a78bfa);
+  border-radius: 18px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 30px;
+  box-shadow: 0 4px 20px rgba(99,102,241,0.25);
+}
+
+.welcome h2 {
+  font-size: 22px; font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+.welcome p {
+  color: var(--text-muted); font-size: 14px;
+  max-width: 380px; line-height: 1.5;
+}
+
+.suggestions {
+  display: flex; flex-wrap: wrap;
+  gap: 8px; justify-content: center;
+  margin-top: 8px;
+  max-width: 520px;
+}
+
+.suggestion {
+  font-size: 13px;
+  padding: 8px 16px;
+  background: var(--bg-surface);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: all 0.15s;
+  white-space: nowrap;
+}
+
+.suggestion:hover {
+  border-color: var(--accent);
+  color: var(--text);
+  background: var(--accent-glow);
+}
+
+/* ── Input ──────────────────────────────────────────── */
+.input-area {
+  padding: 12px 20px 20px;
+  border-top: 1px solid var(--border);
+  background: var(--bg);
+  flex-shrink: 0;
+}
+
+.input-row {
+  display: flex;
+  gap: 8px;
+  align-items: flex-end;
+}
+
+.input-wrapper {
+  flex: 1;
+  position: relative;
+}
+
+textarea {
+  width: 100%;
+  min-height: 44px;
+  max-height: 160px;
+  padding: 11px 16px;
+  background: var(--bg-input);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  color: var(--text);
+  font-family: var(--font);
+  font-size: 14px;
+  line-height: 1.5;
+  resize: none;
+  outline: none;
+  transition: border-color 0.15s;
+}
+
+textarea::placeholder { color: var(--text-faint); }
+textarea:focus { border-color: var(--border-focus); box-shadow: 0 0 0 3px var(--accent-glow); }
+
+.send-btn {
+  width: 44px; height: 44px;
+  background: var(--accent);
+  color: white;
+  border: none;
+  border-radius: var(--radius);
+  cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  transition: all 0.15s;
+  flex-shrink: 0;
+  font-size: 18px;
+}
+
+.send-btn:hover { background: var(--accent-hover); transform: scale(1.03); }
+.send-btn:disabled { opacity: 0.4; cursor: not-allowed; transform: none; }
+
+.input-hint {
+  font-size: 11px;
+  color: var(--text-faint);
+  margin-top: 6px;
+  text-align: center;
+}
+
+/* ── Settings Modal ─────────────────────────────────── */
+.modal-overlay {
+  display: none;
+  position: fixed; inset: 0;
+  background: rgba(0,0,0,0.6);
+  backdrop-filter: blur(4px);
+  z-index: 100;
+  align-items: center; justify-content: center;
+}
+
+.modal-overlay.open { display: flex; }
+
+.modal {
+  background: var(--bg-surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 24px;
+  width: 90%;
+  max-width: 400px;
+  box-shadow: var(--shadow);
+}
+
+.modal h3 { font-size: 16px; font-weight: 600; margin-bottom: 16px; }
+
+.field { margin-bottom: 14px; }
+.field label {
+  display: block; font-size: 12px;
+  color: var(--text-muted); margin-bottom: 6px;
+  font-weight: 500; text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.field input {
+  width: 100%;
+  padding: 9px 12px;
+  background: var(--bg-input);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  color: var(--text);
+  font-family: var(--mono);
+  font-size: 13px;
+  outline: none;
+}
+
+.field input:focus { border-color: var(--border-focus); }
+
+.modal-actions {
+  display: flex; gap: 8px; justify-content: flex-end; margin-top: 20px;
+}
+
+.btn { padding: 8px 16px; border-radius: 8px; font-size: 13px; font-weight: 500; cursor: pointer; border: none; transition: all 0.15s; }
+.btn-primary { background: var(--accent); color: white; }
+.btn-primary:hover { background: var(--accent-hover); }
+.btn-ghost { background: transparent; color: var(--text-muted); border: 1px solid var(--border); }
+.btn-ghost:hover { background: var(--bg-surface-hover); color: var(--text); }
+
+/* ── Mobile ─────────────────────────────────────────── */
+@media (max-width: 600px) {
+  .header { padding: 12px 16px; }
+  .messages { padding: 12px; }
+  .input-area { padding: 10px 16px 16px; }
+  .thread-badge { display: none; }
+  .msg { max-width: 92%; }
+  .welcome h2 { font-size: 19px; }
+  .suggestions { gap: 6px; }
+  .suggestion { font-size: 12px; padding: 6px 12px; }
+}
+</style>
+</head>
+<body>
+
+<div class="app">
+  <!-- Header -->
+  <div class="header">
+    <div class="header-left">
+      <div class="logo">🤖</div>
+      <div>
+        <h1>PM Agent</h1>
+        <div class="subtitle">AI Product Manager Assistant</div>
+      </div>
+    </div>
+    <div class="header-right">
+      <div class="status-dot" id="statusDot" title="Connected"></div>
+      <span class="thread-badge" id="threadBadge">new thread</span>
+      <button class="btn-icon" id="newChatBtn" title="New conversation">✦</button>
+      <button class="btn-icon" id="settingsBtn" title="Settings">⚙</button>
+    </div>
+  </div>
+
+  <!-- Messages -->
+  <div class="messages" id="messages">
+    <div class="welcome" id="welcome">
+      <div class="welcome-icon">🤖</div>
+      <h2>Hey! I'm your PM Agent</h2>
+      <p>I can help with Jira tickets, GitHub PRs, market research, Notion reports, and more. What would you like to work on?</p>
+      <div class="suggestions">
+        <div class="suggestion" data-msg="Give me a daily digest of what happened across our projects today">📋 Daily digest</div>
+        <div class="suggestion" data-msg="What are the highest priority open bugs in Jira?">🐛 Top bugs</div>
+        <div class="suggestion" data-msg="Show me recent open PRs and their status">🔀 Open PRs</div>
+        <div class="suggestion" data-msg="Do a quick market scan on our competitors">🔍 Market scan</div>
+        <div class="suggestion" data-msg="Create a weekly status report in Notion">📝 Weekly report</div>
+        <div class="suggestion" data-msg="What are the latest customer support tickets?">🎟️ Support tickets</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Input -->
+  <div class="input-area">
+    <div class="input-row">
+      <div class="input-wrapper">
+        <textarea id="input" rows="1" placeholder="Ask your PM Agent anything..." autofocus></textarea>
+      </div>
+      <button class="send-btn" id="sendBtn" title="Send">↑</button>
+    </div>
+    <div class="input-hint">Press Enter to send · Shift+Enter for new line</div>
+  </div>
+</div>
+
+<!-- Settings Modal -->
+<div class="modal-overlay" id="settingsModal">
+  <div class="modal">
+    <h3>Settings</h3>
+    <div class="field">
+      <label>API Token</label>
+      <input type="password" id="settingsToken" placeholder="Bearer token for authentication">
+    </div>
+    <div class="field">
+      <label>Server URL</label>
+      <input type="text" id="settingsUrl" placeholder="http://127.0.0.1:8000">
+    </div>
+    <div class="modal-actions">
+      <button class="btn btn-ghost" id="settingsCancel">Cancel</button>
+      <button class="btn btn-primary" id="settingsSave">Save</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ── State ──────────────────────────────────────────────
+const state = {
+  threadId: null,
+  sending: false,
+  config: {
+    token: localStorage.getItem('pm_token') || 'demo-token',
+    baseUrl: localStorage.getItem('pm_url') || window.location.origin,
+  },
+};
+
+// ── DOM ────────────────────────────────────────────────
+const $messages = document.getElementById('messages');
+const $input = document.getElementById('input');
+const $sendBtn = document.getElementById('sendBtn');
+const $welcome = document.getElementById('welcome');
+const $threadBadge = document.getElementById('threadBadge');
+const $statusDot = document.getElementById('statusDot');
+const $settingsModal = document.getElementById('settingsModal');
+
+// ── Helpers ────────────────────────────────────────────
+function uid() {
+  return 'thread-' + Date.now().toString(36) + '-' + Math.random().toString(36).slice(2, 8);
+}
+
+function time() {
+  return new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+}
+
+function escapeHtml(text) {
+  const d = document.createElement('div');
+  d.textContent = text;
+  return d.innerHTML;
+}
+
+function renderMarkdown(text) {
+  // Simple markdown: bold, italic, code blocks, inline code, lists, paragraphs
+  let html = escapeHtml(text);
+
+  // Code blocks
+  html = html.replace(/```(\w*)\n([\s\S]*?)```/g, '<pre><code>$2</code></pre>');
+  html = html.replace(/```([\s\S]*?)```/g, '<pre><code>$1</code></pre>');
+
+  // Inline code
+  html = html.replace(/`([^`]+)`/g, '<code>$1</code>');
+
+  // Bold
+  html = html.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
+
+  // Italic
+  html = html.replace(/\*(.+?)\*/g, '<em>$1</em>');
+
+  // Bullet lists
+  html = html.replace(/^[-•] (.+)$/gm, '<li>$1</li>');
+  html = html.replace(/(<li>.*<\/li>)/s, '<ul>$1</ul>');
+
+  // Numbered lists
+  html = html.replace(/^\d+\.\s(.+)$/gm, '<li>$1</li>');
+
+  // Line breaks and paragraphs
+  html = html.replace(/\n\n/g, '</p><p>');
+  html = html.replace(/\n/g, '<br>');
+  html = '<p>' + html + '</p>';
+
+  // Clean empty paragraphs
+  html = html.replace(/<p>\s*<\/p>/g, '');
+
+  return html;
+}
+
+function scrollToBottom() {
+  requestAnimationFrame(() => {
+    $messages.scrollTop = $messages.scrollHeight;
+  });
+}
+
+function autoResize() {
+  $input.style.height = 'auto';
+  $input.style.height = Math.min($input.scrollHeight, 160) + 'px';
+}
+
+// ── Messages ───────────────────────────────────────────
+function addMessage(role, text) {
+  if ($welcome) $welcome.style.display = 'none';
+
+  const avatar = role === 'user' ? '👤' : '🤖';
+  const div = document.createElement('div');
+  div.className = `msg ${role}`;
+  div.innerHTML = `
+    <div class="msg-avatar">${avatar}</div>
+    <div>
+      <div class="msg-content">${role === 'user' ? escapeHtml(text) : renderMarkdown(text)}</div>
+      <div class="msg-meta">${time()}</div>
+    </div>
+  `;
+  $messages.appendChild(div);
+  scrollToBottom();
+  return div;
+}
+
+function addThinkingIndicator(label) {
+  if ($welcome) $welcome.style.display = 'none';
+  const existing = document.getElementById('thinking');
+  if (existing) {
+    // Just update the label text with a fresh animation
+    const lbl = existing.querySelector('.thinking-label');
+    if (lbl) {
+      lbl.style.animation = 'none';
+      void lbl.offsetHeight; // trigger reflow
+      lbl.style.animation = '';
+      lbl.textContent = label || 'Thinking...';
+    }
+    scrollToBottom();
+    return;
+  }
+  const div = document.createElement('div');
+  div.className = 'msg agent';
+  div.id = 'thinking';
+  div.innerHTML = `
+    <div class="msg-avatar">🤖</div>
+    <div>
+      <div class="msg-content">
+        <div class="thinking">
+          <div class="thinking-spinner"></div>
+          <span class="thinking-label">${escapeHtml(label || 'Thinking...')}</span>
+        </div>
+      </div>
+    </div>
+  `;
+  $messages.appendChild(div);
+  scrollToBottom();
+}
+
+function removeThinkingIndicator() {
+  const el = document.getElementById('thinking');
+  if (el) el.remove();
+}
+
+// ── API ────────────────────────────────────────────────
+async function sendMessage(text) {
+  if (state.sending || !text.trim()) return;
+  state.sending = true;
+  $sendBtn.disabled = true;
+
+  if (!state.threadId) {
+    state.threadId = uid();
+    $threadBadge.textContent = state.threadId.slice(0, 16);
+  }
+
+  addMessage('user', text);
+  $input.value = '';
+  autoResize();
+  addThinkingIndicator('Thinking...');
+
+  try {
+    // Use streaming endpoint for real-time response
+    const response = await fetch(`${state.config.baseUrl}/stream`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${state.config.token}`,
+      },
+      body: JSON.stringify({
+        query: text,
+        thread_id: state.threadId,
+        trigger_type: 'manual',
+      }),
+    });
+
+    if (response.status === 401) {
+      removeThinkingIndicator();
+      addMessage('agent', '🔒 **Authentication failed.** Please check your API token in Settings.');
+      return;
+    }
+
+    if (!response.ok) {
+      removeThinkingIndicator();
+      addMessage('agent', `⚠️ **Error ${response.status}**: ${response.statusText}`);
+      return;
+    }
+
+    // Read SSE stream
+    const reader = response.body.getReader();
+    const decoder = new TextDecoder();
+    let fullText = '';
+    let buffer = '';
+
+    while (true) {
+      const { done, value } = await reader.read();
+      if (done) break;
+
+      buffer += decoder.decode(value, { stream: true });
+      const lines = buffer.split('\n');
+      buffer = lines.pop() || '';
+
+      for (const line of lines) {
+        if (!line.startsWith('data: ')) continue;
+        const raw = line.slice(6).trim();
+        if (!raw) continue;
+
+        try {
+          const payload = JSON.parse(raw);
+
+          if (payload.done) continue;
+          if (payload.error) {
+            fullText += `⚠️ Error: ${payload.error}`;
+            continue;
+          }
+
+          // Handle status events — update the thinking indicator
+          if (payload.type === 'status') {
+            addThinkingIndicator(payload.label || 'Working...');
+            continue;
+          }
+
+          // The backend sends clean JSON: {node, content, type}
+          // Only keep actual AI responses, skip tool routing messages
+          if (payload.content && payload.type === 'ai') {
+            const c = payload.content;
+            // Skip internal routing messages
+            if (c.startsWith('Transferring back to') || c.startsWith('Successfully transferred')) continue;
+            // Keep updating — the final supervisor message is the complete answer
+            fullText = c;
+          }
+        } catch (e) {
+          // Not JSON, skip
+        }
+      }
+    }
+
+    removeThinkingIndicator();
+
+    if (!fullText) {
+      // Fallback: try the /chat endpoint
+      const chatResp = await fetch(`${state.config.baseUrl}/chat`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${state.config.token}`,
+        },
+        body: JSON.stringify({
+          message: text,
+          thread_id: state.threadId,
+        }),
+      });
+
+      if (chatResp.ok) {
+        const data = await chatResp.json();
+        fullText = data.reply || 'No response.';
+        if (data.thread_id) {
+          state.threadId = data.thread_id;
+          $threadBadge.textContent = state.threadId.slice(0, 16);
+        }
+      } else {
+        fullText = 'Sorry, I could not generate a response.';
+      }
+    }
+
+    addMessage('agent', fullText);
+
+  } catch (err) {
+    removeThinkingIndicator();
+    if (err.name === 'TypeError' && err.message.includes('fetch')) {
+      addMessage('agent', '🔌 **Cannot reach the server.** Make sure the PM Agent is running.');
+      $statusDot.style.background = 'var(--error)';
+    } else {
+      addMessage('agent', `⚠️ **Error**: ${err.message}`);
+    }
+  } finally {
+    state.sending = false;
+    $sendBtn.disabled = false;
+    $input.focus();
+  }
+}
+
+// ── Health Check ───────────────────────────────────────
+async function checkHealth() {
+  try {
+    const r = await fetch(`${state.config.baseUrl}/health`);
+    const ok = r.ok;
+    $statusDot.style.background = ok ? 'var(--success)' : 'var(--warning)';
+    $statusDot.title = ok ? 'Connected' : 'Unhealthy';
+  } catch {
+    $statusDot.style.background = 'var(--error)';
+    $statusDot.title = 'Disconnected';
+  }
+}
+
+// ── Events ─────────────────────────────────────────────
+$input.addEventListener('input', autoResize);
+
+$input.addEventListener('keydown', (e) => {
+  if (e.key === 'Enter' && !e.shiftKey) {
+    e.preventDefault();
+    sendMessage($input.value);
+  }
+});
+
+$sendBtn.addEventListener('click', () => sendMessage($input.value));
+
+document.getElementById('newChatBtn').addEventListener('click', () => {
+  state.threadId = null;
+  $threadBadge.textContent = 'new thread';
+  $messages.innerHTML = '';
+  $welcome.style.display = '';
+  $messages.appendChild($welcome);
+  $input.focus();
+});
+
+// Suggestions
+document.querySelectorAll('.suggestion').forEach(el => {
+  el.addEventListener('click', () => {
+    sendMessage(el.dataset.msg);
+  });
+});
+
+// Settings
+document.getElementById('settingsBtn').addEventListener('click', () => {
+  document.getElementById('settingsToken').value = state.config.token;
+  document.getElementById('settingsUrl').value = state.config.baseUrl;
+  $settingsModal.classList.add('open');
+});
+
+document.getElementById('settingsCancel').addEventListener('click', () => {
+  $settingsModal.classList.remove('open');
+});
+
+document.getElementById('settingsSave').addEventListener('click', () => {
+  state.config.token = document.getElementById('settingsToken').value.trim() || 'demo-token';
+  state.config.baseUrl = document.getElementById('settingsUrl').value.trim() || window.location.origin;
+  localStorage.setItem('pm_token', state.config.token);
+  localStorage.setItem('pm_url', state.config.baseUrl);
+  $settingsModal.classList.remove('open');
+  checkHealth();
+});
+
+$settingsModal.addEventListener('click', (e) => {
+  if (e.target === $settingsModal) $settingsModal.classList.remove('open');
+});
+
+// Init
+checkHealth();
+setInterval(checkHealth, 15000);
+</script>
+
+</body>
+</html>

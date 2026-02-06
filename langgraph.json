@@ -1,0 +1,11 @@
+{
+  "$schema": "https://langchain-ai.github.io/langgraph/schema.json",
+  "dependencies": ["./requirements.txt"],
+  "graphs": {
+    "pm_agent": {
+      "module": "src.graphs.main_graph",
+      "function": "get_graph"
+    }
+  },
+  "env": ".env"
+}
