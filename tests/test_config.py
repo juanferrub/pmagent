@@ -32,9 +32,13 @@ class TestSettings:
         repos = settings.github_repo_list
         assert repos == ["org/repo1"]
 
-    def test_settings_defaults(self):
-        # Test with minimal env
+    def test_settings_defaults(self, monkeypatch):
+        # Clear env vars and skip .env file to test pure class defaults
+        for key in ("DEFAULT_LLM_PROVIDER", "API_PORT", "TIMEZONE"):
+            monkeypatch.delenv(key, raising=False)
+
         s = Settings(
+            _env_file=None,
             anthropic_api_key="key",
             jira_project_keys="",
             github_repos="",

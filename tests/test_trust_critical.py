@@ -144,7 +144,7 @@ class TestExecutionState:
     
     def test_initial_state_all_not_started(self, fresh_state):
         """All checks should start as NOT_STARTED."""
-        for check_type in ExecutionState.REQUIRED_CHECKS:
+        for check_type in fresh_state.REQUIRED_CHECKS:
             assert fresh_state.get_check_status(check_type) == CheckStatus.NOT_STARTED
     
     def test_start_check_changes_status(self, fresh_state):
@@ -203,12 +203,19 @@ class TestExecutionState:
         assert failed[0].check_type == CheckType.SLACK
         assert "permissions" in failed[0].failure_reason
     
-    def test_get_incomplete_checks(self, incomplete_state):
+    def test_get_incomplete_checks(self, fresh_state):
         """get_incomplete_checks should return checks not finished."""
-        incomplete = incomplete_state.get_incomplete_checks()
-        # JIRA is in progress, GITHUB and SLACK are not started
+        # Start all three checks so they become required
+        fresh_state.start_check(CheckType.JIRA)
+        fresh_state.start_check(CheckType.GITHUB)
+        fresh_state.start_check(CheckType.SLACK)
+        # Only complete SLACK
+        fresh_state.complete_check_success(CheckType.SLACK, findings=[])
+        incomplete = fresh_state.get_incomplete_checks()
+        # JIRA and GITHUB are still in progress
+        assert CheckType.JIRA in incomplete
         assert CheckType.GITHUB in incomplete
-        assert CheckType.SLACK in incomplete
+        assert CheckType.SLACK not in incomplete
 
 
 class TestExecutionStateReports:
@@ -261,7 +268,7 @@ class TestAlertGate:
     def test_no_alert_without_critical_findings(self, fresh_state):
         """No alert should be sent without P0/P1 findings."""
         # Complete all checks with no findings
-        for check_type in ExecutionState.REQUIRED_CHECKS:
+        for check_type in fresh_state.REQUIRED_CHECKS:
             fresh_state.start_check(check_type)
             fresh_state.complete_check_success(check_type, findings=[])
         
