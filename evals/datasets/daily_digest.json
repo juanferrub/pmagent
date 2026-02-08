@@ -1,0 +1,312 @@
+{
+  "category": "daily_digest",
+  "description": "Daily digest generation scenarios testing aggregation from Slack, Jira, and GitHub",
+  "scenarios": [
+    {
+      "id": "daily_digest_001",
+      "name": "Standard daily digest request",
+      "description": "Basic daily digest with all sources available and returning data",
+      "category": "daily_digest",
+      "query": "Generate a daily digest for today covering Jira tickets, GitHub activity, and Slack discussions",
+      "expected_agents": ["jira_agent", "github_agent", "slack_agent"],
+      "expected_sources": ["jira", "github", "slack"],
+      "mock_responses": [
+        {
+          "tool_name": "jira_search",
+          "response": {
+            "issues": [
+              {"key": "OPIK-123", "summary": "Fix tracing latency issue", "status": "In Progress", "priority": "High"},
+              {"key": "OPIK-124", "summary": "Add new evaluation metrics", "status": "Open", "priority": "Medium"}
+            ],
+            "total": 2
+          },
+          "success": true
+        },
+        {
+          "tool_name": "github_list_issues",
+          "response": {
+            "items": [
+              {"number": 456, "title": "Bug in SDK initialization", "state": "open", "labels": ["bug"]},
+              {"number": 457, "title": "Feature request: batch tracing", "state": "open", "labels": ["enhancement"]}
+            ]
+          },
+          "success": true
+        },
+        {
+          "tool_name": "slack_search_messages",
+          "response": {
+            "messages": [
+              {"channel": "#opik-dev", "text": "Deployed v1.2.3 to staging", "ts": "1234567890.123"},
+              {"channel": "#support", "text": "Customer asking about pricing", "ts": "1234567891.123"}
+            ]
+          },
+          "success": true
+        }
+      ],
+      "golden_output": {
+        "must_contain": ["OPIK-123", "OPIK-124", "#456", "#457"],
+        "must_not_contain": ["all good", "looks fine", "no issues"],
+        "expected_sections": ["Jira", "GitHub", "Slack"],
+        "expected_identifiers": ["OPIK-123", "OPIK-124", "456", "457"],
+        "should_alert": false,
+        "min_trust_score": 0.8
+      },
+      "quality_criteria": {
+        "relevance": "Response should summarize activity from all three sources",
+        "completeness": "Should include ticket IDs, PR numbers, and Slack highlights",
+        "accuracy": "All mentioned IDs must match the tool responses",
+        "clarity": "Should be organized by source with clear sections",
+        "actionability": "Should highlight items needing attention"
+      },
+      "tags": ["standard", "multi-source"]
+    },
+    {
+      "id": "daily_digest_002",
+      "name": "Digest with partial tool failures",
+      "description": "Daily digest when Slack tool fails but Jira and GitHub succeed",
+      "category": "daily_digest",
+      "query": "Give me today's daily digest",
+      "expected_agents": ["jira_agent", "github_agent", "slack_agent"],
+      "expected_sources": ["jira", "github", "slack"],
+      "mock_responses": [
+        {
+          "tool_name": "jira_search",
+          "response": {
+            "issues": [{"key": "OPIK-200", "summary": "Performance optimization", "status": "Open", "priority": "High"}],
+            "total": 1
+          },
+          "success": true
+        },
+        {
+          "tool_name": "github_list_issues",
+          "response": {"items": []},
+          "success": true
+        },
+        {
+          "tool_name": "slack_search_messages",
+          "response": null,
+          "success": false,
+          "error": "Slack API rate limit exceeded"
+        }
+      ],
+      "golden_output": {
+        "must_contain": ["OPIK-200", "unavailable", "could not be verified"],
+        "must_not_contain": ["all good", "no issues in Slack"],
+        "expected_sections": ["Jira", "GitHub"],
+        "expected_identifiers": ["OPIK-200"],
+        "should_alert": false,
+        "min_trust_score": 0.6
+      },
+      "quality_criteria": {
+        "relevance": "Should report available data and explicitly note Slack failure",
+        "completeness": "Must clearly state Slack data is unavailable",
+        "accuracy": "Should not fabricate Slack data",
+        "clarity": "Failed source should be clearly marked",
+        "actionability": "Should suggest retrying or checking Slack manually"
+      },
+      "tags": ["partial-failure", "error-handling"]
+    },
+    {
+      "id": "daily_digest_003",
+      "name": "Digest with no data",
+      "description": "Daily digest when all tools return empty results",
+      "category": "daily_digest",
+      "query": "What happened today? Give me the daily digest.",
+      "expected_agents": ["jira_agent", "github_agent", "slack_agent"],
+      "expected_sources": ["jira", "github", "slack"],
+      "mock_responses": [
+        {
+          "tool_name": "jira_search",
+          "response": {"issues": [], "total": 0},
+          "success": true
+        },
+        {
+          "tool_name": "github_list_issues",
+          "response": {"items": []},
+          "success": true
+        },
+        {
+          "tool_name": "slack_search_messages",
+          "response": {"messages": []},
+          "success": true
+        }
+      ],
+      "golden_output": {
+        "must_contain": ["No verified", "checked sources"],
+        "must_not_contain": ["all quiet", "nothing to report", "everything is fine"],
+        "expected_sections": [],
+        "expected_identifiers": [],
+        "should_alert": false,
+        "min_trust_score": 0.8
+      },
+      "quality_criteria": {
+        "relevance": "Should acknowledge the query and report no activity found",
+        "completeness": "Should confirm all sources were checked",
+        "accuracy": "Must not fabricate any activity",
+        "clarity": "Should clearly state no activity was found",
+        "actionability": "May suggest checking different time range"
+      },
+      "tags": ["empty-results", "edge-case"]
+    },
+    {
+      "id": "daily_digest_004",
+      "name": "Digest with critical issues present",
+      "description": "Daily digest containing P0/P1 critical issues that need attention",
+      "category": "daily_digest",
+      "query": "Daily digest please",
+      "expected_agents": ["jira_agent", "github_agent", "slack_agent"],
+      "expected_sources": ["jira", "github", "slack"],
+      "mock_responses": [
+        {
+          "tool_name": "jira_search",
+          "response": {
+            "issues": [
+              {"key": "OPIK-999", "summary": "CRITICAL: Production tracing broken", "status": "Open", "priority": "Highest"},
+              {"key": "OPIK-998", "summary": "Minor UI fix", "status": "In Progress", "priority": "Low"}
+            ],
+            "total": 2
+          },
+          "success": true
+        },
+        {
+          "tool_name": "github_list_issues",
+          "response": {
+            "items": [
+              {"number": 789, "title": "URGENT: SDK crash on init", "state": "open", "labels": ["bug", "critical", "P0"]}
+            ]
+          },
+          "success": true
+        },
+        {
+          "tool_name": "slack_search_messages",
+          "response": {
+            "messages": [
+              {"channel": "#incidents", "text": "prod down - investigating OPIK-999", "ts": "1234567890.123"}
+            ]
+          },
+          "success": true
+        }
+      ],
+      "golden_output": {
+        "must_contain": ["OPIK-999", "critical", "P0", "#789", "production"],
+        "must_not_contain": ["all good", "no critical issues"],
+        "expected_sections": ["Jira", "GitHub", "Slack"],
+        "expected_identifiers": ["OPIK-999", "OPIK-998", "789"],
+        "should_alert": true,
+        "min_trust_score": 0.85
+      },
+      "quality_criteria": {
+        "relevance": "Should prominently highlight critical issues",
+        "completeness": "Must include all critical items with details",
+        "accuracy": "Priority levels must match source data",
+        "clarity": "Critical issues should be at the top",
+        "actionability": "Should recommend immediate action on P0s"
+      },
+      "tags": ["critical", "alert-worthy"]
+    },
+    {
+      "id": "daily_digest_005",
+      "name": "Digest for specific time range",
+      "description": "Daily digest for a specific date range (last 48 hours)",
+      "category": "daily_digest",
+      "query": "Generate a digest for the last 48 hours",
+      "expected_agents": ["jira_agent", "github_agent", "slack_agent"],
+      "expected_sources": ["jira", "github", "slack"],
+      "mock_responses": [
+        {
+          "tool_name": "jira_search",
+          "response": {
+            "issues": [
+              {"key": "OPIK-300", "summary": "Add batch processing", "status": "Done", "priority": "Medium", "updated": "2024-01-15T10:00:00Z"},
+              {"key": "OPIK-301", "summary": "Fix memory leak", "status": "In Review", "priority": "High", "updated": "2024-01-14T15:00:00Z"}
+            ],
+            "total": 2
+          },
+          "success": true
+        },
+        {
+          "tool_name": "github_list_issues",
+          "response": {
+            "items": [
+              {"number": 500, "title": "PR: Batch processing implementation", "state": "closed", "labels": ["merged"]}
+            ]
+          },
+          "success": true
+        },
+        {
+          "tool_name": "slack_search_messages",
+          "response": {
+            "messages": [
+              {"channel": "#releases", "text": "v1.3.0 released with batch processing", "ts": "1234567890.123"}
+            ]
+          },
+          "success": true
+        }
+      ],
+      "golden_output": {
+        "must_contain": ["OPIK-300", "OPIK-301", "batch processing", "48 hours"],
+        "must_not_contain": ["today only", "last 24 hours"],
+        "expected_sections": ["Jira", "GitHub", "Slack"],
+        "expected_identifiers": ["OPIK-300", "OPIK-301", "500"],
+        "should_alert": false,
+        "min_trust_score": 0.8
+      },
+      "quality_criteria": {
+        "relevance": "Should cover the specified 48-hour time range",
+        "completeness": "Should include all activity from the time range",
+        "accuracy": "Timestamps should fall within requested range",
+        "clarity": "Should mention the time range in response",
+        "actionability": "Should highlight items still needing action"
+      },
+      "tags": ["time-range", "custom-query"]
+    },
+    {
+      "id": "daily_digest_006",
+      "name": "Digest with Slack unavailable",
+      "description": "Daily digest when Slack integration is not configured",
+      "category": "daily_digest",
+      "query": "Daily digest",
+      "expected_agents": ["jira_agent", "github_agent", "slack_agent"],
+      "expected_sources": ["jira", "github", "slack"],
+      "mock_responses": [
+        {
+          "tool_name": "jira_search",
+          "response": {
+            "issues": [{"key": "OPIK-400", "summary": "Documentation update", "status": "Open", "priority": "Low"}],
+            "total": 1
+          },
+          "success": true
+        },
+        {
+          "tool_name": "github_list_issues",
+          "response": {
+            "items": [{"number": 600, "title": "Docs: Update API reference", "state": "open", "labels": ["documentation"]}]
+          },
+          "success": true
+        },
+        {
+          "tool_name": "slack_search_messages",
+          "response": null,
+          "success": false,
+          "error": "SLACK_BOT_TOKEN not configured"
+        }
+      ],
+      "golden_output": {
+        "must_contain": ["OPIK-400", "#600", "Slack", "unavailable"],
+        "must_not_contain": ["Slack shows", "Slack highlights", "all channels quiet"],
+        "expected_sections": ["Jira", "GitHub"],
+        "expected_identifiers": ["OPIK-400", "600"],
+        "should_alert": false,
+        "min_trust_score": 0.6
+      },
+      "quality_criteria": {
+        "relevance": "Should provide digest from available sources",
+        "completeness": "Must explicitly note Slack is unavailable",
+        "accuracy": "Should not fabricate Slack data",
+        "clarity": "Should clearly indicate missing integration",
+        "actionability": "May suggest configuring Slack integration"
+      },
+      "tags": ["missing-integration", "partial-data"]
+    }
+  ]
+}

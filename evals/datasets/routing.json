@@ -1,0 +1,329 @@
+{
+  "category": "routing",
+  "description": "Query routing scenarios testing supervisor delegation to correct agents",
+  "scenarios": [
+    {
+      "id": "routing_001",
+      "name": "Jira-only query",
+      "description": "Query that should only route to jira_agent",
+      "category": "routing",
+      "query": "What's the status of OPIK-500?",
+      "expected_agents": ["jira_agent"],
+      "expected_sources": ["jira"],
+      "mock_responses": [
+        {
+          "tool_name": "jira_get_issue",
+          "response": {
+            "key": "OPIK-500",
+            "summary": "Implement batch tracing API",
+            "status": "In Progress",
+            "priority": "High",
+            "assignee": "developer@company.com"
+          },
+          "success": true
+        }
+      ],
+      "golden_output": {
+        "must_contain": ["OPIK-500", "In Progress", "batch tracing"],
+        "must_not_contain": ["GitHub", "Slack", "web search"],
+        "expected_sections": ["Jira"],
+        "expected_identifiers": ["OPIK-500"],
+        "should_alert": false,
+        "min_trust_score": 0.85
+      },
+      "quality_criteria": {
+        "relevance": "Should provide Jira ticket details",
+        "completeness": "Should include status, summary, assignee",
+        "accuracy": "All details must match Jira response",
+        "clarity": "Should present ticket info clearly",
+        "actionability": "May suggest next steps based on status"
+      },
+      "tags": ["single-agent", "jira"]
+    },
+    {
+      "id": "routing_002",
+      "name": "GitHub-only query",
+      "description": "Query that should only route to github_agent",
+      "category": "routing",
+      "query": "Show me the latest PRs merged to main",
+      "expected_agents": ["github_agent"],
+      "expected_sources": ["github"],
+      "mock_responses": [
+        {
+          "tool_name": "github_list_pull_requests",
+          "response": {
+            "items": [
+              {"number": 789, "title": "feat: Add batch processing", "state": "closed", "merged": true},
+              {"number": 788, "title": "fix: Memory leak in tracer", "state": "closed", "merged": true}
+            ]
+          },
+          "success": true
+        }
+      ],
+      "golden_output": {
+        "must_contain": ["#789", "#788", "batch processing", "memory leak", "merged"],
+        "must_not_contain": ["Jira", "Slack", "ticket"],
+        "expected_sections": ["GitHub", "Pull Requests"],
+        "expected_identifiers": ["789", "788"],
+        "should_alert": false,
+        "min_trust_score": 0.85
+      },
+      "quality_criteria": {
+        "relevance": "Should list merged PRs",
+        "completeness": "Should include PR numbers and titles",
+        "accuracy": "PR details must match GitHub response",
+        "clarity": "Should present PRs in clear format",
+        "actionability": "May highlight notable changes"
+      },
+      "tags": ["single-agent", "github"]
+    },
+    {
+      "id": "routing_003",
+      "name": "Slack-only query",
+      "description": "Query that should only route to slack_agent",
+      "category": "routing",
+      "query": "What's being discussed in #opik-dev today?",
+      "expected_agents": ["slack_agent"],
+      "expected_sources": ["slack"],
+      "mock_responses": [
+        {
+          "tool_name": "slack_search_messages",
+          "response": {
+            "messages": [
+              {"channel": "#opik-dev", "text": "Working on the new SDK release", "ts": "1705312800.123"},
+              {"channel": "#opik-dev", "text": "Tests passing on staging", "ts": "1705312900.123"}
+            ]
+          },
+          "success": true
+        }
+      ],
+      "golden_output": {
+        "must_contain": ["#opik-dev", "SDK release", "staging"],
+        "must_not_contain": ["Jira", "GitHub", "PR"],
+        "expected_sections": ["Slack"],
+        "expected_identifiers": [],
+        "should_alert": false,
+        "min_trust_score": 0.85
+      },
+      "quality_criteria": {
+        "relevance": "Should summarize Slack discussions",
+        "completeness": "Should cover key topics discussed",
+        "accuracy": "Must only include actual messages",
+        "clarity": "Should organize by topic/thread",
+        "actionability": "May highlight action items"
+      },
+      "tags": ["single-agent", "slack"]
+    },
+    {
+      "id": "routing_004",
+      "name": "Multi-agent query",
+      "description": "Query requiring multiple agents in parallel",
+      "category": "routing",
+      "query": "Give me a status update on our sprint - tickets, PRs, and team discussions",
+      "expected_agents": ["jira_agent", "github_agent", "slack_agent"],
+      "expected_sources": ["jira", "github", "slack"],
+      "mock_responses": [
+        {
+          "tool_name": "jira_search",
+          "response": {
+            "issues": [{"key": "OPIK-600", "summary": "Sprint task", "status": "In Progress", "priority": "Medium"}],
+            "total": 1
+          },
+          "success": true
+        },
+        {
+          "tool_name": "github_list_pull_requests",
+          "response": {
+            "items": [{"number": 900, "title": "Sprint PR", "state": "open"}]
+          },
+          "success": true
+        },
+        {
+          "tool_name": "slack_search_messages",
+          "response": {
+            "messages": [{"channel": "#sprint", "text": "Sprint going well", "ts": "1705312800.123"}]
+          },
+          "success": true
+        }
+      ],
+      "golden_output": {
+        "must_contain": ["OPIK-600", "#900", "sprint"],
+        "must_not_contain": [],
+        "expected_sections": ["Jira", "GitHub", "Slack"],
+        "expected_identifiers": ["OPIK-600", "900"],
+        "should_alert": false,
+        "min_trust_score": 0.85
+      },
+      "quality_criteria": {
+        "relevance": "Should cover all three areas requested",
+        "completeness": "Should include data from all sources",
+        "accuracy": "All data must match tool responses",
+        "clarity": "Should organize by source",
+        "actionability": "Should highlight blockers or needs"
+      },
+      "tags": ["multi-agent", "parallel"]
+    },
+    {
+      "id": "routing_005",
+      "name": "Ambiguous query",
+      "description": "Query that could go to multiple agents - should pick most relevant",
+      "category": "routing",
+      "query": "What's happening with the SDK?",
+      "expected_agents": ["jira_agent", "github_agent"],
+      "expected_sources": ["jira", "github"],
+      "mock_responses": [
+        {
+          "tool_name": "jira_search",
+          "response": {
+            "issues": [{"key": "OPIK-SDK-1", "summary": "SDK improvement", "status": "Open", "priority": "Medium"}],
+            "total": 1
+          },
+          "success": true
+        },
+        {
+          "tool_name": "github_list_issues",
+          "response": {
+            "items": [{"number": 1000, "title": "SDK: Add Python 3.12 support", "state": "open", "labels": ["sdk"]}]
+          },
+          "success": true
+        }
+      ],
+      "golden_output": {
+        "must_contain": ["SDK", "OPIK-SDK-1", "#1000"],
+        "must_not_contain": [],
+        "expected_sections": ["Jira", "GitHub"],
+        "expected_identifiers": ["OPIK-SDK-1", "1000"],
+        "should_alert": false,
+        "min_trust_score": 0.8
+      },
+      "quality_criteria": {
+        "relevance": "Should cover SDK-related items",
+        "completeness": "Should check relevant sources",
+        "accuracy": "All items must be SDK-related",
+        "clarity": "Should synthesize across sources",
+        "actionability": "Should highlight priorities"
+      },
+      "tags": ["ambiguous", "multi-agent"]
+    },
+    {
+      "id": "routing_006",
+      "name": "Report generation query",
+      "description": "Query requesting report creation - should use notion_agent",
+      "category": "routing",
+      "query": "Create a weekly status report in Notion",
+      "expected_agents": ["jira_agent", "github_agent", "slack_agent", "notion_agent"],
+      "expected_sources": ["jira", "github", "slack", "notion"],
+      "mock_responses": [
+        {
+          "tool_name": "jira_search",
+          "response": {"issues": [{"key": "OPIK-W1", "summary": "Weekly item", "status": "Done", "priority": "Medium"}], "total": 1},
+          "success": true
+        },
+        {
+          "tool_name": "github_list_pull_requests",
+          "response": {"items": [{"number": 1100, "title": "Weekly PR", "state": "closed", "merged": true}]},
+          "success": true
+        },
+        {
+          "tool_name": "slack_search_messages",
+          "response": {"messages": [{"channel": "#general", "text": "Good week!", "ts": "1705312800.123"}]},
+          "success": true
+        },
+        {
+          "tool_name": "notion_create_page",
+          "response": {"id": "notion-page-123", "url": "https://notion.so/weekly-report"},
+          "success": true
+        }
+      ],
+      "golden_output": {
+        "must_contain": ["Notion", "report", "created", "weekly"],
+        "must_not_contain": [],
+        "expected_sections": ["Report"],
+        "expected_identifiers": ["notion-page-123"],
+        "should_alert": false,
+        "min_trust_score": 0.8
+      },
+      "quality_criteria": {
+        "relevance": "Should create a Notion report",
+        "completeness": "Should gather data before creating report",
+        "accuracy": "Report should contain gathered data",
+        "clarity": "Should confirm report creation",
+        "actionability": "Should provide link to report"
+      },
+      "tags": ["report", "notion", "multi-agent"]
+    },
+    {
+      "id": "routing_007",
+      "name": "Email request",
+      "description": "Query requesting email - supervisor should use direct tool",
+      "category": "routing",
+      "query": "Send me an email summary of today's activity",
+      "expected_agents": ["jira_agent", "github_agent", "slack_agent"],
+      "expected_sources": ["jira", "github", "slack"],
+      "mock_responses": [
+        {
+          "tool_name": "jira_search",
+          "response": {"issues": [{"key": "OPIK-E1", "summary": "Email item", "status": "Open", "priority": "Low"}], "total": 1},
+          "success": true
+        },
+        {
+          "tool_name": "github_list_issues",
+          "response": {"items": []},
+          "success": true
+        },
+        {
+          "tool_name": "slack_search_messages",
+          "response": {"messages": []},
+          "success": true
+        },
+        {
+          "tool_name": "send_email_report",
+          "response": {"success": true, "message_id": "email-123"},
+          "success": true
+        }
+      ],
+      "golden_output": {
+        "must_contain": ["email", "sent", "summary"],
+        "must_not_contain": [],
+        "expected_sections": [],
+        "expected_identifiers": [],
+        "should_alert": false,
+        "min_trust_score": 0.8
+      },
+      "quality_criteria": {
+        "relevance": "Should send email as requested",
+        "completeness": "Should gather data before sending",
+        "accuracy": "Email content should match gathered data",
+        "clarity": "Should confirm email was sent",
+        "actionability": "Should note email destination"
+      },
+      "tags": ["email", "direct-tool"]
+    },
+    {
+      "id": "routing_008",
+      "name": "Unknown domain query",
+      "description": "Query outside agent capabilities - should handle gracefully",
+      "category": "routing",
+      "query": "What's the weather like today?",
+      "expected_agents": [],
+      "expected_sources": [],
+      "mock_responses": [],
+      "golden_output": {
+        "must_contain": ["cannot", "outside", "scope"],
+        "must_not_contain": ["sunny", "rain", "temperature", "forecast"],
+        "expected_sections": [],
+        "expected_identifiers": [],
+        "should_alert": false,
+        "min_trust_score": 0.7
+      },
+      "quality_criteria": {
+        "relevance": "Should acknowledge query is outside scope",
+        "completeness": "Should explain what the agent can do",
+        "accuracy": "Must not fabricate weather data",
+        "clarity": "Should clearly state limitations",
+        "actionability": "May suggest relevant queries"
+      },
+      "tags": ["out-of-scope", "graceful-handling"]
+    }
+  ]
+}

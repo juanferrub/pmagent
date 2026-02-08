@@ -1,0 +1,779 @@
+[
+  {
+    "scenario_id": "daily_digest_001",
+    "scenario_name": "Standard daily digest request",
+    "category": "daily_digest",
+    "query": "Generate a daily digest for today covering Jira tickets, GitHub activity, and Slack discussions",
+    "output": "# Response to: Generate a daily digest for today covering Jira tickets, GitHub activity, and Slack discussions\n\n\n## Jira\n- **OPIK-123**: Fix tracing latency issue (Status: In Progress, Priority: High)\n- **OPIK-124**: Add new evaluation metrics (Status: Open, Priority: Medium)\n\n## GitHub\n- **#456**: Bug in SDK initialization (open) [bug]\n- **#457**: Feature request: batch tracing (open) [enhancement]\n\n## Slack\n- #opik-dev: \"Deployed v1.2.3 to staging\"\n- #support: \"Customer asking about pricing\"",
+    "scores": [
+      {
+        "scorer_name": "route_accuracy",
+        "score": 1.0,
+        "passed": true,
+        "details": "Correct: {'jira_agent', 'github_agent', 'slack_agent'}",
+        "metadata": {
+          "expected": [
+            "jira_agent",
+            "github_agent",
+            "slack_agent"
+          ],
+          "invoked": [
+            "jira_agent",
+            "github_agent",
+            "slack_agent"
+          ],
+          "correct": [
+            "jira_agent",
+            "github_agent",
+            "slack_agent"
+          ],
+          "missed": [],
+          "extra": []
+        }
+      },
+      {
+        "scorer_name": "source_coverage",
+        "score": 1.0,
+        "passed": true,
+        "details": "All required sources checked: {'github', 'slack', 'jira'}",
+        "metadata": {
+          "expected": [
+            "github",
+            "slack",
+            "jira"
+          ],
+          "checked": [
+            "github",
+            "slack",
+            "jira"
+          ],
+          "covered": [
+            "github",
+            "slack",
+            "jira"
+          ],
+          "missed": []
+        }
+      },
+      {
+        "scorer_name": "hallucination_detector",
+        "score": 1.0,
+        "passed": true,
+        "details": "No hallucinations detected",
+        "metadata": {
+          "violations": [],
+          "found_jira_ids": [
+            "OPIK-123",
+            "OPIK-124"
+          ],
+          "found_github_ids": [
+            "457",
+            "456"
+          ],
+          "valid_jira_ids": [
+            "OPIK-123",
+            "OPIK-124"
+          ],
+          "valid_github_ids": [
+            "456",
+            "457"
+          ]
+        }
+      },
+      {
+        "scorer_name": "language_compliance",
+        "score": 1.0,
+        "passed": true,
+        "details": "No prohibited phrases found",
+        "metadata": {
+          "prohibited_found": [],
+          "approved_found": []
+        }
+      },
+      {
+        "scorer_name": "structure_scorer",
+        "score": 1.0,
+        "passed": true,
+        "details": "Output structure is valid",
+        "metadata": {
+          "issues": []
+        }
+      },
+      {
+        "scorer_name": "identifier_validator",
+        "score": 1.0,
+        "passed": true,
+        "details": "All expected identifiers found: {'OPIK-123', 'OPIK-124', '456', '457'}",
+        "metadata": {
+          "expected": [
+            "OPIK-123",
+            "OPIK-124",
+            "457",
+            "456"
+          ],
+          "found": [
+            "OPIK-123",
+            "OPIK-124",
+            "456",
+            "457"
+          ],
+          "missing": []
+        }
+      },
+      {
+        "scorer_name": "alert_appropriateness",
+        "score": 1.0,
+        "passed": true,
+        "details": "Correctly did not send alert",
+        "metadata": {
+          "should_alert": false,
+          "did_alert": false
+        }
+      }
+    ],
+    "overall_passed": true,
+    "trust_score": null,
+    "latency_ms": 0.11515617370605469,
+    "timestamp": "2026-02-07T10:43:00.645082+00:00",
+    "error": null
+  },
+  {
+    "scenario_id": "daily_digest_002",
+    "scenario_name": "Digest with partial tool failures",
+    "category": "daily_digest",
+    "query": "Give me today's daily digest",
+    "output": "# Response to: Give me today's daily digest\n\n\n## Jira\n- **OPIK-200**: Performance optimization (Status: Open, Priority: High)\n\n## GitHub\nNo GitHub items found.\n\n## slack_search_messages\nData unavailable: Slack API rate limit exceeded\n\ncould not be verified",
+    "scores": [
+      {
+        "scorer_name": "route_accuracy",
+        "score": 1.0,
+        "passed": true,
+        "details": "Correct: {'jira_agent', 'github_agent', 'slack_agent'}",
+        "metadata": {
+          "expected": [
+            "jira_agent",
+            "github_agent",
+            "slack_agent"
+          ],
+          "invoked": [
+            "jira_agent",
+            "github_agent",
+            "slack_agent"
+          ],
+          "correct": [
+            "jira_agent",
+            "github_agent",
+            "slack_agent"
+          ],
+          "missed": [],
+          "extra": []
+        }
+      },
+      {
+        "scorer_name": "source_coverage",
+        "score": 1.0,
+        "passed": true,
+        "details": "All required sources checked: {'github', 'slack', 'jira'}",
+        "metadata": {
+          "expected": [
+            "github",
+            "slack",
+            "jira"
+          ],
+          "checked": [
+            "github",
+            "slack",
+            "jira"
+          ],
+          "covered": [
+            "github",
+            "slack",
+            "jira"
+          ],
+          "missed": []
+        }
+      },
+      {
+        "scorer_name": "hallucination_detector",
+        "score": 1.0,
+        "passed": true,
+        "details": "No hallucinations detected",
+        "metadata": {
+          "violations": [],
+          "found_jira_ids": [
+            "OPIK-200"
+          ],
+          "found_github_ids": [],
+          "valid_jira_ids": [
+            "OPIK-200"
+          ],
+          "valid_github_ids": []
+        }
+      },
+      {
+        "scorer_name": "language_compliance",
+        "score": 1.0,
+        "passed": true,
+        "details": "Uses approved language: ['Data unavailable', 'Could not be verified']",
+        "metadata": {
+          "prohibited_found": [],
+          "approved_found": [
+            "Data unavailable",
+            "Could not be verified"
+          ]
+        }
+      },
+      {
+        "scorer_name": "structure_scorer",
+        "score": 1.0,
+        "passed": true,
+        "details": "Output structure is valid",
+        "metadata": {
+          "issues": []
+        }
+      },
+      {
+        "scorer_name": "identifier_validator",
+        "score": 1.0,
+        "passed": true,
+        "details": "All expected identifiers found: {'OPIK-200'}",
+        "metadata": {
+          "expected": [
+            "OPIK-200"
+          ],
+          "found": [
+            "OPIK-200"
+          ],
+          "missing": []
+        }
+      },
+      {
+        "scorer_name": "alert_appropriateness",
+        "score": 1.0,
+        "passed": true,
+        "details": "Correctly did not send alert",
+        "metadata": {
+          "should_alert": false,
+          "did_alert": false
+        }
+      }
+    ],
+    "overall_passed": true,
+    "trust_score": null,
+    "latency_ms": 0.054836273193359375,
+    "timestamp": "2026-02-07T10:43:00.645393+00:00",
+    "error": null
+  },
+  {
+    "scenario_id": "daily_digest_003",
+    "scenario_name": "Digest with no data",
+    "category": "daily_digest",
+    "query": "What happened today? Give me the daily digest.",
+    "output": "# Response to: What happened today? Give me the daily digest.\n\n\n## Jira\nNo Jira issues found.\n\n## GitHub\nNo GitHub items found.\n\n## Slack\nNo Slack messages found.\n\nNo verified\n\nchecked sources",
+    "scores": [
+      {
+        "scorer_name": "route_accuracy",
+        "score": 1.0,
+        "passed": true,
+        "details": "Correct: {'jira_agent', 'github_agent', 'slack_agent'}",
+        "metadata": {
+          "expected": [
+            "jira_agent",
+            "github_agent",
+            "slack_agent"
+          ],
+          "invoked": [
+            "jira_agent",
+            "github_agent",
+            "slack_agent"
+          ],
+          "correct": [
+            "jira_agent",
+            "github_agent",
+            "slack_agent"
+          ],
+          "missed": [],
+          "extra": []
+        }
+      },
+      {
+        "scorer_name": "source_coverage",
+        "score": 1.0,
+        "passed": true,
+        "details": "All required sources checked: {'github', 'slack', 'jira'}",
+        "metadata": {
+          "expected": [
+            "github",
+            "slack",
+            "jira"
+          ],
+          "checked": [
+            "github",
+            "slack",
+            "jira"
+          ],
+          "covered": [
+            "github",
+            "slack",
+            "jira"
+          ],
+          "missed": []
+        }
+      },
+      {
+        "scorer_name": "hallucination_detector",
+        "score": 1.0,
+        "passed": true,
+        "details": "No hallucinations detected",
+        "metadata": {
+          "violations": [],
+          "found_jira_ids": [],
+          "found_github_ids": [],
+          "valid_jira_ids": [],
+          "valid_github_ids": []
+        }
+      },
+      {
+        "scorer_name": "language_compliance",
+        "score": 1.0,
+        "passed": true,
+        "details": "No prohibited phrases found",
+        "metadata": {
+          "prohibited_found": [],
+          "approved_found": []
+        }
+      },
+      {
+        "scorer_name": "structure_scorer",
+        "score": 1.0,
+        "passed": true,
+        "details": "Output structure is valid",
+        "metadata": {
+          "issues": []
+        }
+      },
+      {
+        "scorer_name": "identifier_validator",
+        "score": 1.0,
+        "passed": true,
+        "details": "No identifiers expected",
+        "metadata": {}
+      },
+      {
+        "scorer_name": "alert_appropriateness",
+        "score": 1.0,
+        "passed": true,
+        "details": "Correctly did not send alert",
+        "metadata": {
+          "should_alert": false,
+          "did_alert": false
+        }
+      }
+    ],
+    "overall_passed": true,
+    "trust_score": null,
+    "latency_ms": 0.030994415283203125,
+    "timestamp": "2026-02-07T10:43:00.645432+00:00",
+    "error": null
+  },
+  {
+    "scenario_id": "daily_digest_004",
+    "scenario_name": "Digest with critical issues present",
+    "category": "daily_digest",
+    "query": "Daily digest please",
+    "output": "# Response to: Daily digest please\n\n\n## Jira\n- **OPIK-999**: CRITICAL: Production tracing broken (Status: Open, Priority: Highest)\n- **OPIK-998**: Minor UI fix (Status: In Progress, Priority: Low)\n\n## GitHub\n- **#789**: URGENT: SDK crash on init (open) [bug, critical, P0]\n\n## Slack\n- #incidents: \"prod down - investigating OPIK-999\"",
+    "scores": [
+      {
+        "scorer_name": "route_accuracy",
+        "score": 1.0,
+        "passed": true,
+        "details": "Correct: {'jira_agent', 'github_agent', 'slack_agent'}",
+        "metadata": {
+          "expected": [
+            "jira_agent",
+            "github_agent",
+            "slack_agent"
+          ],
+          "invoked": [
+            "jira_agent",
+            "github_agent",
+            "slack_agent"
+          ],
+          "correct": [
+            "jira_agent",
+            "github_agent",
+            "slack_agent"
+          ],
+          "missed": [],
+          "extra": []
+        }
+      },
+      {
+        "scorer_name": "source_coverage",
+        "score": 1.0,
+        "passed": true,
+        "details": "All required sources checked: {'github', 'slack', 'jira'}",
+        "metadata": {
+          "expected": [
+            "github",
+            "slack",
+            "jira"
+          ],
+          "checked": [
+            "github",
+            "slack",
+            "jira"
+          ],
+          "covered": [
+            "github",
+            "slack",
+            "jira"
+          ],
+          "missed": []
+        }
+      },
+      {
+        "scorer_name": "hallucination_detector",
+        "score": 1.0,
+        "passed": true,
+        "details": "No hallucinations detected",
+        "metadata": {
+          "violations": [],
+          "found_jira_ids": [
+            "OPIK-998",
+            "OPIK-999"
+          ],
+          "found_github_ids": [
+            "789"
+          ],
+          "valid_jira_ids": [
+            "OPIK-998",
+            "OPIK-999"
+          ],
+          "valid_github_ids": [
+            "789"
+          ]
+        }
+      },
+      {
+        "scorer_name": "language_compliance",
+        "score": 1.0,
+        "passed": true,
+        "details": "No prohibited phrases found",
+        "metadata": {
+          "prohibited_found": [],
+          "approved_found": []
+        }
+      },
+      {
+        "scorer_name": "structure_scorer",
+        "score": 1.0,
+        "passed": true,
+        "details": "Output structure is valid",
+        "metadata": {
+          "issues": []
+        }
+      },
+      {
+        "scorer_name": "identifier_validator",
+        "score": 1.0,
+        "passed": true,
+        "details": "All expected identifiers found: {'OPIK-998', '789', 'OPIK-999'}",
+        "metadata": {
+          "expected": [
+            "OPIK-998",
+            "789",
+            "OPIK-999"
+          ],
+          "found": [
+            "OPIK-998",
+            "789",
+            "OPIK-999"
+          ],
+          "missing": []
+        }
+      },
+      {
+        "scorer_name": "alert_appropriateness",
+        "score": 1.0,
+        "passed": true,
+        "details": "Correctly sent alert for critical issue",
+        "metadata": {
+          "should_alert": true,
+          "did_alert": true
+        }
+      }
+    ],
+    "overall_passed": true,
+    "trust_score": null,
+    "latency_ms": 0.050067901611328125,
+    "timestamp": "2026-02-07T10:43:00.645488+00:00",
+    "error": null
+  },
+  {
+    "scenario_id": "daily_digest_005",
+    "scenario_name": "Digest for specific time range",
+    "category": "daily_digest",
+    "query": "Generate a digest for the last 48 hours",
+    "output": "# Response to: Generate a digest for the last 48 hours\n\n\n## Jira\n- **OPIK-300**: Add batch processing (Status: Done, Priority: Medium)\n- **OPIK-301**: Fix memory leak (Status: In Review, Priority: High)\n\n## GitHub\n- **#500**: PR: Batch processing implementation (closed) [merged]\n\n## Slack\n- #releases: \"v1.3.0 released with batch processing\"",
+    "scores": [
+      {
+        "scorer_name": "route_accuracy",
+        "score": 1.0,
+        "passed": true,
+        "details": "Correct: {'jira_agent', 'github_agent', 'slack_agent'}",
+        "metadata": {
+          "expected": [
+            "jira_agent",
+            "github_agent",
+            "slack_agent"
+          ],
+          "invoked": [
+            "jira_agent",
+            "github_agent",
+            "slack_agent"
+          ],
+          "correct": [
+            "jira_agent",
+            "github_agent",
+            "slack_agent"
+          ],
+          "missed": [],
+          "extra": []
+        }
+      },
+      {
+        "scorer_name": "source_coverage",
+        "score": 1.0,
+        "passed": true,
+        "details": "All required sources checked: {'github', 'slack', 'jira'}",
+        "metadata": {
+          "expected": [
+            "github",
+            "slack",
+            "jira"
+          ],
+          "checked": [
+            "github",
+            "slack",
+            "jira"
+          ],
+          "covered": [
+            "github",
+            "slack",
+            "jira"
+          ],
+          "missed": []
+        }
+      },
+      {
+        "scorer_name": "hallucination_detector",
+        "score": 1.0,
+        "passed": true,
+        "details": "No hallucinations detected",
+        "metadata": {
+          "violations": [],
+          "found_jira_ids": [
+            "OPIK-300",
+            "OPIK-301"
+          ],
+          "found_github_ids": [
+            "500"
+          ],
+          "valid_jira_ids": [
+            "OPIK-300",
+            "OPIK-301"
+          ],
+          "valid_github_ids": [
+            "500"
+          ]
+        }
+      },
+      {
+        "scorer_name": "language_compliance",
+        "score": 1.0,
+        "passed": true,
+        "details": "No prohibited phrases found",
+        "metadata": {
+          "prohibited_found": [],
+          "approved_found": []
+        }
+      },
+      {
+        "scorer_name": "structure_scorer",
+        "score": 1.0,
+        "passed": true,
+        "details": "Output structure is valid",
+        "metadata": {
+          "issues": []
+        }
+      },
+      {
+        "scorer_name": "identifier_validator",
+        "score": 1.0,
+        "passed": true,
+        "details": "All expected identifiers found: {'OPIK-300', 'OPIK-301', '500'}",
+        "metadata": {
+          "expected": [
+            "OPIK-300",
+            "OPIK-301",
+            "500"
+          ],
+          "found": [
+            "OPIK-300",
+            "OPIK-301",
+            "500"
+          ],
+          "missing": []
+        }
+      },
+      {
+        "scorer_name": "alert_appropriateness",
+        "score": 1.0,
+        "passed": true,
+        "details": "Correctly did not send alert",
+        "metadata": {
+          "should_alert": false,
+          "did_alert": false
+        }
+      }
+    ],
+    "overall_passed": true,
+    "trust_score": null,
+    "latency_ms": 0.04410743713378906,
+    "timestamp": "2026-02-07T10:43:00.645542+00:00",
+    "error": null
+  },
+  {
+    "scenario_id": "daily_digest_006",
+    "scenario_name": "Digest with Slack unavailable",
+    "category": "daily_digest",
+    "query": "Daily digest",
+    "output": "# Response to: Daily digest\n\n\n## Jira\n- **OPIK-400**: Documentation update (Status: Open, Priority: Low)\n\n## GitHub\n- **#600**: Docs: Update API reference (open) [documentation]\n\n## slack_search_messages\nData unavailable: SLACK_BOT_TOKEN not configured\n\nSlack",
+    "scores": [
+      {
+        "scorer_name": "route_accuracy",
+        "score": 1.0,
+        "passed": true,
+        "details": "Correct: {'jira_agent', 'github_agent', 'slack_agent'}",
+        "metadata": {
+          "expected": [
+            "jira_agent",
+            "github_agent",
+            "slack_agent"
+          ],
+          "invoked": [
+            "jira_agent",
+            "github_agent",
+            "slack_agent"
+          ],
+          "correct": [
+            "jira_agent",
+            "github_agent",
+            "slack_agent"
+          ],
+          "missed": [],
+          "extra": []
+        }
+      },
+      {
+        "scorer_name": "source_coverage",
+        "score": 1.0,
+        "passed": true,
+        "details": "All required sources checked: {'github', 'slack', 'jira'}",
+        "metadata": {
+          "expected": [
+            "github",
+            "slack",
+            "jira"
+          ],
+          "checked": [
+            "github",
+            "slack",
+            "jira"
+          ],
+          "covered": [
+            "github",
+            "slack",
+            "jira"
+          ],
+          "missed": []
+        }
+      },
+      {
+        "scorer_name": "hallucination_detector",
+        "score": 1.0,
+        "passed": true,
+        "details": "No hallucinations detected",
+        "metadata": {
+          "violations": [],
+          "found_jira_ids": [
+            "OPIK-400"
+          ],
+          "found_github_ids": [
+            "600"
+          ],
+          "valid_jira_ids": [
+            "OPIK-400"
+          ],
+          "valid_github_ids": [
+            "600"
+          ]
+        }
+      },
+      {
+        "scorer_name": "language_compliance",
+        "score": 1.0,
+        "passed": true,
+        "details": "Uses approved language: ['Data unavailable']",
+        "metadata": {
+          "prohibited_found": [],
+          "approved_found": [
+            "Data unavailable"
+          ]
+        }
+      },
+      {
+        "scorer_name": "structure_scorer",
+        "score": 1.0,
+        "passed": true,
+        "details": "Output structure is valid",
+        "metadata": {
+          "issues": []
+        }
+      },
+      {
+        "scorer_name": "identifier_validator",
+        "score": 1.0,
+        "passed": true,
+        "details": "All expected identifiers found: {'600', 'OPIK-400'}",
+        "metadata": {
+          "expected": [
+            "600",
+            "OPIK-400"
+          ],
+          "found": [
+            "600",
+            "OPIK-400"
+          ],
+          "missing": []
+        }
+      },
+      {
+        "scorer_name": "alert_appropriateness",
+        "score": 1.0,
+        "passed": true,
+        "details": "Correctly did not send alert",
+        "metadata": {
+          "should_alert": false,
+          "did_alert": false
+        }
+      }
+    ],
+    "overall_passed": true,
+    "trust_score": null,
+    "latency_ms": 0.031948089599609375,
+    "timestamp": "2026-02-07T10:43:00.645579+00:00",
+    "error": null
+  }
+]

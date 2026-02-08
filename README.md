@@ -120,6 +120,54 @@ PYTHONPATH=. pytest tests/ -v --tb=short
 PYTHONPATH=. pytest tests/ -v --cov=src --cov=api --cov-report=term-missing
 ```
 
+## Trust-Critical Operations (Production-Grade Safety)
+
+The PM Agent operates under **strict trust-critical rules** designed for production reliability. The agent is a product operations tool, not a chat assistant.
+
+### Core Principles
+
+1. **No Evidence → No Claim**: Facts require successful tool calls
+2. **Missing Data ≠ No Problems**: Failed tools = UNKNOWN state
+3. **Never Fabricate**: No invented IDs, metrics, or timelines
+4. **Alerts Are Dangerous**: Only P0/P1 with full evidence
+5. **One Pass, One Truth**: Each source checked once per run
+
+### Execution Flow
+
+Every run tracks:
+```
+JIRA_CHECK = NOT_STARTED → IN_PROGRESS → SUCCESS | FAILED_WITH_REASON
+GITHUB_CHECK = NOT_STARTED → IN_PROGRESS → SUCCESS | FAILED_WITH_REASON
+SLACK_CHECK = NOT_STARTED → IN_PROGRESS → SUCCESS | FAILED_WITH_REASON
+```
+
+No final output until all checks complete.
+
+### Language Constraints
+
+**Prohibited** (false reassurance):
+- "Looks fine", "All good", "No major issues", "Seems okay"
+
+**Required** (explicit uncertainty):
+- "No verified critical issues detected in checked sources"
+- "Data unavailable", "Unable to verify", "Unknown"
+
+### Trust Score
+
+Every run is scored (0-100%):
+
+| Component | Weight | Description |
+|-----------|--------|-------------|
+| Evidence | 40% | Claims backed by tool calls |
+| Execution | 30% | All checks completed |
+| Language | 15% | No prohibited phrases |
+| Alerting | 15% | Appropriate alert decisions |
+
+### Documentation
+
+- [docs/TRUST_CRITICAL_OPERATIONS.md](docs/TRUST_CRITICAL_OPERATIONS.md) - Full operating instructions
+- [docs/EVIDENCE_GATING.md](docs/EVIDENCE_GATING.md) - Evidence system details
+
 ## Project Structure
 
 ```
@@ -130,12 +178,21 @@ pm-agent/
 │   ├── graphs/           # LangGraph definitions
 │   ├── state.py          # Agent state schema
 │   ├── config.py         # Settings & LLM factory
+│   ├── evidence.py       # Evidence Ledger & Safety Gate
+│   ├── execution_state.py    # Trust-critical execution state machine
+│   ├── alerting.py           # Strict alerting rules & language constraints
+│   ├── trust_score.py        # Trust score calculation
+│   ├── source_validation.py  # Source type validation
+│   ├── evidence_callback.py  # LangChain callback for evidence recording
 │   └── utils.py          # Logging, retry, circuit breaker
 ├── api/
 │   ├── main.py           # FastAPI application
 │   ├── routes.py         # API routes & webhooks
 │   └── background.py     # Scheduled jobs (APScheduler)
 ├── tests/                # Comprehensive test suite
+├── docs/
+│   ├── EVIDENCE_GATING.md        # Evidence system documentation
+│   └── TRUST_CRITICAL_OPERATIONS.md  # Trust-critical operating instructions
 ├── Dockerfile            # Multi-stage Docker build
 ├── docker-compose.yml    # Docker Compose with PostgreSQL
 ├── requirements.txt      # Python dependencies

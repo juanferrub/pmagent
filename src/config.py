@@ -33,6 +33,7 @@ class Settings(BaseSettings):
     opik_api_key: str = ""
     opik_workspace: str = "default"
     opik_project_name: str = "pm-agent"
+    opik_url_override: str = ""  # Set to local URL like http://localhost:5175 for self-hosted
 
     # ── Slack ──
     slack_bot_token: str = ""
@@ -40,12 +41,14 @@ class Settings(BaseSettings):
     slack_app_token: str = ""
     slack_alert_channel: str = "#pm-alerts"
     slack_summary_channel: str = "#product"
+    slack_bot_user: str = "@pm-agent"  # Bot handle for invite instructions
 
     # ── Jira ──
     jira_url: str = ""
     jira_user_email: str = ""
     jira_api_token: str = ""
     jira_project_keys: str = "PROD,SUPPORT"  # comma-separated
+    jira_customer_field_id: str = ""  # Custom field ID for customer/account (e.g., "customfield_10050")
 
     # ── Notion ──
     notion_api_key: str = ""

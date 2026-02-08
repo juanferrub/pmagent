@@ -1,0 +1,418 @@
+{
+  "category": "critical_issues",
+  "description": "Critical issue detection scenarios testing P0/P1 identification and alerting",
+  "scenarios": [
+    {
+      "id": "critical_001",
+      "name": "P0 issue in Jira only",
+      "description": "Critical P0 issue exists only in Jira, should trigger alert",
+      "category": "critical_issues",
+      "query": "Check for any critical issues that need immediate attention",
+      "expected_agents": ["jira_agent", "github_agent", "slack_agent"],
+      "expected_sources": ["jira", "github", "slack"],
+      "mock_responses": [
+        {
+          "tool_name": "jira_search",
+          "response": {
+            "issues": [
+              {
+                "key": "OPIK-911",
+                "summary": "PRODUCTION DOWN: Database connection failures",
+                "status": "Open",
+                "priority": "Highest",
+                "description": "All users unable to access the platform. Database cluster unresponsive.",
+                "assignee": "oncall@company.com"
+              }
+            ],
+            "total": 1
+          },
+          "success": true
+        },
+        {
+          "tool_name": "github_list_issues",
+          "response": {"items": []},
+          "success": true
+        },
+        {
+          "tool_name": "slack_search_messages",
+          "response": {"messages": []},
+          "success": true
+        }
+      ],
+      "golden_output": {
+        "must_contain": ["OPIK-911", "P0", "critical", "production", "database", "immediate"],
+        "must_not_contain": ["no critical issues", "all clear", "looks good"],
+        "expected_sections": ["Critical Issues", "Jira"],
+        "expected_identifiers": ["OPIK-911"],
+        "should_alert": true,
+        "min_trust_score": 0.9
+      },
+      "quality_criteria": {
+        "relevance": "Must identify and highlight the P0 issue",
+        "completeness": "Should include issue ID, summary, status, and assignee",
+        "accuracy": "All details must match the Jira response",
+        "clarity": "P0 severity should be prominently displayed",
+        "actionability": "Should recommend immediate escalation"
+      },
+      "tags": ["p0", "alert", "jira-only"]
+    },
+    {
+      "id": "critical_002",
+      "name": "P1 issue in GitHub only",
+      "description": "Critical P1 bug in GitHub, should trigger alert",
+      "category": "critical_issues",
+      "query": "Are there any blocking issues?",
+      "expected_agents": ["jira_agent", "github_agent", "slack_agent"],
+      "expected_sources": ["jira", "github", "slack"],
+      "mock_responses": [
+        {
+          "tool_name": "jira_search",
+          "response": {"issues": [], "total": 0},
+          "success": true
+        },
+        {
+          "tool_name": "github_list_issues",
+          "response": {
+            "items": [
+              {
+                "number": 1001,
+                "title": "CRITICAL: SDK crashes on Python 3.12",
+                "state": "open",
+                "labels": ["bug", "critical", "P1", "regression"],
+                "body": "SDK initialization fails with segfault on Python 3.12. Affects all users on latest Python.",
+                "html_url": "https://github.com/comet-ml/opik/issues/1001"
+              }
+            ]
+          },
+          "success": true
+        },
+        {
+          "tool_name": "slack_search_messages",
+          "response": {"messages": []},
+          "success": true
+        }
+      ],
+      "golden_output": {
+        "must_contain": ["#1001", "critical", "SDK", "Python 3.12", "regression"],
+        "must_not_contain": ["no blocking issues", "all clear"],
+        "expected_sections": ["Critical Issues", "GitHub"],
+        "expected_identifiers": ["1001"],
+        "should_alert": true,
+        "min_trust_score": 0.9
+      },
+      "quality_criteria": {
+        "relevance": "Must identify the blocking GitHub issue",
+        "completeness": "Should include issue number, title, labels, and impact",
+        "accuracy": "Labels and details must match GitHub response",
+        "clarity": "Should clearly indicate this is a blocking issue",
+        "actionability": "Should recommend investigating the regression"
+      },
+      "tags": ["p1", "alert", "github-only", "regression"]
+    },
+    {
+      "id": "critical_003",
+      "name": "Urgent message in Slack only",
+      "description": "Urgent incident reported in Slack channel",
+      "category": "critical_issues",
+      "query": "Any urgent issues I should know about?",
+      "expected_agents": ["jira_agent", "github_agent", "slack_agent"],
+      "expected_sources": ["jira", "github", "slack"],
+      "mock_responses": [
+        {
+          "tool_name": "jira_search",
+          "response": {"issues": [], "total": 0},
+          "success": true
+        },
+        {
+          "tool_name": "github_list_issues",
+          "response": {"items": []},
+          "success": true
+        },
+        {
+          "tool_name": "slack_search_messages",
+          "response": {
+            "messages": [
+              {
+                "channel": "#incidents",
+                "text": "🚨 INCIDENT: prod down - API returning 503 for all requests. Investigating now.",
+                "ts": "1705312800.123456",
+                "user": "oncall-bot",
+                "permalink": "https://slack.com/archives/C123/p1705312800123456"
+              }
+            ]
+          },
+          "success": true
+        }
+      ],
+      "golden_output": {
+        "must_contain": ["incident", "prod down", "503", "#incidents"],
+        "must_not_contain": ["no urgent issues", "all quiet"],
+        "expected_sections": ["Slack", "Incidents"],
+        "expected_identifiers": [],
+        "should_alert": true,
+        "min_trust_score": 0.85
+      },
+      "quality_criteria": {
+        "relevance": "Must surface the Slack incident report",
+        "completeness": "Should include channel, message content, and timestamp",
+        "accuracy": "Message content must match Slack response",
+        "clarity": "Should clearly indicate active incident",
+        "actionability": "Should recommend joining incident channel"
+      },
+      "tags": ["incident", "alert", "slack-only"]
+    },
+    {
+      "id": "critical_004",
+      "name": "Multiple critical issues across sources",
+      "description": "Critical issues in Jira, GitHub, and Slack simultaneously",
+      "category": "critical_issues",
+      "query": "Critical issue check",
+      "expected_agents": ["jira_agent", "github_agent", "slack_agent"],
+      "expected_sources": ["jira", "github", "slack"],
+      "mock_responses": [
+        {
+          "tool_name": "jira_search",
+          "response": {
+            "issues": [
+              {"key": "OPIK-P0-1", "summary": "Auth service down", "status": "Open", "priority": "Highest"}
+            ],
+            "total": 1
+          },
+          "success": true
+        },
+        {
+          "tool_name": "github_list_issues",
+          "response": {
+            "items": [
+              {"number": 2001, "title": "BLOCKER: Data loss in evaluation runs", "state": "open", "labels": ["blocker", "data-loss"]}
+            ]
+          },
+          "success": true
+        },
+        {
+          "tool_name": "slack_search_messages",
+          "response": {
+            "messages": [
+              {"channel": "#incidents", "text": "Multiple systems affected - coordinating response", "ts": "1705312800.123"}
+            ]
+          },
+          "success": true
+        }
+      ],
+      "golden_output": {
+        "must_contain": ["OPIK-P0-1", "#2001", "auth", "data loss", "multiple"],
+        "must_not_contain": ["single issue", "minor"],
+        "expected_sections": ["Critical Issues", "Jira", "GitHub", "Slack"],
+        "expected_identifiers": ["OPIK-P0-1", "2001"],
+        "should_alert": true,
+        "min_trust_score": 0.9
+      },
+      "quality_criteria": {
+        "relevance": "Must identify all critical issues across sources",
+        "completeness": "Should list each critical issue with source",
+        "accuracy": "All issue details must match source data",
+        "clarity": "Should prioritize by severity",
+        "actionability": "Should recommend coordinated response"
+      },
+      "tags": ["multiple", "cross-source", "alert"]
+    },
+    {
+      "id": "critical_005",
+      "name": "No critical issues",
+      "description": "No critical issues found - should NOT alert",
+      "category": "critical_issues",
+      "query": "Check for critical issues",
+      "expected_agents": ["jira_agent", "github_agent", "slack_agent"],
+      "expected_sources": ["jira", "github", "slack"],
+      "mock_responses": [
+        {
+          "tool_name": "jira_search",
+          "response": {
+            "issues": [
+              {"key": "OPIK-100", "summary": "Minor UI improvement", "status": "Open", "priority": "Low"}
+            ],
+            "total": 1
+          },
+          "success": true
+        },
+        {
+          "tool_name": "github_list_issues",
+          "response": {
+            "items": [
+              {"number": 100, "title": "Enhancement: Add dark mode", "state": "open", "labels": ["enhancement"]}
+            ]
+          },
+          "success": true
+        },
+        {
+          "tool_name": "slack_search_messages",
+          "response": {
+            "messages": [
+              {"channel": "#general", "text": "Team lunch tomorrow!", "ts": "1705312800.123"}
+            ]
+          },
+          "success": true
+        }
+      ],
+      "golden_output": {
+        "must_contain": ["No verified critical issues", "checked sources"],
+        "must_not_contain": ["critical", "urgent", "P0", "P1", "alert"],
+        "expected_sections": [],
+        "expected_identifiers": [],
+        "should_alert": false,
+        "min_trust_score": 0.85
+      },
+      "quality_criteria": {
+        "relevance": "Should confirm no critical issues found",
+        "completeness": "Should confirm all sources were checked",
+        "accuracy": "Should not misclassify low-priority items as critical",
+        "clarity": "Should use approved language for no-issues state",
+        "actionability": "No immediate action needed"
+      },
+      "tags": ["no-issues", "no-alert"]
+    },
+    {
+      "id": "critical_006",
+      "name": "Critical issue with missing details",
+      "description": "P0 issue exists but lacks required fields for alert",
+      "category": "critical_issues",
+      "query": "Any P0 issues?",
+      "expected_agents": ["jira_agent", "github_agent", "slack_agent"],
+      "expected_sources": ["jira", "github", "slack"],
+      "mock_responses": [
+        {
+          "tool_name": "jira_search",
+          "response": {
+            "issues": [
+              {"key": "OPIK-INCOMPLETE", "summary": "", "status": "Open", "priority": "Highest"}
+            ],
+            "total": 1
+          },
+          "success": true
+        },
+        {
+          "tool_name": "github_list_issues",
+          "response": {"items": []},
+          "success": true
+        },
+        {
+          "tool_name": "slack_search_messages",
+          "response": {"messages": []},
+          "success": true
+        }
+      ],
+      "golden_output": {
+        "must_contain": ["OPIK-INCOMPLETE", "missing", "details", "verify"],
+        "must_not_contain": ["all clear"],
+        "expected_sections": ["Needs Verification"],
+        "expected_identifiers": ["OPIK-INCOMPLETE"],
+        "should_alert": false,
+        "min_trust_score": 0.7
+      },
+      "quality_criteria": {
+        "relevance": "Should note the P0 exists but lacks details",
+        "completeness": "Should indicate what information is missing",
+        "accuracy": "Should not fabricate missing details",
+        "clarity": "Should flag for human verification",
+        "actionability": "Should recommend updating the ticket"
+      },
+      "tags": ["incomplete-data", "no-alert", "needs-verification"]
+    },
+    {
+      "id": "critical_007",
+      "name": "False positive detection",
+      "description": "Issue looks critical in title but is actually low priority",
+      "category": "critical_issues",
+      "query": "Critical issue scan",
+      "expected_agents": ["jira_agent", "github_agent", "slack_agent"],
+      "expected_sources": ["jira", "github", "slack"],
+      "mock_responses": [
+        {
+          "tool_name": "jira_search",
+          "response": {
+            "issues": [
+              {
+                "key": "OPIK-FP",
+                "summary": "URGENT: Update copyright year in footer",
+                "status": "Open",
+                "priority": "Lowest",
+                "description": "Need to update 2023 to 2024 in footer. Not blocking anything."
+              }
+            ],
+            "total": 1
+          },
+          "success": true
+        },
+        {
+          "tool_name": "github_list_issues",
+          "response": {"items": []},
+          "success": true
+        },
+        {
+          "tool_name": "slack_search_messages",
+          "response": {"messages": []},
+          "success": true
+        }
+      ],
+      "golden_output": {
+        "must_contain": ["No verified critical issues", "OPIK-FP", "Lowest"],
+        "must_not_contain": ["critical issue found", "P0", "alert"],
+        "expected_sections": [],
+        "expected_identifiers": ["OPIK-FP"],
+        "should_alert": false,
+        "min_trust_score": 0.85
+      },
+      "quality_criteria": {
+        "relevance": "Should correctly identify no actual critical issues",
+        "completeness": "May mention the low-priority ticket exists",
+        "accuracy": "Must use actual priority field, not title keywords",
+        "clarity": "Should not be misled by 'URGENT' in title",
+        "actionability": "No immediate action needed"
+      },
+      "tags": ["false-positive", "no-alert", "priority-check"]
+    },
+    {
+      "id": "critical_008",
+      "name": "Tool failure during critical check",
+      "description": "Jira tool fails during critical issue check",
+      "category": "critical_issues",
+      "query": "Are there any critical blockers?",
+      "expected_agents": ["jira_agent", "github_agent", "slack_agent"],
+      "expected_sources": ["jira", "github", "slack"],
+      "mock_responses": [
+        {
+          "tool_name": "jira_search",
+          "response": null,
+          "success": false,
+          "error": "Jira API authentication failed"
+        },
+        {
+          "tool_name": "github_list_issues",
+          "response": {"items": []},
+          "success": true
+        },
+        {
+          "tool_name": "slack_search_messages",
+          "response": {"messages": []},
+          "success": true
+        }
+      ],
+      "golden_output": {
+        "must_contain": ["CHECK INCOMPLETE", "Jira", "failed", "could not be verified", "unknown"],
+        "must_not_contain": ["no critical issues", "all clear", "looks good"],
+        "expected_sections": ["Incomplete Check"],
+        "expected_identifiers": [],
+        "should_alert": false,
+        "min_trust_score": 0.5
+      },
+      "quality_criteria": {
+        "relevance": "Must indicate check is incomplete",
+        "completeness": "Should specify which source failed and why",
+        "accuracy": "Must not claim no issues when data is unavailable",
+        "clarity": "Should use CHECK INCOMPLETE status",
+        "actionability": "Should recommend fixing Jira auth and retrying"
+      },
+      "tags": ["tool-failure", "incomplete", "no-alert"]
+    }
+  ]
+}

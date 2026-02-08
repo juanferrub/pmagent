@@ -1,0 +1,228 @@
+{
+  "category": "competitor_research",
+  "description": "Competitor and market research scenarios testing web search and analysis",
+  "scenarios": [
+    {
+      "id": "competitor_001",
+      "name": "Specific competitor query",
+      "description": "Query about specific competitor (LangSmith) updates",
+      "category": "competitor_research",
+      "query": "What are the latest updates from LangSmith? Any new features or pricing changes?",
+      "expected_agents": ["market_research_agent"],
+      "expected_sources": ["web"],
+      "mock_responses": [
+        {
+          "tool_name": "tavily_search",
+          "response": {
+            "results": [
+              {
+                "title": "LangSmith Announces New Evaluation Features",
+                "url": "https://blog.langchain.dev/langsmith-eval-update",
+                "content": "LangSmith released new automated evaluation features including custom metrics and A/B testing support. Pricing remains unchanged at $39/seat/month.",
+                "published_date": "2024-01-10"
+              },
+              {
+                "title": "LangSmith vs Competitors 2024",
+                "url": "https://example.com/comparison",
+                "content": "LangSmith continues to lead in LangChain integration but faces competition from open-source alternatives.",
+                "published_date": "2024-01-08"
+              }
+            ]
+          },
+          "success": true
+        }
+      ],
+      "golden_output": {
+        "must_contain": ["LangSmith", "evaluation", "$39", "features"],
+        "must_not_contain": ["I think", "probably", "might have"],
+        "expected_sections": ["Competitor Update", "LangSmith"],
+        "expected_identifiers": [],
+        "should_alert": false,
+        "min_trust_score": 0.8
+      },
+      "quality_criteria": {
+        "relevance": "Should directly address LangSmith updates",
+        "completeness": "Should cover features and pricing as asked",
+        "accuracy": "All claims must be from search results",
+        "clarity": "Should cite sources for claims",
+        "actionability": "Should note competitive implications for Opik"
+      },
+      "tags": ["competitor", "langsmith", "pricing"]
+    },
+    {
+      "id": "competitor_002",
+      "name": "General market trends query",
+      "description": "Query about overall LLM observability market trends",
+      "category": "competitor_research",
+      "query": "What are the current trends in the LLM observability market?",
+      "expected_agents": ["market_research_agent"],
+      "expected_sources": ["web"],
+      "mock_responses": [
+        {
+          "tool_name": "tavily_search",
+          "response": {
+            "results": [
+              {
+                "title": "LLM Observability Market Report 2024",
+                "url": "https://example.com/report",
+                "content": "Key trends: 1) Shift to open-source solutions, 2) Focus on agent observability, 3) Cost optimization features gaining importance, 4) Integration with existing APM tools.",
+                "published_date": "2024-01-12"
+              },
+              {
+                "title": "Enterprise Adoption of LLM Monitoring",
+                "url": "https://example.com/enterprise",
+                "content": "Enterprises increasingly require SOC2 compliance and on-premise deployment options for LLM observability tools.",
+                "published_date": "2024-01-11"
+              }
+            ]
+          },
+          "success": true
+        }
+      ],
+      "golden_output": {
+        "must_contain": ["open-source", "agent observability", "cost optimization", "enterprise"],
+        "must_not_contain": ["I believe", "seems like"],
+        "expected_sections": ["Market Trends"],
+        "expected_identifiers": [],
+        "should_alert": false,
+        "min_trust_score": 0.8
+      },
+      "quality_criteria": {
+        "relevance": "Should cover market-wide trends",
+        "completeness": "Should mention multiple trend areas",
+        "accuracy": "Trends must be from search results",
+        "clarity": "Should organize trends clearly",
+        "actionability": "Should relate trends to Opik's positioning"
+      },
+      "tags": ["market-trends", "industry"]
+    },
+    {
+      "id": "competitor_003",
+      "name": "Pricing comparison request",
+      "description": "Request for competitor pricing comparison",
+      "category": "competitor_research",
+      "query": "Compare pricing of LangSmith, Langfuse, and Arize Phoenix",
+      "expected_agents": ["market_research_agent"],
+      "expected_sources": ["web"],
+      "mock_responses": [
+        {
+          "tool_name": "tavily_search",
+          "response": {
+            "results": [
+              {
+                "title": "LangSmith Pricing",
+                "url": "https://langsmith.com/pricing",
+                "content": "LangSmith: Free tier up to 5K traces/month. Pro: $39/seat/month. Enterprise: Custom pricing.",
+                "published_date": "2024-01-01"
+              },
+              {
+                "title": "Langfuse Open Source",
+                "url": "https://langfuse.com",
+                "content": "Langfuse: Open-source and free self-hosted. Cloud: Free tier, then usage-based starting at $59/month.",
+                "published_date": "2024-01-01"
+              },
+              {
+                "title": "Arize Phoenix Pricing",
+                "url": "https://arize.com/phoenix",
+                "content": "Arize Phoenix: Open-source core. Arize Cloud: Starts at $100/month for teams.",
+                "published_date": "2024-01-01"
+              }
+            ]
+          },
+          "success": true
+        }
+      ],
+      "golden_output": {
+        "must_contain": ["LangSmith", "Langfuse", "Arize", "$39", "$59", "$100", "open-source"],
+        "must_not_contain": ["approximately", "around", "I think"],
+        "expected_sections": ["Pricing Comparison"],
+        "expected_identifiers": [],
+        "should_alert": false,
+        "min_trust_score": 0.85
+      },
+      "quality_criteria": {
+        "relevance": "Should compare all three competitors",
+        "completeness": "Should include pricing tiers for each",
+        "accuracy": "Prices must match search results exactly",
+        "clarity": "Should present in comparable format",
+        "actionability": "Should note Opik's competitive position"
+      },
+      "tags": ["pricing", "comparison", "multiple-competitors"]
+    },
+    {
+      "id": "competitor_004",
+      "name": "Feature comparison request",
+      "description": "Request for feature comparison with competitors",
+      "category": "competitor_research",
+      "query": "How does Opik's evaluation feature compare to LangSmith and Braintrust?",
+      "expected_agents": ["market_research_agent"],
+      "expected_sources": ["web"],
+      "mock_responses": [
+        {
+          "tool_name": "tavily_search",
+          "response": {
+            "results": [
+              {
+                "title": "LLM Evaluation Tools Comparison",
+                "url": "https://example.com/eval-comparison",
+                "content": "LangSmith: Built-in evaluators, custom metrics, dataset management. Braintrust: Evals-first approach, scoring functions, CI/CD integration. Opik: Open-source evaluations, RAGAS integration, experiment tracking.",
+                "published_date": "2024-01-10"
+              }
+            ]
+          },
+          "success": true
+        }
+      ],
+      "golden_output": {
+        "must_contain": ["LangSmith", "Braintrust", "Opik", "evaluation", "metrics"],
+        "must_not_contain": ["probably better", "seems superior"],
+        "expected_sections": ["Feature Comparison"],
+        "expected_identifiers": [],
+        "should_alert": false,
+        "min_trust_score": 0.8
+      },
+      "quality_criteria": {
+        "relevance": "Should compare evaluation features specifically",
+        "completeness": "Should cover all three tools",
+        "accuracy": "Features must be from search results",
+        "clarity": "Should highlight differentiators",
+        "actionability": "Should identify Opik's advantages/gaps"
+      },
+      "tags": ["features", "comparison", "evaluation"]
+    },
+    {
+      "id": "competitor_005",
+      "name": "Research with no web results",
+      "description": "Competitor query when web search returns no results",
+      "category": "competitor_research",
+      "query": "What is XYZ-NonExistent-Tool doing in the LLM space?",
+      "expected_agents": ["market_research_agent"],
+      "expected_sources": ["web"],
+      "mock_responses": [
+        {
+          "tool_name": "tavily_search",
+          "response": {
+            "results": []
+          },
+          "success": true
+        }
+      ],
+      "golden_output": {
+        "must_contain": ["no information", "unable to find", "no results"],
+        "must_not_contain": ["XYZ-NonExistent-Tool offers", "their features include"],
+        "expected_sections": [],
+        "expected_identifiers": [],
+        "should_alert": false,
+        "min_trust_score": 0.7
+      },
+      "quality_criteria": {
+        "relevance": "Should acknowledge the query was understood",
+        "completeness": "Should state no information was found",
+        "accuracy": "Must not fabricate information about unknown tool",
+        "clarity": "Should clearly state data is unavailable",
+        "actionability": "May suggest alternative search terms"
+      },
+      "tags": ["no-results", "unknown-competitor"]
+    }
+  ]
+}

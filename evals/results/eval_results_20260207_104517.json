@@ -1,0 +1,5451 @@
+[
+  {
+    "scenario_id": "daily_digest_001",
+    "scenario_name": "Standard daily digest request",
+    "category": "daily_digest",
+    "query": "Generate a daily digest for today covering Jira tickets, GitHub activity, and Slack discussions",
+    "output": "# Response to: Generate a daily digest for today covering Jira tickets, GitHub activity, and Slack discussions\n\n\n## Jira\n- **OPIK-123**: Fix tracing latency issue (Status: In Progress, Priority: High)\n- **OPIK-124**: Add new evaluation metrics (Status: Open, Priority: Medium)\n\n## GitHub\n- **#456**: Bug in SDK initialization (open) [bug]\n- **#457**: Feature request: batch tracing (open) [enhancement]\n\n## Slack\n- #opik-dev: \"Deployed v1.2.3 to staging\"\n- #support: \"Customer asking about pricing\"",
+    "scores": [
+      {
+        "scorer_name": "route_accuracy",
+        "score": 1.0,
+        "passed": true,
+        "details": "Correct: {'github_agent', 'jira_agent', 'slack_agent'}",
+        "metadata": {
+          "expected": [
+            "github_agent",
+            "jira_agent",
+            "slack_agent"
+          ],
+          "invoked": [
+            "github_agent",
+            "jira_agent",
+            "slack_agent"
+          ],
+          "correct": [
+            "github_agent",
+            "jira_agent",
+            "slack_agent"
+          ],
+          "missed": [],
+          "extra": []
+        }
+      },
+      {
+        "scorer_name": "source_coverage",
+        "score": 1.0,
+        "passed": true,
+        "details": "All required sources checked: {'github', 'jira', 'slack'}",
+        "metadata": {
+          "expected": [
+            "github",
+            "jira",
+            "slack"
+          ],
+          "checked": [
+            "github",
+            "jira",
+            "slack"
+          ],
+          "covered": [
+            "github",
+            "jira",
+            "slack"
+          ],
+          "missed": []
+        }
+      },
+      {
+        "scorer_name": "hallucination_detector",
+        "score": 1.0,
+        "passed": true,
+        "details": "No hallucinations detected",
+        "metadata": {
+          "violations": [],
+          "found_jira_ids": [
+            "OPIK-123",
+            "OPIK-124"
+          ],
+          "found_github_ids": [
+            "457",
+            "456"
+          ],
+          "valid_jira_ids": [
+            "OPIK-123",
+            "OPIK-124"
+          ],
+          "valid_github_ids": [
+            "456",
+            "457"
+          ]
+        }
+      },
+      {
+        "scorer_name": "language_compliance",
+        "score": 1.0,
+        "passed": true,
+        "details": "No prohibited phrases found",
+        "metadata": {
+          "prohibited_found": [],
+          "approved_found": []
+        }
+      },
+      {
+        "scorer_name": "structure_scorer",
+        "score": 1.0,
+        "passed": true,
+        "details": "Output structure is valid",
+        "metadata": {
+          "issues": []
+        }
+      },
+      {
+        "scorer_name": "identifier_validator",
+        "score": 1.0,
+        "passed": true,
+        "details": "All expected identifiers found: {'OPIK-123', 'OPIK-124', '456', '457'}",
+        "metadata": {
+          "expected": [
+            "OPIK-123",
+            "OPIK-124",
+            "457",
+            "456"
+          ],
+          "found": [
+            "OPIK-123",
+            "OPIK-124",
+            "456",
+            "457"
+          ],
+          "missing": []
+        }
+      },
+      {
+        "scorer_name": "alert_appropriateness",
+        "score": 1.0,
+        "passed": true,
+        "details": "Correctly did not send alert",
+        "metadata": {
+          "should_alert": false,
+          "did_alert": false
+        }
+      },
+      {
+        "scorer_name": "trust_score",
+        "score": 0.0,
+        "passed": false,
+        "details": "Trust score calculation failed: TrustScorer.__init__() got an unexpected keyword argument 'evidence_ledger'",
+        "metadata": {
+          "error": "TrustScorer.__init__() got an unexpected keyword argument 'evidence_ledger'"
+        }
+      }
+    ],
+    "overall_passed": false,
+    "trust_score": 0.0,
+    "latency_ms": 5.56635856628418,
+    "timestamp": "2026-02-07T10:45:17.014324+00:00",
+    "error": null
+  },
+  {
+    "scenario_id": "daily_digest_002",
+    "scenario_name": "Digest with partial tool failures",
+    "category": "daily_digest",
+    "query": "Give me today's daily digest",
+    "output": "# Response to: Give me today's daily digest\n\n\n## Jira\n- **OPIK-200**: Performance optimization (Status: Open, Priority: High)\n\n## GitHub\nNo GitHub items found.\n\n## slack_search_messages\nData unavailable: Slack API rate limit exceeded\n\ncould not be verified",
+    "scores": [
+      {
+        "scorer_name": "route_accuracy",
+        "score": 1.0,
+        "passed": true,
+        "details": "Correct: {'github_agent', 'jira_agent', 'slack_agent'}",
+        "metadata": {
+          "expected": [
+            "github_agent",
+            "jira_agent",
+            "slack_agent"
+          ],
+          "invoked": [
+            "github_agent",
+            "jira_agent",
+            "slack_agent"
+          ],
+          "correct": [
+            "github_agent",
+            "jira_agent",
+            "slack_agent"
+          ],
+          "missed": [],
+          "extra": []
+        }
+      },
+      {
+        "scorer_name": "source_coverage",
+        "score": 1.0,
+        "passed": true,
+        "details": "All required sources checked: {'github', 'jira', 'slack'}",
+        "metadata": {
+          "expected": [
+            "github",
+            "jira",
+            "slack"
+          ],
+          "checked": [
+            "github",
+            "jira",
+            "slack"
+          ],
+          "covered": [
+            "github",
+            "jira",
+            "slack"
+          ],
+          "missed": []
+        }
+      },
+      {
+        "scorer_name": "hallucination_detector",
+        "score": 1.0,
+        "passed": true,
+        "details": "No hallucinations detected",
+        "metadata": {
+          "violations": [],
+          "found_jira_ids": [
+            "OPIK-200"
+          ],
+          "found_github_ids": [],
+          "valid_jira_ids": [
+            "OPIK-200"
+          ],
+          "valid_github_ids": []
+        }
+      },
+      {
+        "scorer_name": "language_compliance",
+        "score": 1.0,
+        "passed": true,
+        "details": "Uses approved language: ['Data unavailable', 'Could not be verified']",
+        "metadata": {
+          "prohibited_found": [],
+          "approved_found": [
+            "Data unavailable",
+            "Could not be verified"
+          ]
+        }
+      },
+      {
+        "scorer_name": "structure_scorer",
+        "score": 1.0,
+        "passed": true,
+        "details": "Output structure is valid",
+        "metadata": {
+          "issues": []
+        }
+      },
+      {
+        "scorer_name": "identifier_validator",
+        "score": 1.0,
+        "passed": true,
+        "details": "All expected identifiers found: {'OPIK-200'}",
+        "metadata": {
+          "expected": [
+            "OPIK-200"
+          ],
+          "found": [
+            "OPIK-200"
+          ],
+          "missing": []
+        }
+      },
+      {
+        "scorer_name": "alert_appropriateness",
+        "score": 1.0,
+        "passed": true,
+        "details": "Correctly did not send alert",
+        "metadata": {
+          "should_alert": false,
+          "did_alert": false
+        }
+      },
+      {
+        "scorer_name": "trust_score",
+        "score": 0.0,
+        "passed": false,
+        "details": "Trust score calculation failed: TrustScorer.__init__() got an unexpected keyword argument 'evidence_ledger'",
+        "metadata": {
+          "error": "TrustScorer.__init__() got an unexpected keyword argument 'evidence_ledger'"
+        }
+      }
+    ],
+    "overall_passed": false,
+    "trust_score": 0.0,
+    "latency_ms": 0.06604194641113281,
+    "timestamp": "2026-02-07T10:45:17.014689+00:00",
+    "error": null
+  },
+  {
+    "scenario_id": "daily_digest_003",
+    "scenario_name": "Digest with no data",
+    "category": "daily_digest",
+    "query": "What happened today? Give me the daily digest.",
+    "output": "# Response to: What happened today? Give me the daily digest.\n\n\n## Jira\nNo Jira issues found.\n\n## GitHub\nNo GitHub items found.\n\n## Slack\nNo Slack messages found.\n\nNo verified\n\nchecked sources",
+    "scores": [
+      {
+        "scorer_name": "route_accuracy",
+        "score": 1.0,
+        "passed": true,
+        "details": "Correct: {'github_agent', 'jira_agent', 'slack_agent'}",
+        "metadata": {
+          "expected": [
+            "github_agent",
+            "jira_agent",
+            "slack_agent"
+          ],
+          "invoked": [
+            "github_agent",
+            "jira_agent",
+            "slack_agent"
+          ],
+          "correct": [
+            "github_agent",
+            "jira_agent",
+            "slack_agent"
+          ],
+          "missed": [],
+          "extra": []
+        }
+      },
+      {
+        "scorer_name": "source_coverage",
+        "score": 1.0,
+        "passed": true,
+        "details": "All required sources checked: {'github', 'jira', 'slack'}",
+        "metadata": {
+          "expected": [
+            "github",
+            "jira",
+            "slack"
+          ],
+          "checked": [
+            "github",
+            "jira",
+            "slack"
+          ],
+          "covered": [
+            "github",
+            "jira",
+            "slack"
+          ],
+          "missed": []
+        }
+      },
+      {
+        "scorer_name": "hallucination_detector",
+        "score": 1.0,
+        "passed": true,
+        "details": "No hallucinations detected",
+        "metadata": {
+          "violations": [],
+          "found_jira_ids": [],
+          "found_github_ids": [],
+          "valid_jira_ids": [],
+          "valid_github_ids": []
+        }
+      },
+      {
+        "scorer_name": "language_compliance",
+        "score": 1.0,
+        "passed": true,
+        "details": "No prohibited phrases found",
+        "metadata": {
+          "prohibited_found": [],
+          "approved_found": []
+        }
+      },
+      {
+        "scorer_name": "structure_scorer",
+        "score": 1.0,
+        "passed": true,
+        "details": "Output structure is valid",
+        "metadata": {
+          "issues": []
+        }
+      },
+      {
+        "scorer_name": "identifier_validator",
+        "score": 1.0,
+        "passed": true,
+        "details": "No identifiers expected",
+        "metadata": {}
+      },
+      {
+        "scorer_name": "alert_appropriateness",
+        "score": 1.0,
+        "passed": true,
+        "details": "Correctly did not send alert",
+        "metadata": {
+          "should_alert": false,
+          "did_alert": false
+        }
+      },
+      {
+        "scorer_name": "trust_score",
+        "score": 0.0,
+        "passed": false,
+        "details": "Trust score calculation failed: TrustScorer.__init__() got an unexpected keyword argument 'evidence_ledger'",
+        "metadata": {
+          "error": "TrustScorer.__init__() got an unexpected keyword argument 'evidence_ledger'"
+        }
+      }
+    ],
+    "overall_passed": false,
+    "trust_score": 0.0,
+    "latency_ms": 0.03266334533691406,
+    "timestamp": "2026-02-07T10:45:17.014738+00:00",
+    "error": null
+  },
+  {
+    "scenario_id": "daily_digest_004",
+    "scenario_name": "Digest with critical issues present",
+    "category": "daily_digest",
+    "query": "Daily digest please",
+    "output": "# Response to: Daily digest please\n\n\n## Jira\n- **OPIK-999**: CRITICAL: Production tracing broken (Status: Open, Priority: Highest)\n- **OPIK-998**: Minor UI fix (Status: In Progress, Priority: Low)\n\n## GitHub\n- **#789**: URGENT: SDK crash on init (open) [bug, critical, P0]\n\n## Slack\n- #incidents: \"prod down - investigating OPIK-999\"",
+    "scores": [
+      {
+        "scorer_name": "route_accuracy",
+        "score": 1.0,
+        "passed": true,
+        "details": "Correct: {'github_agent', 'jira_agent', 'slack_agent'}",
+        "metadata": {
+          "expected": [
+            "github_agent",
+            "jira_agent",
+            "slack_agent"
+          ],
+          "invoked": [
+            "github_agent",
+            "jira_agent",
+            "slack_agent"
+          ],
+          "correct": [
+            "github_agent",
+            "jira_agent",
+            "slack_agent"
+          ],
+          "missed": [],
+          "extra": []
+        }
+      },
+      {
+        "scorer_name": "source_coverage",
+        "score": 1.0,
+        "passed": true,
+        "details": "All required sources checked: {'github', 'jira', 'slack'}",
+        "metadata": {
+          "expected": [
+            "github",
+            "jira",
+            "slack"
+          ],
+          "checked": [
+            "github",
+            "jira",
+            "slack"
+          ],
+          "covered": [
+            "github",
+            "jira",
+            "slack"
+          ],
+          "missed": []
+        }
+      },
+      {
+        "scorer_name": "hallucination_detector",
+        "score": 1.0,
+        "passed": true,
+        "details": "No hallucinations detected",
+        "metadata": {
+          "violations": [],
+          "found_jira_ids": [
+            "OPIK-999",
+            "OPIK-998"
+          ],
+          "found_github_ids": [
+            "789"
+          ],
+          "valid_jira_ids": [
+            "OPIK-999",
+            "OPIK-998"
+          ],
+          "valid_github_ids": [
+            "789"
+          ]
+        }
+      },
+      {
+        "scorer_name": "language_compliance",
+        "score": 1.0,
+        "passed": true,
+        "details": "No prohibited phrases found",
+        "metadata": {
+          "prohibited_found": [],
+          "approved_found": []
+        }
+      },
+      {
+        "scorer_name": "structure_scorer",
+        "score": 1.0,
+        "passed": true,
+        "details": "Output structure is valid",
+        "metadata": {
+          "issues": []
+        }
+      },
+      {
+        "scorer_name": "identifier_validator",
+        "score": 1.0,
+        "passed": true,
+        "details": "All expected identifiers found: {'OPIK-998', 'OPIK-999', '789'}",
+        "metadata": {
+          "expected": [
+            "OPIK-999",
+            "789",
+            "OPIK-998"
+          ],
+          "found": [
+            "OPIK-998",
+            "OPIK-999",
+            "789"
+          ],
+          "missing": []
+        }
+      },
+      {
+        "scorer_name": "alert_appropriateness",
+        "score": 1.0,
+        "passed": true,
+        "details": "Correctly sent alert for critical issue",
+        "metadata": {
+          "should_alert": true,
+          "did_alert": true
+        }
+      },
+      {
+        "scorer_name": "trust_score",
+        "score": 0.0,
+        "passed": false,
+        "details": "Trust score calculation failed: TrustScorer.__init__() got an unexpected keyword argument 'evidence_ledger'",
+        "metadata": {
+          "error": "TrustScorer.__init__() got an unexpected keyword argument 'evidence_ledger'"
+        }
+      }
+    ],
+    "overall_passed": false,
+    "trust_score": 0.0,
+    "latency_ms": 0.041961669921875,
+    "timestamp": "2026-02-07T10:45:17.014787+00:00",
+    "error": null
+  },
+  {
+    "scenario_id": "daily_digest_005",
+    "scenario_name": "Digest for specific time range",
+    "category": "daily_digest",
+    "query": "Generate a digest for the last 48 hours",
+    "output": "# Response to: Generate a digest for the last 48 hours\n\n\n## Jira\n- **OPIK-300**: Add batch processing (Status: Done, Priority: Medium)\n- **OPIK-301**: Fix memory leak (Status: In Review, Priority: High)\n\n## GitHub\n- **#500**: PR: Batch processing implementation (closed) [merged]\n\n## Slack\n- #releases: \"v1.3.0 released with batch processing\"",
+    "scores": [
+      {
+        "scorer_name": "route_accuracy",
+        "score": 1.0,
+        "passed": true,
+        "details": "Correct: {'github_agent', 'jira_agent', 'slack_agent'}",
+        "metadata": {
+          "expected": [
+            "github_agent",
+            "jira_agent",
+            "slack_agent"
+          ],
+          "invoked": [
+            "github_agent",
+            "jira_agent",
+            "slack_agent"
+          ],
+          "correct": [
+            "github_agent",
+            "jira_agent",
+            "slack_agent"
+          ],
+          "missed": [],
+          "extra": []
+        }
+      },
+      {
+        "scorer_name": "source_coverage",
+        "score": 1.0,
+        "passed": true,
+        "details": "All required sources checked: {'github', 'jira', 'slack'}",
+        "metadata": {
+          "expected": [
+            "github",
+            "jira",
+            "slack"
+          ],
+          "checked": [
+            "github",
+            "jira",
+            "slack"
+          ],
+          "covered": [
+            "github",
+            "jira",
+            "slack"
+          ],
+          "missed": []
+        }
+      },
+      {
+        "scorer_name": "hallucination_detector",
+        "score": 1.0,
+        "passed": true,
+        "details": "No hallucinations detected",
+        "metadata": {
+          "violations": [],
+          "found_jira_ids": [
+            "OPIK-301",
+            "OPIK-300"
+          ],
+          "found_github_ids": [
+            "500"
+          ],
+          "valid_jira_ids": [
+            "OPIK-301",
+            "OPIK-300"
+          ],
+          "valid_github_ids": [
+            "500"
+          ]
+        }
+      },
+      {
+        "scorer_name": "language_compliance",
+        "score": 1.0,
+        "passed": true,
+        "details": "No prohibited phrases found",
+        "metadata": {
+          "prohibited_found": [],
+          "approved_found": []
+        }
+      },
+      {
+        "scorer_name": "structure_scorer",
+        "score": 1.0,
+        "passed": true,
+        "details": "Output structure is valid",
+        "metadata": {
+          "issues": []
+        }
+      },
+      {
+        "scorer_name": "identifier_validator",
+        "score": 1.0,
+        "passed": true,
+        "details": "All expected identifiers found: {'OPIK-301', 'OPIK-300', '500'}",
+        "metadata": {
+          "expected": [
+            "OPIK-301",
+            "OPIK-300",
+            "500"
+          ],
+          "found": [
+            "OPIK-301",
+            "OPIK-300",
+            "500"
+          ],
+          "missing": []
+        }
+      },
+      {
+        "scorer_name": "alert_appropriateness",
+        "score": 1.0,
+        "passed": true,
+        "details": "Correctly did not send alert",
+        "metadata": {
+          "should_alert": false,
+          "did_alert": false
+        }
+      },
+      {
+        "scorer_name": "trust_score",
+        "score": 0.0,
+        "passed": false,
+        "details": "Trust score calculation failed: TrustScorer.__init__() got an unexpected keyword argument 'evidence_ledger'",
+        "metadata": {
+          "error": "TrustScorer.__init__() got an unexpected keyword argument 'evidence_ledger'"
+        }
+      }
+    ],
+    "overall_passed": false,
+    "trust_score": 0.0,
+    "latency_ms": 0.03814697265625,
+    "timestamp": "2026-02-07T10:45:17.014830+00:00",
+    "error": null
+  },
+  {
+    "scenario_id": "daily_digest_006",
+    "scenario_name": "Digest with Slack unavailable",
+    "category": "daily_digest",
+    "query": "Daily digest",
+    "output": "# Response to: Daily digest\n\n\n## Jira\n- **OPIK-400**: Documentation update (Status: Open, Priority: Low)\n\n## GitHub\n- **#600**: Docs: Update API reference (open) [documentation]\n\n## slack_search_messages\nData unavailable: SLACK_BOT_TOKEN not configured\n\nSlack",
+    "scores": [
+      {
+        "scorer_name": "route_accuracy",
+        "score": 1.0,
+        "passed": true,
+        "details": "Correct: {'github_agent', 'jira_agent', 'slack_agent'}",
+        "metadata": {
+          "expected": [
+            "github_agent",
+            "jira_agent",
+            "slack_agent"
+          ],
+          "invoked": [
+            "github_agent",
+            "jira_agent",
+            "slack_agent"
+          ],
+          "correct": [
+            "github_agent",
+            "jira_agent",
+            "slack_agent"
+          ],
+          "missed": [],
+          "extra": []
+        }
+      },
+      {
+        "scorer_name": "source_coverage",
+        "score": 1.0,
+        "passed": true,
+        "details": "All required sources checked: {'github', 'jira', 'slack'}",
+        "metadata": {
+          "expected": [
+            "github",
+            "jira",
+            "slack"
+          ],
+          "checked": [
+            "github",
+            "jira",
+            "slack"
+          ],
+          "covered": [
+            "github",
+            "jira",
+            "slack"
+          ],
+          "missed": []
+        }
+      },
+      {
+        "scorer_name": "hallucination_detector",
+        "score": 1.0,
+        "passed": true,
+        "details": "No hallucinations detected",
+        "metadata": {
+          "violations": [],
+          "found_jira_ids": [
+            "OPIK-400"
+          ],
+          "found_github_ids": [
+            "600"
+          ],
+          "valid_jira_ids": [
+            "OPIK-400"
+          ],
+          "valid_github_ids": [
+            "600"
+          ]
+        }
+      },
+      {
+        "scorer_name": "language_compliance",
+        "score": 1.0,
+        "passed": true,
+        "details": "Uses approved language: ['Data unavailable']",
+        "metadata": {
+          "prohibited_found": [],
+          "approved_found": [
+            "Data unavailable"
+          ]
+        }
+      },
+      {
+        "scorer_name": "structure_scorer",
+        "score": 1.0,
+        "passed": true,
+        "details": "Output structure is valid",
+        "metadata": {
+          "issues": []
+        }
+      },
+      {
+        "scorer_name": "identifier_validator",
+        "score": 1.0,
+        "passed": true,
+        "details": "All expected identifiers found: {'OPIK-400', '600'}",
+        "metadata": {
+          "expected": [
+            "OPIK-400",
+            "600"
+          ],
+          "found": [
+            "OPIK-400",
+            "600"
+          ],
+          "missing": []
+        }
+      },
+      {
+        "scorer_name": "alert_appropriateness",
+        "score": 1.0,
+        "passed": true,
+        "details": "Correctly did not send alert",
+        "metadata": {
+          "should_alert": false,
+          "did_alert": false
+        }
+      },
+      {
+        "scorer_name": "trust_score",
+        "score": 0.0,
+        "passed": false,
+        "details": "Trust score calculation failed: TrustScorer.__init__() got an unexpected keyword argument 'evidence_ledger'",
+        "metadata": {
+          "error": "TrustScorer.__init__() got an unexpected keyword argument 'evidence_ledger'"
+        }
+      }
+    ],
+    "overall_passed": false,
+    "trust_score": 0.0,
+    "latency_ms": 0.030994415283203125,
+    "timestamp": "2026-02-07T10:45:17.014865+00:00",
+    "error": null
+  },
+  {
+    "scenario_id": "critical_001",
+    "scenario_name": "P0 issue in Jira only",
+    "category": "critical_issues",
+    "query": "Check for any critical issues that need immediate attention",
+    "output": "# Response to: Check for any critical issues that need immediate attention\n\n\n## Jira\n- **OPIK-911**: PRODUCTION DOWN: Database connection failures (Status: Open, Priority: Highest)\n\n## GitHub\nNo GitHub items found.\n\n## Slack\nNo Slack messages found.\n\nP0",
+    "scores": [
+      {
+        "scorer_name": "route_accuracy",
+        "score": 1.0,
+        "passed": true,
+        "details": "Correct: {'github_agent', 'jira_agent', 'slack_agent'}",
+        "metadata": {
+          "expected": [
+            "github_agent",
+            "jira_agent",
+            "slack_agent"
+          ],
+          "invoked": [
+            "github_agent",
+            "jira_agent",
+            "slack_agent"
+          ],
+          "correct": [
+            "github_agent",
+            "jira_agent",
+            "slack_agent"
+          ],
+          "missed": [],
+          "extra": []
+        }
+      },
+      {
+        "scorer_name": "source_coverage",
+        "score": 1.0,
+        "passed": true,
+        "details": "All required sources checked: {'github', 'jira', 'slack'}",
+        "metadata": {
+          "expected": [
+            "github",
+            "jira",
+            "slack"
+          ],
+          "checked": [
+            "github",
+            "jira",
+            "slack"
+          ],
+          "covered": [
+            "github",
+            "jira",
+            "slack"
+          ],
+          "missed": []
+        }
+      },
+      {
+        "scorer_name": "hallucination_detector",
+        "score": 1.0,
+        "passed": true,
+        "details": "No hallucinations detected",
+        "metadata": {
+          "violations": [],
+          "found_jira_ids": [
+            "OPIK-911"
+          ],
+          "found_github_ids": [],
+          "valid_jira_ids": [
+            "OPIK-911"
+          ],
+          "valid_github_ids": []
+        }
+      },
+      {
+        "scorer_name": "language_compliance",
+        "score": 1.0,
+        "passed": true,
+        "details": "No prohibited phrases found",
+        "metadata": {
+          "prohibited_found": [],
+          "approved_found": []
+        }
+      },
+      {
+        "scorer_name": "structure_scorer",
+        "score": 1.0,
+        "passed": true,
+        "details": "Output structure is valid",
+        "metadata": {
+          "issues": []
+        }
+      },
+      {
+        "scorer_name": "identifier_validator",
+        "score": 1.0,
+        "passed": true,
+        "details": "All expected identifiers found: {'OPIK-911'}",
+        "metadata": {
+          "expected": [
+            "OPIK-911"
+          ],
+          "found": [
+            "OPIK-911"
+          ],
+          "missing": []
+        }
+      },
+      {
+        "scorer_name": "alert_appropriateness",
+        "score": 1.0,
+        "passed": true,
+        "details": "Correctly sent alert for critical issue",
+        "metadata": {
+          "should_alert": true,
+          "did_alert": true
+        }
+      },
+      {
+        "scorer_name": "trust_score",
+        "score": 0.0,
+        "passed": false,
+        "details": "Trust score calculation failed: TrustScorer.__init__() got an unexpected keyword argument 'evidence_ledger'",
+        "metadata": {
+          "error": "TrustScorer.__init__() got an unexpected keyword argument 'evidence_ledger'"
+        }
+      }
+    ],
+    "overall_passed": false,
+    "trust_score": 0.0,
+    "latency_ms": 0.05888938903808594,
+    "timestamp": "2026-02-07T10:45:17.015457+00:00",
+    "error": null
+  },
+  {
+    "scenario_id": "critical_002",
+    "scenario_name": "P1 issue in GitHub only",
+    "category": "critical_issues",
+    "query": "Are there any blocking issues?",
+    "output": "# Response to: Are there any blocking issues?\n\n\n## Jira\nNo Jira issues found.\n\n## GitHub\n- **#1001**: CRITICAL: SDK crashes on Python 3.12 (open) [bug, critical, P1, regression]\n\n## Slack\nNo Slack messages found.",
+    "scores": [
+      {
+        "scorer_name": "route_accuracy",
+        "score": 1.0,
+        "passed": true,
+        "details": "Correct: {'github_agent', 'jira_agent', 'slack_agent'}",
+        "metadata": {
+          "expected": [
+            "github_agent",
+            "jira_agent",
+            "slack_agent"
+          ],
+          "invoked": [
+            "github_agent",
+            "jira_agent",
+            "slack_agent"
+          ],
+          "correct": [
+            "github_agent",
+            "jira_agent",
+            "slack_agent"
+          ],
+          "missed": [],
+          "extra": []
+        }
+      },
+      {
+        "scorer_name": "source_coverage",
+        "score": 1.0,
+        "passed": true,
+        "details": "All required sources checked: {'github', 'jira', 'slack'}",
+        "metadata": {
+          "expected": [
+            "github",
+            "jira",
+            "slack"
+          ],
+          "checked": [
+            "github",
+            "jira",
+            "slack"
+          ],
+          "covered": [
+            "github",
+            "jira",
+            "slack"
+          ],
+          "missed": []
+        }
+      },
+      {
+        "scorer_name": "hallucination_detector",
+        "score": 1.0,
+        "passed": true,
+        "details": "No hallucinations detected",
+        "metadata": {
+          "violations": [],
+          "found_jira_ids": [],
+          "found_github_ids": [
+            "1001"
+          ],
+          "valid_jira_ids": [],
+          "valid_github_ids": [
+            "1001"
+          ]
+        }
+      },
+      {
+        "scorer_name": "language_compliance",
+        "score": 1.0,
+        "passed": true,
+        "details": "No prohibited phrases found",
+        "metadata": {
+          "prohibited_found": [],
+          "approved_found": []
+        }
+      },
+      {
+        "scorer_name": "structure_scorer",
+        "score": 0.75,
+        "passed": true,
+        "details": "Missing sections: ['Critical Issues']",
+        "metadata": {
+          "issues": [
+            "Missing sections: ['Critical Issues']"
+          ]
+        }
+      },
+      {
+        "scorer_name": "identifier_validator",
+        "score": 1.0,
+        "passed": true,
+        "details": "All expected identifiers found: {'1001'}",
+        "metadata": {
+          "expected": [
+            "1001"
+          ],
+          "found": [
+            "1001"
+          ],
+          "missing": []
+        }
+      },
+      {
+        "scorer_name": "alert_appropriateness",
+        "score": 1.0,
+        "passed": true,
+        "details": "Correctly sent alert for critical issue",
+        "metadata": {
+          "should_alert": true,
+          "did_alert": true
+        }
+      },
+      {
+        "scorer_name": "trust_score",
+        "score": 0.0,
+        "passed": false,
+        "details": "Trust score calculation failed: TrustScorer.__init__() got an unexpected keyword argument 'evidence_ledger'",
+        "metadata": {
+          "error": "TrustScorer.__init__() got an unexpected keyword argument 'evidence_ledger'"
+        }
+      }
+    ],
+    "overall_passed": false,
+    "trust_score": 0.0,
+    "latency_ms": 0.03814697265625,
+    "timestamp": "2026-02-07T10:45:17.015503+00:00",
+    "error": null
+  },
+  {
+    "scenario_id": "critical_003",
+    "scenario_name": "Urgent message in Slack only",
+    "category": "critical_issues",
+    "query": "Any urgent issues I should know about?",
+    "output": "# Response to: Any urgent issues I should know about?\n\n\n## Jira\nNo Jira issues found.\n\n## GitHub\nNo GitHub items found.\n\n## Slack\n- #incidents: \"\ud83d\udea8 INCIDENT: prod down - API returning 503 for all requests. Investigating now.\"",
+    "scores": [
+      {
+        "scorer_name": "route_accuracy",
+        "score": 1.0,
+        "passed": true,
+        "details": "Correct: {'github_agent', 'jira_agent', 'slack_agent'}",
+        "metadata": {
+          "expected": [
+            "github_agent",
+            "jira_agent",
+            "slack_agent"
+          ],
+          "invoked": [
+            "github_agent",
+            "jira_agent",
+            "slack_agent"
+          ],
+          "correct": [
+            "github_agent",
+            "jira_agent",
+            "slack_agent"
+          ],
+          "missed": [],
+          "extra": []
+        }
+      },
+      {
+        "scorer_name": "source_coverage",
+        "score": 1.0,
+        "passed": true,
+        "details": "All required sources checked: {'github', 'jira', 'slack'}",
+        "metadata": {
+          "expected": [
+            "github",
+            "jira",
+            "slack"
+          ],
+          "checked": [
+            "github",
+            "jira",
+            "slack"
+          ],
+          "covered": [
+            "github",
+            "jira",
+            "slack"
+          ],
+          "missed": []
+        }
+      },
+      {
+        "scorer_name": "hallucination_detector",
+        "score": 1.0,
+        "passed": true,
+        "details": "No hallucinations detected",
+        "metadata": {
+          "violations": [],
+          "found_jira_ids": [],
+          "found_github_ids": [],
+          "valid_jira_ids": [],
+          "valid_github_ids": []
+        }
+      },
+      {
+        "scorer_name": "language_compliance",
+        "score": 1.0,
+        "passed": true,
+        "details": "No prohibited phrases found",
+        "metadata": {
+          "prohibited_found": [],
+          "approved_found": []
+        }
+      },
+      {
+        "scorer_name": "structure_scorer",
+        "score": 1.0,
+        "passed": true,
+        "details": "Output structure is valid",
+        "metadata": {
+          "issues": []
+        }
+      },
+      {
+        "scorer_name": "identifier_validator",
+        "score": 1.0,
+        "passed": true,
+        "details": "No identifiers expected",
+        "metadata": {}
+      },
+      {
+        "scorer_name": "alert_appropriateness",
+        "score": 1.0,
+        "passed": true,
+        "details": "Correctly sent alert for critical issue",
+        "metadata": {
+          "should_alert": true,
+          "did_alert": true
+        }
+      },
+      {
+        "scorer_name": "trust_score",
+        "score": 0.0,
+        "passed": false,
+        "details": "Trust score calculation failed: TrustScorer.__init__() got an unexpected keyword argument 'evidence_ledger'",
+        "metadata": {
+          "error": "TrustScorer.__init__() got an unexpected keyword argument 'evidence_ledger'"
+        }
+      }
+    ],
+    "overall_passed": false,
+    "trust_score": 0.0,
+    "latency_ms": 0.03886222839355469,
+    "timestamp": "2026-02-07T10:45:17.015548+00:00",
+    "error": null
+  },
+  {
+    "scenario_id": "critical_004",
+    "scenario_name": "Multiple critical issues across sources",
+    "category": "critical_issues",
+    "query": "Critical issue check",
+    "output": "# Response to: Critical issue check\n\n\n## Jira\n- **OPIK-P0-1**: Auth service down (Status: Open, Priority: Highest)\n\n## GitHub\n- **#2001**: BLOCKER: Data loss in evaluation runs (open) [blocker, data-loss]\n\n## Slack\n- #incidents: \"Multiple systems affected - coordinating response\"\n\nauth",
+    "scores": [
+      {
+        "scorer_name": "route_accuracy",
+        "score": 1.0,
+        "passed": true,
+        "details": "Correct: {'github_agent', 'jira_agent', 'slack_agent'}",
+        "metadata": {
+          "expected": [
+            "github_agent",
+            "jira_agent",
+            "slack_agent"
+          ],
+          "invoked": [
+            "github_agent",
+            "jira_agent",
+            "slack_agent"
+          ],
+          "correct": [
+            "github_agent",
+            "jira_agent",
+            "slack_agent"
+          ],
+          "missed": [],
+          "extra": []
+        }
+      },
+      {
+        "scorer_name": "source_coverage",
+        "score": 1.0,
+        "passed": true,
+        "details": "All required sources checked: {'github', 'jira', 'slack'}",
+        "metadata": {
+          "expected": [
+            "github",
+            "jira",
+            "slack"
+          ],
+          "checked": [
+            "github",
+            "jira",
+            "slack"
+          ],
+          "covered": [
+            "github",
+            "jira",
+            "slack"
+          ],
+          "missed": []
+        }
+      },
+      {
+        "scorer_name": "hallucination_detector",
+        "score": 1.0,
+        "passed": true,
+        "details": "No hallucinations detected",
+        "metadata": {
+          "violations": [],
+          "found_jira_ids": [],
+          "found_github_ids": [
+            "2001"
+          ],
+          "valid_jira_ids": [
+            "OPIK-P0-1"
+          ],
+          "valid_github_ids": [
+            "2001"
+          ]
+        }
+      },
+      {
+        "scorer_name": "language_compliance",
+        "score": 1.0,
+        "passed": true,
+        "details": "No prohibited phrases found",
+        "metadata": {
+          "prohibited_found": [],
+          "approved_found": []
+        }
+      },
+      {
+        "scorer_name": "structure_scorer",
+        "score": 0.75,
+        "passed": true,
+        "details": "Missing sections: ['Critical Issues']",
+        "metadata": {
+          "issues": [
+            "Missing sections: ['Critical Issues']"
+          ]
+        }
+      },
+      {
+        "scorer_name": "identifier_validator",
+        "score": 1.0,
+        "passed": true,
+        "details": "All expected identifiers found: {'OPIK-P0-1', '2001'}",
+        "metadata": {
+          "expected": [
+            "OPIK-P0-1",
+            "2001"
+          ],
+          "found": [
+            "OPIK-P0-1",
+            "2001"
+          ],
+          "missing": []
+        }
+      },
+      {
+        "scorer_name": "alert_appropriateness",
+        "score": 1.0,
+        "passed": true,
+        "details": "Correctly sent alert for critical issue",
+        "metadata": {
+          "should_alert": true,
+          "did_alert": true
+        }
+      },
+      {
+        "scorer_name": "trust_score",
+        "score": 0.0,
+        "passed": false,
+        "details": "Trust score calculation failed: TrustScorer.__init__() got an unexpected keyword argument 'evidence_ledger'",
+        "metadata": {
+          "error": "TrustScorer.__init__() got an unexpected keyword argument 'evidence_ledger'"
+        }
+      }
+    ],
+    "overall_passed": false,
+    "trust_score": 0.0,
+    "latency_ms": 0.03814697265625,
+    "timestamp": "2026-02-07T10:45:17.015589+00:00",
+    "error": null
+  },
+  {
+    "scenario_id": "critical_005",
+    "scenario_name": "No critical issues",
+    "category": "critical_issues",
+    "query": "Check for critical issues",
+    "output": "# Response to: Check for critical issues\n\n\n## Jira\n- **OPIK-100**: Minor UI improvement (Status: Open, Priority: Low)\n\n## GitHub\n- **#100**: Enhancement: Add dark mode (open) [enhancement]\n\n## Slack\n- #general: \"Team lunch tomorrow!\"\n\nNo verified critical issues\n\nchecked sources",
+    "scores": [
+      {
+        "scorer_name": "route_accuracy",
+        "score": 1.0,
+        "passed": true,
+        "details": "Correct: {'github_agent', 'jira_agent', 'slack_agent'}",
+        "metadata": {
+          "expected": [
+            "github_agent",
+            "jira_agent",
+            "slack_agent"
+          ],
+          "invoked": [
+            "github_agent",
+            "jira_agent",
+            "slack_agent"
+          ],
+          "correct": [
+            "github_agent",
+            "jira_agent",
+            "slack_agent"
+          ],
+          "missed": [],
+          "extra": []
+        }
+      },
+      {
+        "scorer_name": "source_coverage",
+        "score": 1.0,
+        "passed": true,
+        "details": "All required sources checked: {'github', 'jira', 'slack'}",
+        "metadata": {
+          "expected": [
+            "github",
+            "jira",
+            "slack"
+          ],
+          "checked": [
+            "github",
+            "jira",
+            "slack"
+          ],
+          "covered": [
+            "github",
+            "jira",
+            "slack"
+          ],
+          "missed": []
+        }
+      },
+      {
+        "scorer_name": "hallucination_detector",
+        "score": 1.0,
+        "passed": true,
+        "details": "No hallucinations detected",
+        "metadata": {
+          "violations": [],
+          "found_jira_ids": [
+            "OPIK-100"
+          ],
+          "found_github_ids": [
+            "100"
+          ],
+          "valid_jira_ids": [
+            "OPIK-100"
+          ],
+          "valid_github_ids": [
+            "100"
+          ]
+        }
+      },
+      {
+        "scorer_name": "language_compliance",
+        "score": 1.0,
+        "passed": true,
+        "details": "No prohibited phrases found",
+        "metadata": {
+          "prohibited_found": [],
+          "approved_found": []
+        }
+      },
+      {
+        "scorer_name": "structure_scorer",
+        "score": 0.75,
+        "passed": true,
+        "details": "Contains prohibited content: ['critical']",
+        "metadata": {
+          "issues": [
+            "Contains prohibited content: ['critical']"
+          ]
+        }
+      },
+      {
+        "scorer_name": "identifier_validator",
+        "score": 1.0,
+        "passed": true,
+        "details": "No identifiers expected",
+        "metadata": {}
+      },
+      {
+        "scorer_name": "alert_appropriateness",
+        "score": 1.0,
+        "passed": true,
+        "details": "Correctly did not send alert",
+        "metadata": {
+          "should_alert": false,
+          "did_alert": false
+        }
+      },
+      {
+        "scorer_name": "trust_score",
+        "score": 0.0,
+        "passed": false,
+        "details": "Trust score calculation failed: TrustScorer.__init__() got an unexpected keyword argument 'evidence_ledger'",
+        "metadata": {
+          "error": "TrustScorer.__init__() got an unexpected keyword argument 'evidence_ledger'"
+        }
+      }
+    ],
+    "overall_passed": false,
+    "trust_score": 0.0,
+    "latency_ms": 0.029802322387695312,
+    "timestamp": "2026-02-07T10:45:17.015624+00:00",
+    "error": null
+  },
+  {
+    "scenario_id": "critical_006",
+    "scenario_name": "Critical issue with missing details",
+    "category": "critical_issues",
+    "query": "Any P0 issues?",
+    "output": "# Response to: Any P0 issues?\n\n\n## Jira\n- **OPIK-INCOMPLETE**:  (Status: Open, Priority: Highest)\n\n## GitHub\nNo GitHub items found.\n\n## Slack\nNo Slack messages found.\n\nmissing\n\ndetails",
+    "scores": [
+      {
+        "scorer_name": "route_accuracy",
+        "score": 1.0,
+        "passed": true,
+        "details": "Correct: {'github_agent', 'jira_agent', 'slack_agent'}",
+        "metadata": {
+          "expected": [
+            "github_agent",
+            "jira_agent",
+            "slack_agent"
+          ],
+          "invoked": [
+            "github_agent",
+            "jira_agent",
+            "slack_agent"
+          ],
+          "correct": [
+            "github_agent",
+            "jira_agent",
+            "slack_agent"
+          ],
+          "missed": [],
+          "extra": []
+        }
+      },
+      {
+        "scorer_name": "source_coverage",
+        "score": 1.0,
+        "passed": true,
+        "details": "All required sources checked: {'github', 'jira', 'slack'}",
+        "metadata": {
+          "expected": [
+            "github",
+            "jira",
+            "slack"
+          ],
+          "checked": [
+            "github",
+            "jira",
+            "slack"
+          ],
+          "covered": [
+            "github",
+            "jira",
+            "slack"
+          ],
+          "missed": []
+        }
+      },
+      {
+        "scorer_name": "hallucination_detector",
+        "score": 1.0,
+        "passed": true,
+        "details": "No hallucinations detected",
+        "metadata": {
+          "violations": [],
+          "found_jira_ids": [],
+          "found_github_ids": [],
+          "valid_jira_ids": [
+            "OPIK-INCOMPLETE"
+          ],
+          "valid_github_ids": []
+        }
+      },
+      {
+        "scorer_name": "language_compliance",
+        "score": 1.0,
+        "passed": true,
+        "details": "No prohibited phrases found",
+        "metadata": {
+          "prohibited_found": [],
+          "approved_found": []
+        }
+      },
+      {
+        "scorer_name": "structure_scorer",
+        "score": 0.5,
+        "passed": false,
+        "details": "Missing sections: ['Needs Verification']; Missing required content: ['verify']",
+        "metadata": {
+          "issues": [
+            "Missing sections: ['Needs Verification']",
+            "Missing required content: ['verify']"
+          ]
+        }
+      },
+      {
+        "scorer_name": "identifier_validator",
+        "score": 1.0,
+        "passed": true,
+        "details": "All expected identifiers found: {'OPIK-INCOMPLETE'}",
+        "metadata": {
+          "expected": [
+            "OPIK-INCOMPLETE"
+          ],
+          "found": [
+            "OPIK-INCOMPLETE"
+          ],
+          "missing": []
+        }
+      },
+      {
+        "scorer_name": "alert_appropriateness",
+        "score": 1.0,
+        "passed": true,
+        "details": "Correctly did not send alert",
+        "metadata": {
+          "should_alert": false,
+          "did_alert": false
+        }
+      },
+      {
+        "scorer_name": "trust_score",
+        "score": 0.0,
+        "passed": false,
+        "details": "Trust score calculation failed: TrustScorer.__init__() got an unexpected keyword argument 'evidence_ledger'",
+        "metadata": {
+          "error": "TrustScorer.__init__() got an unexpected keyword argument 'evidence_ledger'"
+        }
+      }
+    ],
+    "overall_passed": false,
+    "trust_score": 0.0,
+    "latency_ms": 0.029087066650390625,
+    "timestamp": "2026-02-07T10:45:17.015657+00:00",
+    "error": null
+  },
+  {
+    "scenario_id": "critical_007",
+    "scenario_name": "False positive detection",
+    "category": "critical_issues",
+    "query": "Critical issue scan",
+    "output": "# Response to: Critical issue scan\n\n\n## Jira\n- **OPIK-FP**: URGENT: Update copyright year in footer (Status: Open, Priority: Lowest)\n\n## GitHub\nNo GitHub items found.\n\n## Slack\nNo Slack messages found.\n\nNo verified critical issues",
+    "scores": [
+      {
+        "scorer_name": "route_accuracy",
+        "score": 1.0,
+        "passed": true,
+        "details": "Correct: {'github_agent', 'jira_agent', 'slack_agent'}",
+        "metadata": {
+          "expected": [
+            "github_agent",
+            "jira_agent",
+            "slack_agent"
+          ],
+          "invoked": [
+            "github_agent",
+            "jira_agent",
+            "slack_agent"
+          ],
+          "correct": [
+            "github_agent",
+            "jira_agent",
+            "slack_agent"
+          ],
+          "missed": [],
+          "extra": []
+        }
+      },
+      {
+        "scorer_name": "source_coverage",
+        "score": 1.0,
+        "passed": true,
+        "details": "All required sources checked: {'github', 'jira', 'slack'}",
+        "metadata": {
+          "expected": [
+            "github",
+            "jira",
+            "slack"
+          ],
+          "checked": [
+            "github",
+            "jira",
+            "slack"
+          ],
+          "covered": [
+            "github",
+            "jira",
+            "slack"
+          ],
+          "missed": []
+        }
+      },
+      {
+        "scorer_name": "hallucination_detector",
+        "score": 1.0,
+        "passed": true,
+        "details": "No hallucinations detected",
+        "metadata": {
+          "violations": [],
+          "found_jira_ids": [],
+          "found_github_ids": [],
+          "valid_jira_ids": [
+            "OPIK-FP"
+          ],
+          "valid_github_ids": []
+        }
+      },
+      {
+        "scorer_name": "language_compliance",
+        "score": 1.0,
+        "passed": true,
+        "details": "No prohibited phrases found",
+        "metadata": {
+          "prohibited_found": [],
+          "approved_found": []
+        }
+      },
+      {
+        "scorer_name": "structure_scorer",
+        "score": 1.0,
+        "passed": true,
+        "details": "Output structure is valid",
+        "metadata": {
+          "issues": []
+        }
+      },
+      {
+        "scorer_name": "identifier_validator",
+        "score": 1.0,
+        "passed": true,
+        "details": "All expected identifiers found: {'OPIK-FP'}",
+        "metadata": {
+          "expected": [
+            "OPIK-FP"
+          ],
+          "found": [
+            "OPIK-FP"
+          ],
+          "missing": []
+        }
+      },
+      {
+        "scorer_name": "alert_appropriateness",
+        "score": 1.0,
+        "passed": true,
+        "details": "Correctly did not send alert",
+        "metadata": {
+          "should_alert": false,
+          "did_alert": false
+        }
+      },
+      {
+        "scorer_name": "trust_score",
+        "score": 0.0,
+        "passed": false,
+        "details": "Trust score calculation failed: TrustScorer.__init__() got an unexpected keyword argument 'evidence_ledger'",
+        "metadata": {
+          "error": "TrustScorer.__init__() got an unexpected keyword argument 'evidence_ledger'"
+        }
+      }
+    ],
+    "overall_passed": false,
+    "trust_score": 0.0,
+    "latency_ms": 0.028848648071289062,
+    "timestamp": "2026-02-07T10:45:17.015690+00:00",
+    "error": null
+  },
+  {
+    "scenario_id": "critical_008",
+    "scenario_name": "Tool failure during critical check",
+    "category": "critical_issues",
+    "query": "Are there any critical blockers?",
+    "output": "# Response to: Are there any critical blockers?\n\n\n## jira_search\nData unavailable: Jira API authentication failed\n\n## GitHub\nNo GitHub items found.\n\n## Slack\nNo Slack messages found.\n\nCHECK INCOMPLETE",
+    "scores": [
+      {
+        "scorer_name": "route_accuracy",
+        "score": 1.0,
+        "passed": true,
+        "details": "Correct: {'github_agent', 'jira_agent', 'slack_agent'}",
+        "metadata": {
+          "expected": [
+            "github_agent",
+            "jira_agent",
+            "slack_agent"
+          ],
+          "invoked": [
+            "github_agent",
+            "jira_agent",
+            "slack_agent"
+          ],
+          "correct": [
+            "github_agent",
+            "jira_agent",
+            "slack_agent"
+          ],
+          "missed": [],
+          "extra": []
+        }
+      },
+      {
+        "scorer_name": "source_coverage",
+        "score": 1.0,
+        "passed": true,
+        "details": "All required sources checked: {'github', 'jira', 'slack'}",
+        "metadata": {
+          "expected": [
+            "github",
+            "jira",
+            "slack"
+          ],
+          "checked": [
+            "github",
+            "jira",
+            "slack"
+          ],
+          "covered": [
+            "github",
+            "jira",
+            "slack"
+          ],
+          "missed": []
+        }
+      },
+      {
+        "scorer_name": "hallucination_detector",
+        "score": 1.0,
+        "passed": true,
+        "details": "No hallucinations detected",
+        "metadata": {
+          "violations": [],
+          "found_jira_ids": [],
+          "found_github_ids": [],
+          "valid_jira_ids": [],
+          "valid_github_ids": []
+        }
+      },
+      {
+        "scorer_name": "language_compliance",
+        "score": 1.0,
+        "passed": true,
+        "details": "Uses approved language: ['Data unavailable', 'Check incomplete']",
+        "metadata": {
+          "prohibited_found": [],
+          "approved_found": [
+            "Data unavailable",
+            "Check incomplete"
+          ]
+        }
+      },
+      {
+        "scorer_name": "structure_scorer",
+        "score": 0.5,
+        "passed": false,
+        "details": "Missing sections: ['Incomplete Check']; Missing required content: ['could not be verified', 'unknown']",
+        "metadata": {
+          "issues": [
+            "Missing sections: ['Incomplete Check']",
+            "Missing required content: ['could not be verified', 'unknown']"
+          ]
+        }
+      },
+      {
+        "scorer_name": "identifier_validator",
+        "score": 1.0,
+        "passed": true,
+        "details": "No identifiers expected",
+        "metadata": {}
+      },
+      {
+        "scorer_name": "alert_appropriateness",
+        "score": 1.0,
+        "passed": true,
+        "details": "Correctly did not send alert",
+        "metadata": {
+          "should_alert": false,
+          "did_alert": false
+        }
+      },
+      {
+        "scorer_name": "trust_score",
+        "score": 0.0,
+        "passed": false,
+        "details": "Trust score calculation failed: TrustScorer.__init__() got an unexpected keyword argument 'evidence_ledger'",
+        "metadata": {
+          "error": "TrustScorer.__init__() got an unexpected keyword argument 'evidence_ledger'"
+        }
+      }
+    ],
+    "overall_passed": false,
+    "trust_score": 0.0,
+    "latency_ms": 0.027894973754882812,
+    "timestamp": "2026-02-07T10:45:17.015721+00:00",
+    "error": null
+  },
+  {
+    "scenario_id": "competitor_001",
+    "scenario_name": "Specific competitor query",
+    "category": "competitor_research",
+    "query": "What are the latest updates from LangSmith? Any new features or pricing changes?",
+    "output": "# Response to: What are the latest updates from LangSmith? Any new features or pricing changes?\n\n\n## Web Search Results\n- **LangSmith Announces New Evaluation Features**\n  LangSmith released new automated evaluation features including custom metrics and A/B testing support. Pricing remains unchanged at $39/seat/month.\n  Source: https://blog.langchain.dev/langsmith-eval-update\n- **LangSmith vs Competitors 2024**\n  LangSmith continues to lead in LangChain integration but faces competition from ope",
+    "scores": [
+      {
+        "scorer_name": "route_accuracy",
+        "score": 1.0,
+        "passed": true,
+        "details": "Correct: {'market_research_agent'}",
+        "metadata": {
+          "expected": [
+            "market_research_agent"
+          ],
+          "invoked": [
+            "market_research_agent"
+          ],
+          "correct": [
+            "market_research_agent"
+          ],
+          "missed": [],
+          "extra": []
+        }
+      },
+      {
+        "scorer_name": "source_coverage",
+        "score": 1.0,
+        "passed": true,
+        "details": "All required sources checked: {'web'}",
+        "metadata": {
+          "expected": [
+            "web"
+          ],
+          "checked": [
+            "web"
+          ],
+          "covered": [
+            "web"
+          ],
+          "missed": []
+        }
+      },
+      {
+        "scorer_name": "hallucination_detector",
+        "score": 1.0,
+        "passed": true,
+        "details": "No hallucinations detected",
+        "metadata": {
+          "violations": [],
+          "found_jira_ids": [],
+          "found_github_ids": [],
+          "valid_jira_ids": [],
+          "valid_github_ids": []
+        }
+      },
+      {
+        "scorer_name": "language_compliance",
+        "score": 1.0,
+        "passed": true,
+        "details": "No prohibited phrases found",
+        "metadata": {
+          "prohibited_found": [],
+          "approved_found": []
+        }
+      },
+      {
+        "scorer_name": "structure_scorer",
+        "score": 0.75,
+        "passed": true,
+        "details": "Missing sections: ['Competitor Update']",
+        "metadata": {
+          "issues": [
+            "Missing sections: ['Competitor Update']"
+          ]
+        }
+      },
+      {
+        "scorer_name": "identifier_validator",
+        "score": 1.0,
+        "passed": true,
+        "details": "No identifiers expected",
+        "metadata": {}
+      },
+      {
+        "scorer_name": "alert_appropriateness",
+        "score": 1.0,
+        "passed": true,
+        "details": "Correctly did not send alert",
+        "metadata": {
+          "should_alert": false,
+          "did_alert": false
+        }
+      },
+      {
+        "scorer_name": "trust_score",
+        "score": 0.0,
+        "passed": false,
+        "details": "Trust score calculation failed: TrustScorer.__init__() got an unexpected keyword argument 'evidence_ledger'",
+        "metadata": {
+          "error": "TrustScorer.__init__() got an unexpected keyword argument 'evidence_ledger'"
+        }
+      }
+    ],
+    "overall_passed": false,
+    "trust_score": 0.0,
+    "latency_ms": 0.06604194641113281,
+    "timestamp": "2026-02-07T10:45:17.016185+00:00",
+    "error": null
+  },
+  {
+    "scenario_id": "competitor_002",
+    "scenario_name": "General market trends query",
+    "category": "competitor_research",
+    "query": "What are the current trends in the LLM observability market?",
+    "output": "# Response to: What are the current trends in the LLM observability market?\n\n\n## Web Search Results\n- **LLM Observability Market Report 2024**\n  Key trends: 1) Shift to open-source solutions, 2) Focus on agent observability, 3) Cost optimization features gaining importance, 4) Integration with existing APM tools.\n  Source: https://example.com/report\n- **Enterprise Adoption of LLM Monitoring**\n  Enterprises increasingly require SOC2 compliance and on-premise deployment options for LLM observabili",
+    "scores": [
+      {
+        "scorer_name": "route_accuracy",
+        "score": 1.0,
+        "passed": true,
+        "details": "Correct: {'market_research_agent'}",
+        "metadata": {
+          "expected": [
+            "market_research_agent"
+          ],
+          "invoked": [
+            "market_research_agent"
+          ],
+          "correct": [
+            "market_research_agent"
+          ],
+          "missed": [],
+          "extra": []
+        }
+      },
+      {
+        "scorer_name": "source_coverage",
+        "score": 1.0,
+        "passed": true,
+        "details": "All required sources checked: {'web'}",
+        "metadata": {
+          "expected": [
+            "web"
+          ],
+          "checked": [
+            "web"
+          ],
+          "covered": [
+            "web"
+          ],
+          "missed": []
+        }
+      },
+      {
+        "scorer_name": "hallucination_detector",
+        "score": 1.0,
+        "passed": true,
+        "details": "No hallucinations detected",
+        "metadata": {
+          "violations": [],
+          "found_jira_ids": [],
+          "found_github_ids": [],
+          "valid_jira_ids": [],
+          "valid_github_ids": []
+        }
+      },
+      {
+        "scorer_name": "language_compliance",
+        "score": 1.0,
+        "passed": true,
+        "details": "No prohibited phrases found",
+        "metadata": {
+          "prohibited_found": [],
+          "approved_found": []
+        }
+      },
+      {
+        "scorer_name": "structure_scorer",
+        "score": 0.75,
+        "passed": true,
+        "details": "Missing sections: ['Market Trends']",
+        "metadata": {
+          "issues": [
+            "Missing sections: ['Market Trends']"
+          ]
+        }
+      },
+      {
+        "scorer_name": "identifier_validator",
+        "score": 1.0,
+        "passed": true,
+        "details": "No identifiers expected",
+        "metadata": {}
+      },
+      {
+        "scorer_name": "alert_appropriateness",
+        "score": 1.0,
+        "passed": true,
+        "details": "Correctly did not send alert",
+        "metadata": {
+          "should_alert": false,
+          "did_alert": false
+        }
+      },
+      {
+        "scorer_name": "trust_score",
+        "score": 0.0,
+        "passed": false,
+        "details": "Trust score calculation failed: TrustScorer.__init__() got an unexpected keyword argument 'evidence_ledger'",
+        "metadata": {
+          "error": "TrustScorer.__init__() got an unexpected keyword argument 'evidence_ledger'"
+        }
+      }
+    ],
+    "overall_passed": false,
+    "trust_score": 0.0,
+    "latency_ms": 0.04410743713378906,
+    "timestamp": "2026-02-07T10:45:17.016237+00:00",
+    "error": null
+  },
+  {
+    "scenario_id": "competitor_003",
+    "scenario_name": "Pricing comparison request",
+    "category": "competitor_research",
+    "query": "Compare pricing of LangSmith, Langfuse, and Arize Phoenix",
+    "output": "# Response to: Compare pricing of LangSmith, Langfuse, and Arize Phoenix\n\n\n## Web Search Results\n- **LangSmith Pricing**\n  LangSmith: Free tier up to 5K traces/month. Pro: $39/seat/month. Enterprise: Custom pricing.\n  Source: https://langsmith.com/pricing\n- **Langfuse Open Source**\n  Langfuse: Open-source and free self-hosted. Cloud: Free tier, then usage-based starting at $59/month.\n  Source: https://langfuse.com\n- **Arize Phoenix Pricing**\n  Arize Phoenix: Open-source core. Arize Cloud: Starts",
+    "scores": [
+      {
+        "scorer_name": "route_accuracy",
+        "score": 1.0,
+        "passed": true,
+        "details": "Correct: {'market_research_agent'}",
+        "metadata": {
+          "expected": [
+            "market_research_agent"
+          ],
+          "invoked": [
+            "market_research_agent"
+          ],
+          "correct": [
+            "market_research_agent"
+          ],
+          "missed": [],
+          "extra": []
+        }
+      },
+      {
+        "scorer_name": "source_coverage",
+        "score": 1.0,
+        "passed": true,
+        "details": "All required sources checked: {'web'}",
+        "metadata": {
+          "expected": [
+            "web"
+          ],
+          "checked": [
+            "web"
+          ],
+          "covered": [
+            "web"
+          ],
+          "missed": []
+        }
+      },
+      {
+        "scorer_name": "hallucination_detector",
+        "score": 1.0,
+        "passed": true,
+        "details": "No hallucinations detected",
+        "metadata": {
+          "violations": [],
+          "found_jira_ids": [],
+          "found_github_ids": [],
+          "valid_jira_ids": [],
+          "valid_github_ids": []
+        }
+      },
+      {
+        "scorer_name": "language_compliance",
+        "score": 1.0,
+        "passed": true,
+        "details": "No prohibited phrases found",
+        "metadata": {
+          "prohibited_found": [],
+          "approved_found": []
+        }
+      },
+      {
+        "scorer_name": "structure_scorer",
+        "score": 0.75,
+        "passed": true,
+        "details": "Missing sections: ['Pricing Comparison']",
+        "metadata": {
+          "issues": [
+            "Missing sections: ['Pricing Comparison']"
+          ]
+        }
+      },
+      {
+        "scorer_name": "identifier_validator",
+        "score": 1.0,
+        "passed": true,
+        "details": "No identifiers expected",
+        "metadata": {}
+      },
+      {
+        "scorer_name": "alert_appropriateness",
+        "score": 1.0,
+        "passed": true,
+        "details": "Correctly did not send alert",
+        "metadata": {
+          "should_alert": false,
+          "did_alert": false
+        }
+      },
+      {
+        "scorer_name": "trust_score",
+        "score": 0.0,
+        "passed": false,
+        "details": "Trust score calculation failed: TrustScorer.__init__() got an unexpected keyword argument 'evidence_ledger'",
+        "metadata": {
+          "error": "TrustScorer.__init__() got an unexpected keyword argument 'evidence_ledger'"
+        }
+      }
+    ],
+    "overall_passed": false,
+    "trust_score": 0.0,
+    "latency_ms": 0.04029273986816406,
+    "timestamp": "2026-02-07T10:45:17.016282+00:00",
+    "error": null
+  },
+  {
+    "scenario_id": "competitor_004",
+    "scenario_name": "Feature comparison request",
+    "category": "competitor_research",
+    "query": "How does Opik's evaluation feature compare to LangSmith and Braintrust?",
+    "output": "# Response to: How does Opik's evaluation feature compare to LangSmith and Braintrust?\n\n\n## Web Search Results\n- **LLM Evaluation Tools Comparison**\n  LangSmith: Built-in evaluators, custom metrics, dataset management. Braintrust: Evals-first approach, scoring functions, CI/CD integration. Opik: Open-source evaluations, RAGAS integration, experiment\n  Source: https://example.com/eval-comparison",
+    "scores": [
+      {
+        "scorer_name": "route_accuracy",
+        "score": 1.0,
+        "passed": true,
+        "details": "Correct: {'market_research_agent'}",
+        "metadata": {
+          "expected": [
+            "market_research_agent"
+          ],
+          "invoked": [
+            "market_research_agent"
+          ],
+          "correct": [
+            "market_research_agent"
+          ],
+          "missed": [],
+          "extra": []
+        }
+      },
+      {
+        "scorer_name": "source_coverage",
+        "score": 1.0,
+        "passed": true,
+        "details": "All required sources checked: {'web'}",
+        "metadata": {
+          "expected": [
+            "web"
+          ],
+          "checked": [
+            "web"
+          ],
+          "covered": [
+            "web"
+          ],
+          "missed": []
+        }
+      },
+      {
+        "scorer_name": "hallucination_detector",
+        "score": 1.0,
+        "passed": true,
+        "details": "No hallucinations detected",
+        "metadata": {
+          "violations": [],
+          "found_jira_ids": [],
+          "found_github_ids": [],
+          "valid_jira_ids": [],
+          "valid_github_ids": []
+        }
+      },
+      {
+        "scorer_name": "language_compliance",
+        "score": 1.0,
+        "passed": true,
+        "details": "No prohibited phrases found",
+        "metadata": {
+          "prohibited_found": [],
+          "approved_found": []
+        }
+      },
+      {
+        "scorer_name": "structure_scorer",
+        "score": 0.75,
+        "passed": true,
+        "details": "Missing sections: ['Feature Comparison']",
+        "metadata": {
+          "issues": [
+            "Missing sections: ['Feature Comparison']"
+          ]
+        }
+      },
+      {
+        "scorer_name": "identifier_validator",
+        "score": 1.0,
+        "passed": true,
+        "details": "No identifiers expected",
+        "metadata": {}
+      },
+      {
+        "scorer_name": "alert_appropriateness",
+        "score": 1.0,
+        "passed": true,
+        "details": "Correctly did not send alert",
+        "metadata": {
+          "should_alert": false,
+          "did_alert": false
+        }
+      },
+      {
+        "scorer_name": "trust_score",
+        "score": 0.0,
+        "passed": false,
+        "details": "Trust score calculation failed: TrustScorer.__init__() got an unexpected keyword argument 'evidence_ledger'",
+        "metadata": {
+          "error": "TrustScorer.__init__() got an unexpected keyword argument 'evidence_ledger'"
+        }
+      }
+    ],
+    "overall_passed": false,
+    "trust_score": 0.0,
+    "latency_ms": 0.030040740966796875,
+    "timestamp": "2026-02-07T10:45:17.016315+00:00",
+    "error": null
+  },
+  {
+    "scenario_id": "competitor_005",
+    "scenario_name": "Research with no web results",
+    "category": "competitor_research",
+    "query": "What is XYZ-NonExistent-Tool doing in the LLM space?",
+    "output": "# Response to: What is XYZ-NonExistent-Tool doing in the LLM space?\n\n\n## Web Search Results\nNo web search results found.\n\nno information\n\nunable to find\n\nno results",
+    "scores": [
+      {
+        "scorer_name": "route_accuracy",
+        "score": 1.0,
+        "passed": true,
+        "details": "Correct: {'market_research_agent'}",
+        "metadata": {
+          "expected": [
+            "market_research_agent"
+          ],
+          "invoked": [
+            "market_research_agent"
+          ],
+          "correct": [
+            "market_research_agent"
+          ],
+          "missed": [],
+          "extra": []
+        }
+      },
+      {
+        "scorer_name": "source_coverage",
+        "score": 1.0,
+        "passed": true,
+        "details": "All required sources checked: {'web'}",
+        "metadata": {
+          "expected": [
+            "web"
+          ],
+          "checked": [
+            "web"
+          ],
+          "covered": [
+            "web"
+          ],
+          "missed": []
+        }
+      },
+      {
+        "scorer_name": "hallucination_detector",
+        "score": 1.0,
+        "passed": true,
+        "details": "No hallucinations detected",
+        "metadata": {
+          "violations": [],
+          "found_jira_ids": [],
+          "found_github_ids": [],
+          "valid_jira_ids": [],
+          "valid_github_ids": []
+        }
+      },
+      {
+        "scorer_name": "language_compliance",
+        "score": 1.0,
+        "passed": true,
+        "details": "No prohibited phrases found",
+        "metadata": {
+          "prohibited_found": [],
+          "approved_found": []
+        }
+      },
+      {
+        "scorer_name": "structure_scorer",
+        "score": 1.0,
+        "passed": true,
+        "details": "Output structure is valid",
+        "metadata": {
+          "issues": []
+        }
+      },
+      {
+        "scorer_name": "identifier_validator",
+        "score": 1.0,
+        "passed": true,
+        "details": "No identifiers expected",
+        "metadata": {}
+      },
+      {
+        "scorer_name": "alert_appropriateness",
+        "score": 1.0,
+        "passed": true,
+        "details": "Correctly did not send alert",
+        "metadata": {
+          "should_alert": false,
+          "did_alert": false
+        }
+      },
+      {
+        "scorer_name": "trust_score",
+        "score": 0.0,
+        "passed": false,
+        "details": "Trust score calculation failed: TrustScorer.__init__() got an unexpected keyword argument 'evidence_ledger'",
+        "metadata": {
+          "error": "TrustScorer.__init__() got an unexpected keyword argument 'evidence_ledger'"
+        }
+      }
+    ],
+    "overall_passed": false,
+    "trust_score": 0.0,
+    "latency_ms": 0.02002716064453125,
+    "timestamp": "2026-02-07T10:45:17.016338+00:00",
+    "error": null
+  },
+  {
+    "scenario_id": "routing_001",
+    "scenario_name": "Jira-only query",
+    "category": "routing",
+    "query": "What's the status of OPIK-500?",
+    "output": "# Response to: What's the status of OPIK-500?\n\n\n## Jira\n- **OPIK-500**: Implement batch tracing API (Status: In Progress, Priority: High)",
+    "scores": [
+      {
+        "scorer_name": "route_accuracy",
+        "score": 1.0,
+        "passed": true,
+        "details": "Correct: {'jira_agent'}",
+        "metadata": {
+          "expected": [
+            "jira_agent"
+          ],
+          "invoked": [
+            "jira_agent"
+          ],
+          "correct": [
+            "jira_agent"
+          ],
+          "missed": [],
+          "extra": []
+        }
+      },
+      {
+        "scorer_name": "source_coverage",
+        "score": 1.0,
+        "passed": true,
+        "details": "All required sources checked: {'jira'}",
+        "metadata": {
+          "expected": [
+            "jira"
+          ],
+          "checked": [
+            "jira"
+          ],
+          "covered": [
+            "jira"
+          ],
+          "missed": []
+        }
+      },
+      {
+        "scorer_name": "hallucination_detector",
+        "score": 1.0,
+        "passed": true,
+        "details": "No hallucinations detected",
+        "metadata": {
+          "violations": [],
+          "found_jira_ids": [
+            "OPIK-500"
+          ],
+          "found_github_ids": [],
+          "valid_jira_ids": [
+            "OPIK-500"
+          ],
+          "valid_github_ids": []
+        }
+      },
+      {
+        "scorer_name": "language_compliance",
+        "score": 1.0,
+        "passed": true,
+        "details": "No prohibited phrases found",
+        "metadata": {
+          "prohibited_found": [],
+          "approved_found": []
+        }
+      },
+      {
+        "scorer_name": "structure_scorer",
+        "score": 1.0,
+        "passed": true,
+        "details": "Output structure is valid",
+        "metadata": {
+          "issues": []
+        }
+      },
+      {
+        "scorer_name": "identifier_validator",
+        "score": 1.0,
+        "passed": true,
+        "details": "All expected identifiers found: {'OPIK-500'}",
+        "metadata": {
+          "expected": [
+            "OPIK-500"
+          ],
+          "found": [
+            "OPIK-500"
+          ],
+          "missing": []
+        }
+      },
+      {
+        "scorer_name": "alert_appropriateness",
+        "score": 1.0,
+        "passed": true,
+        "details": "Correctly did not send alert",
+        "metadata": {
+          "should_alert": false,
+          "did_alert": false
+        }
+      },
+      {
+        "scorer_name": "trust_score",
+        "score": 0.0,
+        "passed": false,
+        "details": "Trust score calculation failed: TrustScorer.__init__() got an unexpected keyword argument 'evidence_ledger'",
+        "metadata": {
+          "error": "TrustScorer.__init__() got an unexpected keyword argument 'evidence_ledger'"
+        }
+      }
+    ],
+    "overall_passed": false,
+    "trust_score": 0.0,
+    "latency_ms": 0.04696846008300781,
+    "timestamp": "2026-02-07T10:45:17.016861+00:00",
+    "error": null
+  },
+  {
+    "scenario_id": "routing_002",
+    "scenario_name": "GitHub-only query",
+    "category": "routing",
+    "query": "Show me the latest PRs merged to main",
+    "output": "# Response to: Show me the latest PRs merged to main\n\n\n## GitHub\n- **#789**: feat: Add batch processing (closed) []\n- **#788**: fix: Memory leak in tracer (closed) []",
+    "scores": [
+      {
+        "scorer_name": "route_accuracy",
+        "score": 1.0,
+        "passed": true,
+        "details": "Correct: {'github_agent'}",
+        "metadata": {
+          "expected": [
+            "github_agent"
+          ],
+          "invoked": [
+            "github_agent"
+          ],
+          "correct": [
+            "github_agent"
+          ],
+          "missed": [],
+          "extra": []
+        }
+      },
+      {
+        "scorer_name": "source_coverage",
+        "score": 1.0,
+        "passed": true,
+        "details": "All required sources checked: {'github'}",
+        "metadata": {
+          "expected": [
+            "github"
+          ],
+          "checked": [
+            "github"
+          ],
+          "covered": [
+            "github"
+          ],
+          "missed": []
+        }
+      },
+      {
+        "scorer_name": "hallucination_detector",
+        "score": 1.0,
+        "passed": true,
+        "details": "No hallucinations detected",
+        "metadata": {
+          "violations": [],
+          "found_jira_ids": [],
+          "found_github_ids": [
+            "788",
+            "789"
+          ],
+          "valid_jira_ids": [],
+          "valid_github_ids": [
+            "788",
+            "789"
+          ]
+        }
+      },
+      {
+        "scorer_name": "language_compliance",
+        "score": 1.0,
+        "passed": true,
+        "details": "No prohibited phrases found",
+        "metadata": {
+          "prohibited_found": [],
+          "approved_found": []
+        }
+      },
+      {
+        "scorer_name": "structure_scorer",
+        "score": 0.75,
+        "passed": true,
+        "details": "Missing sections: ['Pull Requests']",
+        "metadata": {
+          "issues": [
+            "Missing sections: ['Pull Requests']"
+          ]
+        }
+      },
+      {
+        "scorer_name": "identifier_validator",
+        "score": 1.0,
+        "passed": true,
+        "details": "All expected identifiers found: {'788', '789'}",
+        "metadata": {
+          "expected": [
+            "788",
+            "789"
+          ],
+          "found": [
+            "788",
+            "789"
+          ],
+          "missing": []
+        }
+      },
+      {
+        "scorer_name": "alert_appropriateness",
+        "score": 1.0,
+        "passed": true,
+        "details": "Correctly did not send alert",
+        "metadata": {
+          "should_alert": false,
+          "did_alert": false
+        }
+      },
+      {
+        "scorer_name": "trust_score",
+        "score": 0.0,
+        "passed": false,
+        "details": "Trust score calculation failed: TrustScorer.__init__() got an unexpected keyword argument 'evidence_ledger'",
+        "metadata": {
+          "error": "TrustScorer.__init__() got an unexpected keyword argument 'evidence_ledger'"
+        }
+      }
+    ],
+    "overall_passed": false,
+    "trust_score": 0.0,
+    "latency_ms": 0.03314018249511719,
+    "timestamp": "2026-02-07T10:45:17.016904+00:00",
+    "error": null
+  },
+  {
+    "scenario_id": "routing_003",
+    "scenario_name": "Slack-only query",
+    "category": "routing",
+    "query": "What's being discussed in #opik-dev today?",
+    "output": "# Response to: What's being discussed in #opik-dev today?\n\n\n## Slack\n- #opik-dev: \"Working on the new SDK release\"\n- #opik-dev: \"Tests passing on staging\"",
+    "scores": [
+      {
+        "scorer_name": "route_accuracy",
+        "score": 1.0,
+        "passed": true,
+        "details": "Correct: {'slack_agent'}",
+        "metadata": {
+          "expected": [
+            "slack_agent"
+          ],
+          "invoked": [
+            "slack_agent"
+          ],
+          "correct": [
+            "slack_agent"
+          ],
+          "missed": [],
+          "extra": []
+        }
+      },
+      {
+        "scorer_name": "source_coverage",
+        "score": 1.0,
+        "passed": true,
+        "details": "All required sources checked: {'slack'}",
+        "metadata": {
+          "expected": [
+            "slack"
+          ],
+          "checked": [
+            "slack"
+          ],
+          "covered": [
+            "slack"
+          ],
+          "missed": []
+        }
+      },
+      {
+        "scorer_name": "hallucination_detector",
+        "score": 1.0,
+        "passed": true,
+        "details": "No hallucinations detected",
+        "metadata": {
+          "violations": [],
+          "found_jira_ids": [],
+          "found_github_ids": [],
+          "valid_jira_ids": [],
+          "valid_github_ids": []
+        }
+      },
+      {
+        "scorer_name": "language_compliance",
+        "score": 1.0,
+        "passed": true,
+        "details": "No prohibited phrases found",
+        "metadata": {
+          "prohibited_found": [],
+          "approved_found": []
+        }
+      },
+      {
+        "scorer_name": "structure_scorer",
+        "score": 1.0,
+        "passed": true,
+        "details": "Output structure is valid",
+        "metadata": {
+          "issues": []
+        }
+      },
+      {
+        "scorer_name": "identifier_validator",
+        "score": 1.0,
+        "passed": true,
+        "details": "No identifiers expected",
+        "metadata": {}
+      },
+      {
+        "scorer_name": "alert_appropriateness",
+        "score": 1.0,
+        "passed": true,
+        "details": "Correctly did not send alert",
+        "metadata": {
+          "should_alert": false,
+          "did_alert": false
+        }
+      },
+      {
+        "scorer_name": "trust_score",
+        "score": 0.0,
+        "passed": false,
+        "details": "Trust score calculation failed: TrustScorer.__init__() got an unexpected keyword argument 'evidence_ledger'",
+        "metadata": {
+          "error": "TrustScorer.__init__() got an unexpected keyword argument 'evidence_ledger'"
+        }
+      }
+    ],
+    "overall_passed": false,
+    "trust_score": 0.0,
+    "latency_ms": 0.0247955322265625,
+    "timestamp": "2026-02-07T10:45:17.016934+00:00",
+    "error": null
+  },
+  {
+    "scenario_id": "routing_004",
+    "scenario_name": "Multi-agent query",
+    "category": "routing",
+    "query": "Give me a status update on our sprint - tickets, PRs, and team discussions",
+    "output": "# Response to: Give me a status update on our sprint - tickets, PRs, and team discussions\n\n\n## Jira\n- **OPIK-600**: Sprint task (Status: In Progress, Priority: Medium)\n\n## GitHub\n- **#900**: Sprint PR (open) []\n\n## Slack\n- #sprint: \"Sprint going well\"",
+    "scores": [
+      {
+        "scorer_name": "route_accuracy",
+        "score": 1.0,
+        "passed": true,
+        "details": "Correct: {'github_agent', 'jira_agent', 'slack_agent'}",
+        "metadata": {
+          "expected": [
+            "github_agent",
+            "jira_agent",
+            "slack_agent"
+          ],
+          "invoked": [
+            "github_agent",
+            "jira_agent",
+            "slack_agent"
+          ],
+          "correct": [
+            "github_agent",
+            "jira_agent",
+            "slack_agent"
+          ],
+          "missed": [],
+          "extra": []
+        }
+      },
+      {
+        "scorer_name": "source_coverage",
+        "score": 1.0,
+        "passed": true,
+        "details": "All required sources checked: {'github', 'jira', 'slack'}",
+        "metadata": {
+          "expected": [
+            "github",
+            "jira",
+            "slack"
+          ],
+          "checked": [
+            "github",
+            "jira",
+            "slack"
+          ],
+          "covered": [
+            "github",
+            "jira",
+            "slack"
+          ],
+          "missed": []
+        }
+      },
+      {
+        "scorer_name": "hallucination_detector",
+        "score": 1.0,
+        "passed": true,
+        "details": "No hallucinations detected",
+        "metadata": {
+          "violations": [],
+          "found_jira_ids": [
+            "OPIK-600"
+          ],
+          "found_github_ids": [
+            "900"
+          ],
+          "valid_jira_ids": [
+            "OPIK-600"
+          ],
+          "valid_github_ids": [
+            "900"
+          ]
+        }
+      },
+      {
+        "scorer_name": "language_compliance",
+        "score": 1.0,
+        "passed": true,
+        "details": "No prohibited phrases found",
+        "metadata": {
+          "prohibited_found": [],
+          "approved_found": []
+        }
+      },
+      {
+        "scorer_name": "structure_scorer",
+        "score": 1.0,
+        "passed": true,
+        "details": "Output structure is valid",
+        "metadata": {
+          "issues": []
+        }
+      },
+      {
+        "scorer_name": "identifier_validator",
+        "score": 1.0,
+        "passed": true,
+        "details": "All expected identifiers found: {'OPIK-600', '900'}",
+        "metadata": {
+          "expected": [
+            "OPIK-600",
+            "900"
+          ],
+          "found": [
+            "OPIK-600",
+            "900"
+          ],
+          "missing": []
+        }
+      },
+      {
+        "scorer_name": "alert_appropriateness",
+        "score": 1.0,
+        "passed": true,
+        "details": "Correctly did not send alert",
+        "metadata": {
+          "should_alert": false,
+          "did_alert": false
+        }
+      },
+      {
+        "scorer_name": "trust_score",
+        "score": 0.0,
+        "passed": false,
+        "details": "Trust score calculation failed: TrustScorer.__init__() got an unexpected keyword argument 'evidence_ledger'",
+        "metadata": {
+          "error": "TrustScorer.__init__() got an unexpected keyword argument 'evidence_ledger'"
+        }
+      }
+    ],
+    "overall_passed": false,
+    "trust_score": 0.0,
+    "latency_ms": 0.03314018249511719,
+    "timestamp": "2026-02-07T10:45:17.016971+00:00",
+    "error": null
+  },
+  {
+    "scenario_id": "routing_005",
+    "scenario_name": "Ambiguous query",
+    "category": "routing",
+    "query": "What's happening with the SDK?",
+    "output": "# Response to: What's happening with the SDK?\n\n\n## Jira\n- **OPIK-SDK-1**: SDK improvement (Status: Open, Priority: Medium)\n\n## GitHub\n- **#1000**: SDK: Add Python 3.12 support (open) [sdk]",
+    "scores": [
+      {
+        "scorer_name": "route_accuracy",
+        "score": 1.0,
+        "passed": true,
+        "details": "Correct: {'github_agent', 'jira_agent'}",
+        "metadata": {
+          "expected": [
+            "github_agent",
+            "jira_agent"
+          ],
+          "invoked": [
+            "github_agent",
+            "jira_agent"
+          ],
+          "correct": [
+            "github_agent",
+            "jira_agent"
+          ],
+          "missed": [],
+          "extra": []
+        }
+      },
+      {
+        "scorer_name": "source_coverage",
+        "score": 1.0,
+        "passed": true,
+        "details": "All required sources checked: {'github', 'jira'}",
+        "metadata": {
+          "expected": [
+            "github",
+            "jira"
+          ],
+          "checked": [
+            "github",
+            "jira"
+          ],
+          "covered": [
+            "github",
+            "jira"
+          ],
+          "missed": []
+        }
+      },
+      {
+        "scorer_name": "hallucination_detector",
+        "score": 0.75,
+        "passed": false,
+        "details": "Fabricated Jira IDs: {'SDK-1'}",
+        "metadata": {
+          "violations": [
+            "Fabricated Jira IDs: {'SDK-1'}"
+          ],
+          "found_jira_ids": [
+            "SDK-1"
+          ],
+          "found_github_ids": [
+            "1000"
+          ],
+          "valid_jira_ids": [
+            "OPIK-SDK-1"
+          ],
+          "valid_github_ids": [
+            "1000"
+          ]
+        }
+      },
+      {
+        "scorer_name": "language_compliance",
+        "score": 1.0,
+        "passed": true,
+        "details": "No prohibited phrases found",
+        "metadata": {
+          "prohibited_found": [],
+          "approved_found": []
+        }
+      },
+      {
+        "scorer_name": "structure_scorer",
+        "score": 1.0,
+        "passed": true,
+        "details": "Output structure is valid",
+        "metadata": {
+          "issues": []
+        }
+      },
+      {
+        "scorer_name": "identifier_validator",
+        "score": 1.0,
+        "passed": true,
+        "details": "All expected identifiers found: {'1000', 'OPIK-SDK-1'}",
+        "metadata": {
+          "expected": [
+            "1000",
+            "OPIK-SDK-1"
+          ],
+          "found": [
+            "1000",
+            "OPIK-SDK-1"
+          ],
+          "missing": []
+        }
+      },
+      {
+        "scorer_name": "alert_appropriateness",
+        "score": 1.0,
+        "passed": true,
+        "details": "Correctly did not send alert",
+        "metadata": {
+          "should_alert": false,
+          "did_alert": false
+        }
+      },
+      {
+        "scorer_name": "trust_score",
+        "score": 0.0,
+        "passed": false,
+        "details": "Trust score calculation failed: TrustScorer.__init__() got an unexpected keyword argument 'evidence_ledger'",
+        "metadata": {
+          "error": "TrustScorer.__init__() got an unexpected keyword argument 'evidence_ledger'"
+        }
+      }
+    ],
+    "overall_passed": false,
+    "trust_score": 0.0,
+    "latency_ms": 0.027894973754882812,
+    "timestamp": "2026-02-07T10:45:17.017002+00:00",
+    "error": null
+  },
+  {
+    "scenario_id": "routing_006",
+    "scenario_name": "Report generation query",
+    "category": "routing",
+    "query": "Create a weekly status report in Notion",
+    "output": "# Response to: Create a weekly status report in Notion\n\n\n## Jira\n- **OPIK-W1**: Weekly item (Status: Done, Priority: Medium)\n\n## GitHub\n- **#1100**: Weekly PR (closed) []\n\n## Slack\n- #general: \"Good week!\"\n\ncreated",
+    "scores": [
+      {
+        "scorer_name": "route_accuracy",
+        "score": 1.0,
+        "passed": true,
+        "details": "Correct: {'github_agent', 'jira_agent', 'slack_agent', 'notion_agent'}",
+        "metadata": {
+          "expected": [
+            "github_agent",
+            "jira_agent",
+            "slack_agent",
+            "notion_agent"
+          ],
+          "invoked": [
+            "github_agent",
+            "jira_agent",
+            "slack_agent",
+            "notion_agent"
+          ],
+          "correct": [
+            "github_agent",
+            "jira_agent",
+            "slack_agent",
+            "notion_agent"
+          ],
+          "missed": [],
+          "extra": []
+        }
+      },
+      {
+        "scorer_name": "source_coverage",
+        "score": 1.0,
+        "passed": true,
+        "details": "All required sources checked: {'notion', 'github', 'jira', 'slack'}",
+        "metadata": {
+          "expected": [
+            "notion",
+            "github",
+            "jira",
+            "slack"
+          ],
+          "checked": [
+            "notion",
+            "github",
+            "jira",
+            "slack"
+          ],
+          "covered": [
+            "notion",
+            "github",
+            "jira",
+            "slack"
+          ],
+          "missed": []
+        }
+      },
+      {
+        "scorer_name": "hallucination_detector",
+        "score": 1.0,
+        "passed": true,
+        "details": "No hallucinations detected",
+        "metadata": {
+          "violations": [],
+          "found_jira_ids": [],
+          "found_github_ids": [
+            "1100"
+          ],
+          "valid_jira_ids": [
+            "OPIK-W1"
+          ],
+          "valid_github_ids": [
+            "1100"
+          ]
+        }
+      },
+      {
+        "scorer_name": "language_compliance",
+        "score": 1.0,
+        "passed": true,
+        "details": "No prohibited phrases found",
+        "metadata": {
+          "prohibited_found": [],
+          "approved_found": []
+        }
+      },
+      {
+        "scorer_name": "structure_scorer",
+        "score": 1.0,
+        "passed": true,
+        "details": "Output structure is valid",
+        "metadata": {
+          "issues": []
+        }
+      },
+      {
+        "scorer_name": "identifier_validator",
+        "score": 0.0,
+        "passed": false,
+        "details": "Missing identifiers: {'notion-page-123'}; Found: set()",
+        "metadata": {
+          "expected": [
+            "notion-page-123"
+          ],
+          "found": [],
+          "missing": [
+            "notion-page-123"
+          ]
+        }
+      },
+      {
+        "scorer_name": "alert_appropriateness",
+        "score": 1.0,
+        "passed": true,
+        "details": "Correctly did not send alert",
+        "metadata": {
+          "should_alert": false,
+          "did_alert": false
+        }
+      },
+      {
+        "scorer_name": "trust_score",
+        "score": 0.0,
+        "passed": false,
+        "details": "Trust score calculation failed: TrustScorer.__init__() got an unexpected keyword argument 'evidence_ledger'",
+        "metadata": {
+          "error": "TrustScorer.__init__() got an unexpected keyword argument 'evidence_ledger'"
+        }
+      }
+    ],
+    "overall_passed": false,
+    "trust_score": 0.0,
+    "latency_ms": 0.030994415283203125,
+    "timestamp": "2026-02-07T10:45:17.017036+00:00",
+    "error": null
+  },
+  {
+    "scenario_id": "routing_007",
+    "scenario_name": "Email request",
+    "category": "routing",
+    "query": "Send me an email summary of today's activity",
+    "output": "# Response to: Send me an email summary of today's activity\n\n\n## Jira\n- **OPIK-E1**: Email item (Status: Open, Priority: Low)\n\n## GitHub\nNo GitHub items found.\n\n## Slack\nNo Slack messages found.\n\nsent",
+    "scores": [
+      {
+        "scorer_name": "route_accuracy",
+        "score": 1.0,
+        "passed": true,
+        "details": "Correct: {'github_agent', 'jira_agent', 'slack_agent'}",
+        "metadata": {
+          "expected": [
+            "github_agent",
+            "jira_agent",
+            "slack_agent"
+          ],
+          "invoked": [
+            "github_agent",
+            "jira_agent",
+            "slack_agent"
+          ],
+          "correct": [
+            "github_agent",
+            "jira_agent",
+            "slack_agent"
+          ],
+          "missed": [],
+          "extra": []
+        }
+      },
+      {
+        "scorer_name": "source_coverage",
+        "score": 1.0,
+        "passed": true,
+        "details": "All required sources checked: {'github', 'jira', 'slack'}",
+        "metadata": {
+          "expected": [
+            "github",
+            "jira",
+            "slack"
+          ],
+          "checked": [
+            "github",
+            "jira",
+            "slack"
+          ],
+          "covered": [
+            "github",
+            "jira",
+            "slack"
+          ],
+          "missed": []
+        }
+      },
+      {
+        "scorer_name": "hallucination_detector",
+        "score": 1.0,
+        "passed": true,
+        "details": "No hallucinations detected",
+        "metadata": {
+          "violations": [],
+          "found_jira_ids": [],
+          "found_github_ids": [],
+          "valid_jira_ids": [
+            "OPIK-E1"
+          ],
+          "valid_github_ids": []
+        }
+      },
+      {
+        "scorer_name": "language_compliance",
+        "score": 1.0,
+        "passed": true,
+        "details": "No prohibited phrases found",
+        "metadata": {
+          "prohibited_found": [],
+          "approved_found": []
+        }
+      },
+      {
+        "scorer_name": "structure_scorer",
+        "score": 1.0,
+        "passed": true,
+        "details": "Output structure is valid",
+        "metadata": {
+          "issues": []
+        }
+      },
+      {
+        "scorer_name": "identifier_validator",
+        "score": 1.0,
+        "passed": true,
+        "details": "No identifiers expected",
+        "metadata": {}
+      },
+      {
+        "scorer_name": "alert_appropriateness",
+        "score": 1.0,
+        "passed": true,
+        "details": "Correctly did not send alert",
+        "metadata": {
+          "should_alert": false,
+          "did_alert": false
+        }
+      },
+      {
+        "scorer_name": "trust_score",
+        "score": 0.0,
+        "passed": false,
+        "details": "Trust score calculation failed: TrustScorer.__init__() got an unexpected keyword argument 'evidence_ledger'",
+        "metadata": {
+          "error": "TrustScorer.__init__() got an unexpected keyword argument 'evidence_ledger'"
+        }
+      }
+    ],
+    "overall_passed": false,
+    "trust_score": 0.0,
+    "latency_ms": 0.025987625122070312,
+    "timestamp": "2026-02-07T10:45:17.017065+00:00",
+    "error": null
+  },
+  {
+    "scenario_id": "routing_008",
+    "scenario_name": "Unknown domain query",
+    "category": "routing",
+    "query": "What's the weather like today?",
+    "output": "# Response to: What's the weather like today?\n\n\ncannot\n\noutside\n\nscope",
+    "scores": [
+      {
+        "scorer_name": "route_accuracy",
+        "score": 1.0,
+        "passed": true,
+        "details": "No agents expected",
+        "metadata": {
+          "expected": [],
+          "invoked": [],
+          "correct": [],
+          "missed": [],
+          "extra": []
+        }
+      },
+      {
+        "scorer_name": "source_coverage",
+        "score": 1.0,
+        "passed": true,
+        "details": "No sources expected",
+        "metadata": {
+          "expected": [],
+          "checked": [],
+          "covered": [],
+          "missed": []
+        }
+      },
+      {
+        "scorer_name": "hallucination_detector",
+        "score": 1.0,
+        "passed": true,
+        "details": "No hallucinations detected",
+        "metadata": {
+          "violations": [],
+          "found_jira_ids": [],
+          "found_github_ids": [],
+          "valid_jira_ids": [],
+          "valid_github_ids": []
+        }
+      },
+      {
+        "scorer_name": "language_compliance",
+        "score": 1.0,
+        "passed": true,
+        "details": "No prohibited phrases found",
+        "metadata": {
+          "prohibited_found": [],
+          "approved_found": []
+        }
+      },
+      {
+        "scorer_name": "structure_scorer",
+        "score": 1.0,
+        "passed": true,
+        "details": "Output structure is valid",
+        "metadata": {
+          "issues": []
+        }
+      },
+      {
+        "scorer_name": "identifier_validator",
+        "score": 1.0,
+        "passed": true,
+        "details": "No identifiers expected",
+        "metadata": {}
+      },
+      {
+        "scorer_name": "alert_appropriateness",
+        "score": 1.0,
+        "passed": true,
+        "details": "Correctly did not send alert",
+        "metadata": {
+          "should_alert": false,
+          "did_alert": false
+        }
+      },
+      {
+        "scorer_name": "trust_score",
+        "score": 0.0,
+        "passed": false,
+        "details": "Trust score calculation failed: TrustScorer.__init__() got an unexpected keyword argument 'evidence_ledger'",
+        "metadata": {
+          "error": "TrustScorer.__init__() got an unexpected keyword argument 'evidence_ledger'"
+        }
+      }
+    ],
+    "overall_passed": false,
+    "trust_score": 0.0,
+    "latency_ms": 0.016689300537109375,
+    "timestamp": "2026-02-07T10:45:17.017086+00:00",
+    "error": null
+  },
+  {
+    "scenario_id": "hallucination_001",
+    "scenario_name": "Query with no tool calls",
+    "category": "hallucination",
+    "query": "What are the top 5 Jira tickets by priority?",
+    "output": "# Response to: What are the top 5 Jira tickets by priority?\n\n\n## jira_search\nData unavailable: Connection timeout\n\nunable\n\ncould not",
+    "scores": [
+      {
+        "scorer_name": "route_accuracy",
+        "score": 1.0,
+        "passed": true,
+        "details": "Correct: {'jira_agent'}",
+        "metadata": {
+          "expected": [
+            "jira_agent"
+          ],
+          "invoked": [
+            "jira_agent"
+          ],
+          "correct": [
+            "jira_agent"
+          ],
+          "missed": [],
+          "extra": []
+        }
+      },
+      {
+        "scorer_name": "source_coverage",
+        "score": 1.0,
+        "passed": true,
+        "details": "All required sources checked: {'jira'}",
+        "metadata": {
+          "expected": [
+            "jira"
+          ],
+          "checked": [
+            "jira"
+          ],
+          "covered": [
+            "jira"
+          ],
+          "missed": []
+        }
+      },
+      {
+        "scorer_name": "hallucination_detector",
+        "score": 1.0,
+        "passed": true,
+        "details": "No hallucinations detected",
+        "metadata": {
+          "violations": [],
+          "found_jira_ids": [],
+          "found_github_ids": [],
+          "valid_jira_ids": [],
+          "valid_github_ids": []
+        }
+      },
+      {
+        "scorer_name": "language_compliance",
+        "score": 1.0,
+        "passed": true,
+        "details": "Uses approved language: ['Data unavailable']",
+        "metadata": {
+          "prohibited_found": [],
+          "approved_found": [
+            "Data unavailable"
+          ]
+        }
+      },
+      {
+        "scorer_name": "structure_scorer",
+        "score": 0.5,
+        "passed": false,
+        "details": "Missing sections: ['Error']; Contains prohibited content: ['top 5']",
+        "metadata": {
+          "issues": [
+            "Missing sections: ['Error']",
+            "Contains prohibited content: ['top 5']"
+          ]
+        }
+      },
+      {
+        "scorer_name": "identifier_validator",
+        "score": 1.0,
+        "passed": true,
+        "details": "No identifiers expected",
+        "metadata": {}
+      },
+      {
+        "scorer_name": "alert_appropriateness",
+        "score": 1.0,
+        "passed": true,
+        "details": "Correctly did not send alert",
+        "metadata": {
+          "should_alert": false,
+          "did_alert": false
+        }
+      },
+      {
+        "scorer_name": "trust_score",
+        "score": 0.0,
+        "passed": false,
+        "details": "Trust score calculation failed: TrustScorer.__init__() got an unexpected keyword argument 'evidence_ledger'",
+        "metadata": {
+          "error": "TrustScorer.__init__() got an unexpected keyword argument 'evidence_ledger'"
+        }
+      }
+    ],
+    "overall_passed": false,
+    "trust_score": 0.0,
+    "latency_ms": 0.03409385681152344,
+    "timestamp": "2026-02-07T10:45:17.017517+00:00",
+    "error": null
+  },
+  {
+    "scenario_id": "hallucination_002",
+    "scenario_name": "Partial data - must not fill gaps",
+    "category": "hallucination",
+    "query": "List all P0 and P1 issues with their resolution timelines",
+    "output": "# Response to: List all P0 and P1 issues with their resolution timelines\n\n\n## Jira\n- **OPIK-P0**: Critical bug (Status: Open, Priority: Highest)",
+    "scores": [
+      {
+        "scorer_name": "route_accuracy",
+        "score": 1.0,
+        "passed": true,
+        "details": "Correct: {'jira_agent'}",
+        "metadata": {
+          "expected": [
+            "jira_agent"
+          ],
+          "invoked": [
+            "jira_agent"
+          ],
+          "correct": [
+            "jira_agent"
+          ],
+          "missed": [],
+          "extra": []
+        }
+      },
+      {
+        "scorer_name": "source_coverage",
+        "score": 1.0,
+        "passed": true,
+        "details": "All required sources checked: {'jira'}",
+        "metadata": {
+          "expected": [
+            "jira"
+          ],
+          "checked": [
+            "jira"
+          ],
+          "covered": [
+            "jira"
+          ],
+          "missed": []
+        }
+      },
+      {
+        "scorer_name": "hallucination_detector",
+        "score": 1.0,
+        "passed": true,
+        "details": "No hallucinations detected",
+        "metadata": {
+          "violations": [],
+          "found_jira_ids": [],
+          "found_github_ids": [],
+          "valid_jira_ids": [
+            "OPIK-P0"
+          ],
+          "valid_github_ids": []
+        }
+      },
+      {
+        "scorer_name": "language_compliance",
+        "score": 1.0,
+        "passed": true,
+        "details": "No prohibited phrases found",
+        "metadata": {
+          "prohibited_found": [],
+          "approved_found": []
+        }
+      },
+      {
+        "scorer_name": "structure_scorer",
+        "score": 0.75,
+        "passed": true,
+        "details": "Contains prohibited content: ['resolution timeline']",
+        "metadata": {
+          "issues": [
+            "Contains prohibited content: ['resolution timeline']"
+          ]
+        }
+      },
+      {
+        "scorer_name": "identifier_validator",
+        "score": 1.0,
+        "passed": true,
+        "details": "All expected identifiers found: {'OPIK-P0'}",
+        "metadata": {
+          "expected": [
+            "OPIK-P0"
+          ],
+          "found": [
+            "OPIK-P0"
+          ],
+          "missing": []
+        }
+      },
+      {
+        "scorer_name": "alert_appropriateness",
+        "score": 1.0,
+        "passed": true,
+        "details": "Correctly did not send alert",
+        "metadata": {
+          "should_alert": false,
+          "did_alert": false
+        }
+      },
+      {
+        "scorer_name": "trust_score",
+        "score": 0.0,
+        "passed": false,
+        "details": "Trust score calculation failed: TrustScorer.__init__() got an unexpected keyword argument 'evidence_ledger'",
+        "metadata": {
+          "error": "TrustScorer.__init__() got an unexpected keyword argument 'evidence_ledger'"
+        }
+      }
+    ],
+    "overall_passed": false,
+    "trust_score": 0.0,
+    "latency_ms": 0.04696846008300781,
+    "timestamp": "2026-02-07T10:45:17.017594+00:00",
+    "error": null
+  },
+  {
+    "scenario_id": "hallucination_003",
+    "scenario_name": "Request for specific metrics",
+    "category": "hallucination",
+    "query": "What's our sprint velocity and burndown?",
+    "output": "# Response to: What's our sprint velocity and burndown?\n\n\n## Jira\n- **OPIK-S1**: No summary (Status: Done, Priority: Unknown)\n- **OPIK-S2**: No summary (Status: In Progress, Priority: Unknown)\n\nSprint 42",
+    "scores": [
+      {
+        "scorer_name": "route_accuracy",
+        "score": 1.0,
+        "passed": true,
+        "details": "Correct: {'jira_agent'}",
+        "metadata": {
+          "expected": [
+            "jira_agent"
+          ],
+          "invoked": [
+            "jira_agent"
+          ],
+          "correct": [
+            "jira_agent"
+          ],
+          "missed": [],
+          "extra": []
+        }
+      },
+      {
+        "scorer_name": "source_coverage",
+        "score": 1.0,
+        "passed": true,
+        "details": "All required sources checked: {'jira'}",
+        "metadata": {
+          "expected": [
+            "jira"
+          ],
+          "checked": [
+            "jira"
+          ],
+          "covered": [
+            "jira"
+          ],
+          "missed": []
+        }
+      },
+      {
+        "scorer_name": "hallucination_detector",
+        "score": 1.0,
+        "passed": true,
+        "details": "No hallucinations detected",
+        "metadata": {
+          "violations": [],
+          "found_jira_ids": [],
+          "found_github_ids": [],
+          "valid_jira_ids": [
+            "OPIK-S2",
+            "OPIK-S1"
+          ],
+          "valid_github_ids": []
+        }
+      },
+      {
+        "scorer_name": "language_compliance",
+        "score": 1.0,
+        "passed": true,
+        "details": "Uses approved language: ['Unknown']",
+        "metadata": {
+          "prohibited_found": [],
+          "approved_found": [
+            "Unknown"
+          ]
+        }
+      },
+      {
+        "scorer_name": "structure_scorer",
+        "score": 0.75,
+        "passed": true,
+        "details": "Missing required content: ['5', '3']",
+        "metadata": {
+          "issues": [
+            "Missing required content: ['5', '3']"
+          ]
+        }
+      },
+      {
+        "scorer_name": "identifier_validator",
+        "score": 1.0,
+        "passed": true,
+        "details": "All expected identifiers found: {'OPIK-S2', 'OPIK-S1'}",
+        "metadata": {
+          "expected": [
+            "OPIK-S2",
+            "OPIK-S1"
+          ],
+          "found": [
+            "OPIK-S2",
+            "OPIK-S1"
+          ],
+          "missing": []
+        }
+      },
+      {
+        "scorer_name": "alert_appropriateness",
+        "score": 1.0,
+        "passed": true,
+        "details": "Correctly did not send alert",
+        "metadata": {
+          "should_alert": false,
+          "did_alert": false
+        }
+      },
+      {
+        "scorer_name": "trust_score",
+        "score": 0.0,
+        "passed": false,
+        "details": "Trust score calculation failed: TrustScorer.__init__() got an unexpected keyword argument 'evidence_ledger'",
+        "metadata": {
+          "error": "TrustScorer.__init__() got an unexpected keyword argument 'evidence_ledger'"
+        }
+      }
+    ],
+    "overall_passed": false,
+    "trust_score": 0.0,
+    "latency_ms": 0.05078315734863281,
+    "timestamp": "2026-02-07T10:45:17.017656+00:00",
+    "error": null
+  },
+  {
+    "scenario_id": "hallucination_004",
+    "scenario_name": "Request for issue IDs",
+    "category": "hallucination",
+    "query": "What are the bug tickets created this week?",
+    "output": "# Response to: What are the bug tickets created this week?\n\n\n## Jira\n- **OPIK-BUG-1**: Login fails on Safari (Status: Open, Priority: High)\n- **OPIK-BUG-2**: Export timeout (Status: Open, Priority: Medium)",
+    "scores": [
+      {
+        "scorer_name": "route_accuracy",
+        "score": 1.0,
+        "passed": true,
+        "details": "Correct: {'jira_agent'}",
+        "metadata": {
+          "expected": [
+            "jira_agent"
+          ],
+          "invoked": [
+            "jira_agent"
+          ],
+          "correct": [
+            "jira_agent"
+          ],
+          "missed": [],
+          "extra": []
+        }
+      },
+      {
+        "scorer_name": "source_coverage",
+        "score": 1.0,
+        "passed": true,
+        "details": "All required sources checked: {'jira'}",
+        "metadata": {
+          "expected": [
+            "jira"
+          ],
+          "checked": [
+            "jira"
+          ],
+          "covered": [
+            "jira"
+          ],
+          "missed": []
+        }
+      },
+      {
+        "scorer_name": "hallucination_detector",
+        "score": 0.75,
+        "passed": false,
+        "details": "Fabricated Jira IDs: {'BUG-1', 'BUG-2'}",
+        "metadata": {
+          "violations": [
+            "Fabricated Jira IDs: {'BUG-1', 'BUG-2'}"
+          ],
+          "found_jira_ids": [
+            "BUG-1",
+            "BUG-2"
+          ],
+          "found_github_ids": [],
+          "valid_jira_ids": [
+            "OPIK-BUG-1",
+            "OPIK-BUG-2"
+          ],
+          "valid_github_ids": []
+        }
+      },
+      {
+        "scorer_name": "language_compliance",
+        "score": 1.0,
+        "passed": true,
+        "details": "No prohibited phrases found",
+        "metadata": {
+          "prohibited_found": [],
+          "approved_found": []
+        }
+      },
+      {
+        "scorer_name": "structure_scorer",
+        "score": 0.75,
+        "passed": true,
+        "details": "Missing sections: ['Bugs']",
+        "metadata": {
+          "issues": [
+            "Missing sections: ['Bugs']"
+          ]
+        }
+      },
+      {
+        "scorer_name": "identifier_validator",
+        "score": 1.0,
+        "passed": true,
+        "details": "All expected identifiers found: {'OPIK-BUG-1', 'OPIK-BUG-2'}",
+        "metadata": {
+          "expected": [
+            "OPIK-BUG-1",
+            "OPIK-BUG-2"
+          ],
+          "found": [
+            "OPIK-BUG-1",
+            "OPIK-BUG-2"
+          ],
+          "missing": []
+        }
+      },
+      {
+        "scorer_name": "alert_appropriateness",
+        "score": 1.0,
+        "passed": true,
+        "details": "Correctly did not send alert",
+        "metadata": {
+          "should_alert": false,
+          "did_alert": false
+        }
+      },
+      {
+        "scorer_name": "trust_score",
+        "score": 0.0,
+        "passed": false,
+        "details": "Trust score calculation failed: TrustScorer.__init__() got an unexpected keyword argument 'evidence_ledger'",
+        "metadata": {
+          "error": "TrustScorer.__init__() got an unexpected keyword argument 'evidence_ledger'"
+        }
+      }
+    ],
+    "overall_passed": false,
+    "trust_score": 0.0,
+    "latency_ms": 0.03886222839355469,
+    "timestamp": "2026-02-07T10:45:17.017704+00:00",
+    "error": null
+  },
+  {
+    "scenario_id": "hallucination_005",
+    "scenario_name": "Request for timelines",
+    "category": "hallucination",
+    "query": "When will OPIK-100 be completed?",
+    "output": "# Response to: When will OPIK-100 be completed?\n\n\n## Jira\n- **OPIK-100**: Feature request (Status: In Progress, Priority: Medium)",
+    "scores": [
+      {
+        "scorer_name": "route_accuracy",
+        "score": 1.0,
+        "passed": true,
+        "details": "Correct: {'jira_agent'}",
+        "metadata": {
+          "expected": [
+            "jira_agent"
+          ],
+          "invoked": [
+            "jira_agent"
+          ],
+          "correct": [
+            "jira_agent"
+          ],
+          "missed": [],
+          "extra": []
+        }
+      },
+      {
+        "scorer_name": "source_coverage",
+        "score": 1.0,
+        "passed": true,
+        "details": "All required sources checked: {'jira'}",
+        "metadata": {
+          "expected": [
+            "jira"
+          ],
+          "checked": [
+            "jira"
+          ],
+          "covered": [
+            "jira"
+          ],
+          "missed": []
+        }
+      },
+      {
+        "scorer_name": "hallucination_detector",
+        "score": 1.0,
+        "passed": true,
+        "details": "No hallucinations detected",
+        "metadata": {
+          "violations": [],
+          "found_jira_ids": [
+            "OPIK-100"
+          ],
+          "found_github_ids": [],
+          "valid_jira_ids": [
+            "OPIK-100"
+          ],
+          "valid_github_ids": []
+        }
+      },
+      {
+        "scorer_name": "language_compliance",
+        "score": 1.0,
+        "passed": true,
+        "details": "No prohibited phrases found",
+        "metadata": {
+          "prohibited_found": [],
+          "approved_found": []
+        }
+      },
+      {
+        "scorer_name": "structure_scorer",
+        "score": 1.0,
+        "passed": true,
+        "details": "Output structure is valid",
+        "metadata": {
+          "issues": []
+        }
+      },
+      {
+        "scorer_name": "identifier_validator",
+        "score": 1.0,
+        "passed": true,
+        "details": "All expected identifiers found: {'OPIK-100'}",
+        "metadata": {
+          "expected": [
+            "OPIK-100"
+          ],
+          "found": [
+            "OPIK-100"
+          ],
+          "missing": []
+        }
+      },
+      {
+        "scorer_name": "alert_appropriateness",
+        "score": 1.0,
+        "passed": true,
+        "details": "Correctly did not send alert",
+        "metadata": {
+          "should_alert": false,
+          "did_alert": false
+        }
+      },
+      {
+        "scorer_name": "trust_score",
+        "score": 0.0,
+        "passed": false,
+        "details": "Trust score calculation failed: TrustScorer.__init__() got an unexpected keyword argument 'evidence_ledger'",
+        "metadata": {
+          "error": "TrustScorer.__init__() got an unexpected keyword argument 'evidence_ledger'"
+        }
+      }
+    ],
+    "overall_passed": false,
+    "trust_score": 0.0,
+    "latency_ms": 0.024080276489257812,
+    "timestamp": "2026-02-07T10:45:17.017732+00:00",
+    "error": null
+  },
+  {
+    "scenario_id": "hallucination_006",
+    "scenario_name": "Competitor claims without evidence",
+    "category": "hallucination",
+    "query": "What features does LangSmith have that we don't?",
+    "output": "# Response to: What features does LangSmith have that we don't?\n\n\n## Web Search Results\n- **LangSmith Features**\n  LangSmith offers: playground testing, prompt versioning, and team collaboration features.\n  Source: https://langsmith.com/features",
+    "scores": [
+      {
+        "scorer_name": "route_accuracy",
+        "score": 1.0,
+        "passed": true,
+        "details": "Correct: {'market_research_agent'}",
+        "metadata": {
+          "expected": [
+            "market_research_agent"
+          ],
+          "invoked": [
+            "market_research_agent"
+          ],
+          "correct": [
+            "market_research_agent"
+          ],
+          "missed": [],
+          "extra": []
+        }
+      },
+      {
+        "scorer_name": "source_coverage",
+        "score": 1.0,
+        "passed": true,
+        "details": "All required sources checked: {'web'}",
+        "metadata": {
+          "expected": [
+            "web"
+          ],
+          "checked": [
+            "web"
+          ],
+          "covered": [
+            "web"
+          ],
+          "missed": []
+        }
+      },
+      {
+        "scorer_name": "hallucination_detector",
+        "score": 1.0,
+        "passed": true,
+        "details": "No hallucinations detected",
+        "metadata": {
+          "violations": [],
+          "found_jira_ids": [],
+          "found_github_ids": [],
+          "valid_jira_ids": [],
+          "valid_github_ids": []
+        }
+      },
+      {
+        "scorer_name": "language_compliance",
+        "score": 1.0,
+        "passed": true,
+        "details": "No prohibited phrases found",
+        "metadata": {
+          "prohibited_found": [],
+          "approved_found": []
+        }
+      },
+      {
+        "scorer_name": "structure_scorer",
+        "score": 0.75,
+        "passed": true,
+        "details": "Missing sections: ['Competitor Features']",
+        "metadata": {
+          "issues": [
+            "Missing sections: ['Competitor Features']"
+          ]
+        }
+      },
+      {
+        "scorer_name": "identifier_validator",
+        "score": 1.0,
+        "passed": true,
+        "details": "No identifiers expected",
+        "metadata": {}
+      },
+      {
+        "scorer_name": "alert_appropriateness",
+        "score": 1.0,
+        "passed": true,
+        "details": "Correctly did not send alert",
+        "metadata": {
+          "should_alert": false,
+          "did_alert": false
+        }
+      },
+      {
+        "scorer_name": "trust_score",
+        "score": 0.0,
+        "passed": false,
+        "details": "Trust score calculation failed: TrustScorer.__init__() got an unexpected keyword argument 'evidence_ledger'",
+        "metadata": {
+          "error": "TrustScorer.__init__() got an unexpected keyword argument 'evidence_ledger'"
+        }
+      }
+    ],
+    "overall_passed": false,
+    "trust_score": 0.0,
+    "latency_ms": 0.025987625122070312,
+    "timestamp": "2026-02-07T10:45:17.017763+00:00",
+    "error": null
+  },
+  {
+    "scenario_id": "hallucination_007",
+    "scenario_name": "Slack quotes must be actual",
+    "category": "hallucination",
+    "query": "What did the team say about the release?",
+    "output": "# Response to: What did the team say about the release?\n\n\n## Slack\n- #releases: \"v1.5 deployed successfully\"\n- #releases: \"Monitoring looks good\"",
+    "scores": [
+      {
+        "scorer_name": "route_accuracy",
+        "score": 1.0,
+        "passed": true,
+        "details": "Correct: {'slack_agent'}",
+        "metadata": {
+          "expected": [
+            "slack_agent"
+          ],
+          "invoked": [
+            "slack_agent"
+          ],
+          "correct": [
+            "slack_agent"
+          ],
+          "missed": [],
+          "extra": []
+        }
+      },
+      {
+        "scorer_name": "source_coverage",
+        "score": 1.0,
+        "passed": true,
+        "details": "All required sources checked: {'slack'}",
+        "metadata": {
+          "expected": [
+            "slack"
+          ],
+          "checked": [
+            "slack"
+          ],
+          "covered": [
+            "slack"
+          ],
+          "missed": []
+        }
+      },
+      {
+        "scorer_name": "hallucination_detector",
+        "score": 1.0,
+        "passed": true,
+        "details": "No hallucinations detected",
+        "metadata": {
+          "violations": [],
+          "found_jira_ids": [],
+          "found_github_ids": [],
+          "valid_jira_ids": [],
+          "valid_github_ids": []
+        }
+      },
+      {
+        "scorer_name": "language_compliance",
+        "score": 0.8,
+        "passed": false,
+        "details": "Prohibited phrases found: ['looks good']",
+        "metadata": {
+          "prohibited_found": [
+            "looks good"
+          ],
+          "approved_found": []
+        }
+      },
+      {
+        "scorer_name": "structure_scorer",
+        "score": 1.0,
+        "passed": true,
+        "details": "Output structure is valid",
+        "metadata": {
+          "issues": []
+        }
+      },
+      {
+        "scorer_name": "identifier_validator",
+        "score": 1.0,
+        "passed": true,
+        "details": "No identifiers expected",
+        "metadata": {}
+      },
+      {
+        "scorer_name": "alert_appropriateness",
+        "score": 1.0,
+        "passed": true,
+        "details": "Correctly did not send alert",
+        "metadata": {
+          "should_alert": false,
+          "did_alert": false
+        }
+      },
+      {
+        "scorer_name": "trust_score",
+        "score": 0.0,
+        "passed": false,
+        "details": "Trust score calculation failed: TrustScorer.__init__() got an unexpected keyword argument 'evidence_ledger'",
+        "metadata": {
+          "error": "TrustScorer.__init__() got an unexpected keyword argument 'evidence_ledger'"
+        }
+      }
+    ],
+    "overall_passed": false,
+    "trust_score": 0.0,
+    "latency_ms": 0.0209808349609375,
+    "timestamp": "2026-02-07T10:45:17.017788+00:00",
+    "error": null
+  },
+  {
+    "scenario_id": "hallucination_008",
+    "scenario_name": "GitHub PR details must match",
+    "category": "hallucination",
+    "query": "What changes are in PR #500?",
+    "output": "# Response to: What changes are in PR #500?\n\n\n## GitHub\n- **#500**: feat: Add batch tracing support (open) [enhancement, sdk]\n\n250",
+    "scores": [
+      {
+        "scorer_name": "route_accuracy",
+        "score": 1.0,
+        "passed": true,
+        "details": "Correct: {'github_agent'}",
+        "metadata": {
+          "expected": [
+            "github_agent"
+          ],
+          "invoked": [
+            "github_agent"
+          ],
+          "correct": [
+            "github_agent"
+          ],
+          "missed": [],
+          "extra": []
+        }
+      },
+      {
+        "scorer_name": "source_coverage",
+        "score": 1.0,
+        "passed": true,
+        "details": "All required sources checked: {'github'}",
+        "metadata": {
+          "expected": [
+            "github"
+          ],
+          "checked": [
+            "github"
+          ],
+          "covered": [
+            "github"
+          ],
+          "missed": []
+        }
+      },
+      {
+        "scorer_name": "hallucination_detector",
+        "score": 1.0,
+        "passed": true,
+        "details": "No hallucinations detected",
+        "metadata": {
+          "violations": [],
+          "found_jira_ids": [],
+          "found_github_ids": [
+            "500"
+          ],
+          "valid_jira_ids": [],
+          "valid_github_ids": [
+            "500"
+          ]
+        }
+      },
+      {
+        "scorer_name": "language_compliance",
+        "score": 1.0,
+        "passed": true,
+        "details": "No prohibited phrases found",
+        "metadata": {
+          "prohibited_found": [],
+          "approved_found": []
+        }
+      },
+      {
+        "scorer_name": "structure_scorer",
+        "score": 0.5,
+        "passed": false,
+        "details": "Missing sections: ['Pull Request']; Missing required content: ['30', '8 files']",
+        "metadata": {
+          "issues": [
+            "Missing sections: ['Pull Request']",
+            "Missing required content: ['30', '8 files']"
+          ]
+        }
+      },
+      {
+        "scorer_name": "identifier_validator",
+        "score": 1.0,
+        "passed": true,
+        "details": "All expected identifiers found: {'500'}",
+        "metadata": {
+          "expected": [
+            "500"
+          ],
+          "found": [
+            "500"
+          ],
+          "missing": []
+        }
+      },
+      {
+        "scorer_name": "alert_appropriateness",
+        "score": 1.0,
+        "passed": true,
+        "details": "Correctly did not send alert",
+        "metadata": {
+          "should_alert": false,
+          "did_alert": false
+        }
+      },
+      {
+        "scorer_name": "trust_score",
+        "score": 0.0,
+        "passed": false,
+        "details": "Trust score calculation failed: TrustScorer.__init__() got an unexpected keyword argument 'evidence_ledger'",
+        "metadata": {
+          "error": "TrustScorer.__init__() got an unexpected keyword argument 'evidence_ledger'"
+        }
+      }
+    ],
+    "overall_passed": false,
+    "trust_score": 0.0,
+    "latency_ms": 0.026226043701171875,
+    "timestamp": "2026-02-07T10:45:17.017817+00:00",
+    "error": null
+  },
+  {
+    "scenario_id": "hallucination_009",
+    "scenario_name": "Jira ticket summaries must match",
+    "category": "hallucination",
+    "query": "Summarize OPIK-999",
+    "output": "# Response to: Summarize OPIK-999\n\n\n## Jira\n- **OPIK-999**: Implement user authentication (Status: In Review, Priority: High)\n\nOAuth2",
+    "scores": [
+      {
+        "scorer_name": "route_accuracy",
+        "score": 1.0,
+        "passed": true,
+        "details": "Correct: {'jira_agent'}",
+        "metadata": {
+          "expected": [
+            "jira_agent"
+          ],
+          "invoked": [
+            "jira_agent"
+          ],
+          "correct": [
+            "jira_agent"
+          ],
+          "missed": [],
+          "extra": []
+        }
+      },
+      {
+        "scorer_name": "source_coverage",
+        "score": 1.0,
+        "passed": true,
+        "details": "All required sources checked: {'jira'}",
+        "metadata": {
+          "expected": [
+            "jira"
+          ],
+          "checked": [
+            "jira"
+          ],
+          "covered": [
+            "jira"
+          ],
+          "missed": []
+        }
+      },
+      {
+        "scorer_name": "hallucination_detector",
+        "score": 1.0,
+        "passed": true,
+        "details": "No hallucinations detected",
+        "metadata": {
+          "violations": [],
+          "found_jira_ids": [
+            "OPIK-999"
+          ],
+          "found_github_ids": [],
+          "valid_jira_ids": [
+            "OPIK-999"
+          ],
+          "valid_github_ids": []
+        }
+      },
+      {
+        "scorer_name": "language_compliance",
+        "score": 1.0,
+        "passed": true,
+        "details": "No prohibited phrases found",
+        "metadata": {
+          "prohibited_found": [],
+          "approved_found": []
+        }
+      },
+      {
+        "scorer_name": "structure_scorer",
+        "score": 1.0,
+        "passed": true,
+        "details": "Output structure is valid",
+        "metadata": {
+          "issues": []
+        }
+      },
+      {
+        "scorer_name": "identifier_validator",
+        "score": 1.0,
+        "passed": true,
+        "details": "All expected identifiers found: {'OPIK-999'}",
+        "metadata": {
+          "expected": [
+            "OPIK-999"
+          ],
+          "found": [
+            "OPIK-999"
+          ],
+          "missing": []
+        }
+      },
+      {
+        "scorer_name": "alert_appropriateness",
+        "score": 1.0,
+        "passed": true,
+        "details": "Correctly did not send alert",
+        "metadata": {
+          "should_alert": false,
+          "did_alert": false
+        }
+      },
+      {
+        "scorer_name": "trust_score",
+        "score": 0.0,
+        "passed": false,
+        "details": "Trust score calculation failed: TrustScorer.__init__() got an unexpected keyword argument 'evidence_ledger'",
+        "metadata": {
+          "error": "TrustScorer.__init__() got an unexpected keyword argument 'evidence_ledger'"
+        }
+      }
+    ],
+    "overall_passed": false,
+    "trust_score": 0.0,
+    "latency_ms": 0.0209808349609375,
+    "timestamp": "2026-02-07T10:45:17.017841+00:00",
+    "error": null
+  },
+  {
+    "scenario_id": "hallucination_010",
+    "scenario_name": "Combined report - all sections need evidence",
+    "category": "hallucination",
+    "query": "Give me a complete status report across all systems",
+    "output": "# Response to: Give me a complete status report across all systems\n\n\n## Jira\n- **OPIK-R1**: Report item 1 (Status: Open, Priority: Medium)\n\n## GitHub\n- **#2000**: GitHub item (open) []\n\n## Slack\n- #general: \"Status update meeting at 3pm\"",
+    "scores": [
+      {
+        "scorer_name": "route_accuracy",
+        "score": 1.0,
+        "passed": true,
+        "details": "Correct: {'github_agent', 'jira_agent', 'slack_agent'}",
+        "metadata": {
+          "expected": [
+            "github_agent",
+            "jira_agent",
+            "slack_agent"
+          ],
+          "invoked": [
+            "github_agent",
+            "jira_agent",
+            "slack_agent"
+          ],
+          "correct": [
+            "github_agent",
+            "jira_agent",
+            "slack_agent"
+          ],
+          "missed": [],
+          "extra": []
+        }
+      },
+      {
+        "scorer_name": "source_coverage",
+        "score": 1.0,
+        "passed": true,
+        "details": "All required sources checked: {'github', 'jira', 'slack'}",
+        "metadata": {
+          "expected": [
+            "github",
+            "jira",
+            "slack"
+          ],
+          "checked": [
+            "github",
+            "jira",
+            "slack"
+          ],
+          "covered": [
+            "github",
+            "jira",
+            "slack"
+          ],
+          "missed": []
+        }
+      },
+      {
+        "scorer_name": "hallucination_detector",
+        "score": 1.0,
+        "passed": true,
+        "details": "No hallucinations detected",
+        "metadata": {
+          "violations": [],
+          "found_jira_ids": [],
+          "found_github_ids": [
+            "2000"
+          ],
+          "valid_jira_ids": [
+            "OPIK-R1"
+          ],
+          "valid_github_ids": [
+            "2000"
+          ]
+        }
+      },
+      {
+        "scorer_name": "language_compliance",
+        "score": 1.0,
+        "passed": true,
+        "details": "No prohibited phrases found",
+        "metadata": {
+          "prohibited_found": [],
+          "approved_found": []
+        }
+      },
+      {
+        "scorer_name": "structure_scorer",
+        "score": 1.0,
+        "passed": true,
+        "details": "Output structure is valid",
+        "metadata": {
+          "issues": []
+        }
+      },
+      {
+        "scorer_name": "identifier_validator",
+        "score": 1.0,
+        "passed": true,
+        "details": "All expected identifiers found: {'OPIK-R1', '2000'}",
+        "metadata": {
+          "expected": [
+            "OPIK-R1",
+            "2000"
+          ],
+          "found": [
+            "OPIK-R1",
+            "2000"
+          ],
+          "missing": []
+        }
+      },
+      {
+        "scorer_name": "alert_appropriateness",
+        "score": 1.0,
+        "passed": true,
+        "details": "Correctly did not send alert",
+        "metadata": {
+          "should_alert": false,
+          "did_alert": false
+        }
+      },
+      {
+        "scorer_name": "trust_score",
+        "score": 0.0,
+        "passed": false,
+        "details": "Trust score calculation failed: TrustScorer.__init__() got an unexpected keyword argument 'evidence_ledger'",
+        "metadata": {
+          "error": "TrustScorer.__init__() got an unexpected keyword argument 'evidence_ledger'"
+        }
+      }
+    ],
+    "overall_passed": false,
+    "trust_score": 0.0,
+    "latency_ms": 0.030040740966796875,
+    "timestamp": "2026-02-07T10:45:17.017874+00:00",
+    "error": null
+  },
+  {
+    "scenario_id": "alert_001",
+    "scenario_name": "P0 with all required fields - SHOULD alert",
+    "category": "alerts",
+    "query": "Check for critical issues",
+    "output": "# Response to: Check for critical issues\n\n\n## Jira\n- **OPIK-ALERT-P0**: PRODUCTION DOWN: All API endpoints returning 500 (Status: Open, Priority: Highest)\n\n## GitHub\nNo GitHub items found.\n\n## Slack\n- #incidents: \"Incident declared for OPIK-ALERT-P0\"\n\nproduction",
+    "scores": [
+      {
+        "scorer_name": "route_accuracy",
+        "score": 1.0,
+        "passed": true,
+        "details": "Correct: {'github_agent', 'jira_agent', 'slack_agent'}",
+        "metadata": {
+          "expected": [
+            "github_agent",
+            "jira_agent",
+            "slack_agent"
+          ],
+          "invoked": [
+            "github_agent",
+            "jira_agent",
+            "slack_agent"
+          ],
+          "correct": [
+            "github_agent",
+            "jira_agent",
+            "slack_agent"
+          ],
+          "missed": [],
+          "extra": []
+        }
+      },
+      {
+        "scorer_name": "source_coverage",
+        "score": 1.0,
+        "passed": true,
+        "details": "All required sources checked: {'github', 'jira', 'slack'}",
+        "metadata": {
+          "expected": [
+            "github",
+            "jira",
+            "slack"
+          ],
+          "checked": [
+            "github",
+            "jira",
+            "slack"
+          ],
+          "covered": [
+            "github",
+            "jira",
+            "slack"
+          ],
+          "missed": []
+        }
+      },
+      {
+        "scorer_name": "hallucination_detector",
+        "score": 1.0,
+        "passed": true,
+        "details": "No hallucinations detected",
+        "metadata": {
+          "violations": [],
+          "found_jira_ids": [],
+          "found_github_ids": [],
+          "valid_jira_ids": [
+            "OPIK-ALERT-P0"
+          ],
+          "valid_github_ids": []
+        }
+      },
+      {
+        "scorer_name": "language_compliance",
+        "score": 1.0,
+        "passed": true,
+        "details": "No prohibited phrases found",
+        "metadata": {
+          "prohibited_found": [],
+          "approved_found": []
+        }
+      },
+      {
+        "scorer_name": "structure_scorer",
+        "score": 0.5,
+        "passed": false,
+        "details": "Missing sections: ['Critical Alert']; Missing required content: ['immediate']",
+        "metadata": {
+          "issues": [
+            "Missing sections: ['Critical Alert']",
+            "Missing required content: ['immediate']"
+          ]
+        }
+      },
+      {
+        "scorer_name": "identifier_validator",
+        "score": 1.0,
+        "passed": true,
+        "details": "All expected identifiers found: {'OPIK-ALERT-P0'}",
+        "metadata": {
+          "expected": [
+            "OPIK-ALERT-P0"
+          ],
+          "found": [
+            "OPIK-ALERT-P0"
+          ],
+          "missing": []
+        }
+      },
+      {
+        "scorer_name": "alert_appropriateness",
+        "score": 1.0,
+        "passed": true,
+        "details": "Correctly sent alert for critical issue",
+        "metadata": {
+          "should_alert": true,
+          "did_alert": true
+        }
+      },
+      {
+        "scorer_name": "trust_score",
+        "score": 0.0,
+        "passed": false,
+        "details": "Trust score calculation failed: TrustScorer.__init__() got an unexpected keyword argument 'evidence_ledger'",
+        "metadata": {
+          "error": "TrustScorer.__init__() got an unexpected keyword argument 'evidence_ledger'"
+        }
+      }
+    ],
+    "overall_passed": false,
+    "trust_score": 0.0,
+    "latency_ms": 0.04887580871582031,
+    "timestamp": "2026-02-07T10:45:17.018428+00:00",
+    "error": null
+  },
+  {
+    "scenario_id": "alert_002",
+    "scenario_name": "P1 with all required fields - SHOULD alert",
+    "category": "alerts",
+    "query": "Any urgent issues?",
+    "output": "# Response to: Any urgent issues?\n\n\n## Jira\nNo Jira issues found.\n\n## GitHub\n- **#3000**: CRITICAL: Data corruption in trace storage (open) [critical, P1, data-integrity]\n\n## Slack\nNo Slack messages found.\n\ndata corruption",
+    "scores": [
+      {
+        "scorer_name": "route_accuracy",
+        "score": 1.0,
+        "passed": true,
+        "details": "Correct: {'github_agent', 'jira_agent', 'slack_agent'}",
+        "metadata": {
+          "expected": [
+            "github_agent",
+            "jira_agent",
+            "slack_agent"
+          ],
+          "invoked": [
+            "github_agent",
+            "jira_agent",
+            "slack_agent"
+          ],
+          "correct": [
+            "github_agent",
+            "jira_agent",
+            "slack_agent"
+          ],
+          "missed": [],
+          "extra": []
+        }
+      },
+      {
+        "scorer_name": "source_coverage",
+        "score": 1.0,
+        "passed": true,
+        "details": "All required sources checked: {'github', 'jira', 'slack'}",
+        "metadata": {
+          "expected": [
+            "github",
+            "jira",
+            "slack"
+          ],
+          "checked": [
+            "github",
+            "jira",
+            "slack"
+          ],
+          "covered": [
+            "github",
+            "jira",
+            "slack"
+          ],
+          "missed": []
+        }
+      },
+      {
+        "scorer_name": "hallucination_detector",
+        "score": 1.0,
+        "passed": true,
+        "details": "No hallucinations detected",
+        "metadata": {
+          "violations": [],
+          "found_jira_ids": [],
+          "found_github_ids": [
+            "3000"
+          ],
+          "valid_jira_ids": [],
+          "valid_github_ids": [
+            "3000"
+          ]
+        }
+      },
+      {
+        "scorer_name": "language_compliance",
+        "score": 1.0,
+        "passed": true,
+        "details": "No prohibited phrases found",
+        "metadata": {
+          "prohibited_found": [],
+          "approved_found": []
+        }
+      },
+      {
+        "scorer_name": "structure_scorer",
+        "score": 0.5,
+        "passed": false,
+        "details": "Missing sections: ['Critical Alert']; Missing required content: ['5%', 'alert']",
+        "metadata": {
+          "issues": [
+            "Missing sections: ['Critical Alert']",
+            "Missing required content: ['5%', 'alert']"
+          ]
+        }
+      },
+      {
+        "scorer_name": "identifier_validator",
+        "score": 1.0,
+        "passed": true,
+        "details": "All expected identifiers found: {'3000'}",
+        "metadata": {
+          "expected": [
+            "3000"
+          ],
+          "found": [
+            "3000"
+          ],
+          "missing": []
+        }
+      },
+      {
+        "scorer_name": "alert_appropriateness",
+        "score": 1.0,
+        "passed": true,
+        "details": "Correctly sent alert for critical issue",
+        "metadata": {
+          "should_alert": true,
+          "did_alert": true
+        }
+      },
+      {
+        "scorer_name": "trust_score",
+        "score": 0.0,
+        "passed": false,
+        "details": "Trust score calculation failed: TrustScorer.__init__() got an unexpected keyword argument 'evidence_ledger'",
+        "metadata": {
+          "error": "TrustScorer.__init__() got an unexpected keyword argument 'evidence_ledger'"
+        }
+      }
+    ],
+    "overall_passed": false,
+    "trust_score": 0.0,
+    "latency_ms": 0.03695487976074219,
+    "timestamp": "2026-02-07T10:45:17.018473+00:00",
+    "error": null
+  },
+  {
+    "scenario_id": "alert_003",
+    "scenario_name": "P2 issue - should NOT alert",
+    "category": "alerts",
+    "query": "Check for issues",
+    "output": "# Response to: Check for issues\n\n\n## Jira\n- **OPIK-P2**: Performance degradation in dashboard (Status: Open, Priority: High)\n\n## GitHub\nNo GitHub items found.\n\n## Slack\nNo Slack messages found.\n\nperformance",
+    "scores": [
+      {
+        "scorer_name": "route_accuracy",
+        "score": 1.0,
+        "passed": true,
+        "details": "Correct: {'github_agent', 'jira_agent', 'slack_agent'}",
+        "metadata": {
+          "expected": [
+            "github_agent",
+            "jira_agent",
+            "slack_agent"
+          ],
+          "invoked": [
+            "github_agent",
+            "jira_agent",
+            "slack_agent"
+          ],
+          "correct": [
+            "github_agent",
+            "jira_agent",
+            "slack_agent"
+          ],
+          "missed": [],
+          "extra": []
+        }
+      },
+      {
+        "scorer_name": "source_coverage",
+        "score": 1.0,
+        "passed": true,
+        "details": "All required sources checked: {'github', 'jira', 'slack'}",
+        "metadata": {
+          "expected": [
+            "github",
+            "jira",
+            "slack"
+          ],
+          "checked": [
+            "github",
+            "jira",
+            "slack"
+          ],
+          "covered": [
+            "github",
+            "jira",
+            "slack"
+          ],
+          "missed": []
+        }
+      },
+      {
+        "scorer_name": "hallucination_detector",
+        "score": 1.0,
+        "passed": true,
+        "details": "No hallucinations detected",
+        "metadata": {
+          "violations": [],
+          "found_jira_ids": [],
+          "found_github_ids": [],
+          "valid_jira_ids": [
+            "OPIK-P2"
+          ],
+          "valid_github_ids": []
+        }
+      },
+      {
+        "scorer_name": "language_compliance",
+        "score": 1.0,
+        "passed": true,
+        "details": "No prohibited phrases found",
+        "metadata": {
+          "prohibited_found": [],
+          "approved_found": []
+        }
+      },
+      {
+        "scorer_name": "structure_scorer",
+        "score": 1.0,
+        "passed": true,
+        "details": "Output structure is valid",
+        "metadata": {
+          "issues": []
+        }
+      },
+      {
+        "scorer_name": "identifier_validator",
+        "score": 1.0,
+        "passed": true,
+        "details": "All expected identifiers found: {'OPIK-P2'}",
+        "metadata": {
+          "expected": [
+            "OPIK-P2"
+          ],
+          "found": [
+            "OPIK-P2"
+          ],
+          "missing": []
+        }
+      },
+      {
+        "scorer_name": "alert_appropriateness",
+        "score": 1.0,
+        "passed": true,
+        "details": "Correctly did not send alert",
+        "metadata": {
+          "should_alert": false,
+          "did_alert": false
+        }
+      },
+      {
+        "scorer_name": "trust_score",
+        "score": 0.0,
+        "passed": false,
+        "details": "Trust score calculation failed: TrustScorer.__init__() got an unexpected keyword argument 'evidence_ledger'",
+        "metadata": {
+          "error": "TrustScorer.__init__() got an unexpected keyword argument 'evidence_ledger'"
+        }
+      }
+    ],
+    "overall_passed": false,
+    "trust_score": 0.0,
+    "latency_ms": 0.04410743713378906,
+    "timestamp": "2026-02-07T10:45:17.018522+00:00",
+    "error": null
+  },
+  {
+    "scenario_id": "alert_004",
+    "scenario_name": "P0 without impact description - should NOT alert",
+    "category": "alerts",
+    "query": "Critical issue check",
+    "output": "# Response to: Critical issue check\n\n\n## Jira\n- **OPIK-INCOMPLETE-P0**: Something is broken (Status: Open, Priority: Highest)\n\n## GitHub\nNo GitHub items found.\n\n## Slack\nNo Slack messages found.\n\nneeds verification\n\nmissing",
+    "scores": [
+      {
+        "scorer_name": "route_accuracy",
+        "score": 1.0,
+        "passed": true,
+        "details": "Correct: {'github_agent', 'jira_agent', 'slack_agent'}",
+        "metadata": {
+          "expected": [
+            "github_agent",
+            "jira_agent",
+            "slack_agent"
+          ],
+          "invoked": [
+            "github_agent",
+            "jira_agent",
+            "slack_agent"
+          ],
+          "correct": [
+            "github_agent",
+            "jira_agent",
+            "slack_agent"
+          ],
+          "missed": [],
+          "extra": []
+        }
+      },
+      {
+        "scorer_name": "source_coverage",
+        "score": 1.0,
+        "passed": true,
+        "details": "All required sources checked: {'github', 'jira', 'slack'}",
+        "metadata": {
+          "expected": [
+            "github",
+            "jira",
+            "slack"
+          ],
+          "checked": [
+            "github",
+            "jira",
+            "slack"
+          ],
+          "covered": [
+            "github",
+            "jira",
+            "slack"
+          ],
+          "missed": []
+        }
+      },
+      {
+        "scorer_name": "hallucination_detector",
+        "score": 1.0,
+        "passed": true,
+        "details": "No hallucinations detected",
+        "metadata": {
+          "violations": [],
+          "found_jira_ids": [],
+          "found_github_ids": [],
+          "valid_jira_ids": [
+            "OPIK-INCOMPLETE-P0"
+          ],
+          "valid_github_ids": []
+        }
+      },
+      {
+        "scorer_name": "language_compliance",
+        "score": 1.0,
+        "passed": true,
+        "details": "No prohibited phrases found",
+        "metadata": {
+          "prohibited_found": [],
+          "approved_found": []
+        }
+      },
+      {
+        "scorer_name": "structure_scorer",
+        "score": 0.75,
+        "passed": true,
+        "details": "Missing required content: ['details']",
+        "metadata": {
+          "issues": [
+            "Missing required content: ['details']"
+          ]
+        }
+      },
+      {
+        "scorer_name": "identifier_validator",
+        "score": 1.0,
+        "passed": true,
+        "details": "All expected identifiers found: {'OPIK-INCOMPLETE-P0'}",
+        "metadata": {
+          "expected": [
+            "OPIK-INCOMPLETE-P0"
+          ],
+          "found": [
+            "OPIK-INCOMPLETE-P0"
+          ],
+          "missing": []
+        }
+      },
+      {
+        "scorer_name": "alert_appropriateness",
+        "score": 1.0,
+        "passed": true,
+        "details": "Correctly did not send alert",
+        "metadata": {
+          "should_alert": false,
+          "did_alert": false
+        }
+      },
+      {
+        "scorer_name": "trust_score",
+        "score": 0.0,
+        "passed": false,
+        "details": "Trust score calculation failed: TrustScorer.__init__() got an unexpected keyword argument 'evidence_ledger'",
+        "metadata": {
+          "error": "TrustScorer.__init__() got an unexpected keyword argument 'evidence_ledger'"
+        }
+      }
+    ],
+    "overall_passed": false,
+    "trust_score": 0.0,
+    "latency_ms": 0.03314018249511719,
+    "timestamp": "2026-02-07T10:45:17.018562+00:00",
+    "error": null
+  },
+  {
+    "scenario_id": "alert_005",
+    "scenario_name": "Critical issue but incomplete checks - should NOT alert",
+    "category": "alerts",
+    "query": "Full critical issue scan",
+    "output": "# Response to: Full critical issue scan\n\n\n## Jira\n- **OPIK-PARTIAL-P0**: Potential critical issue (Status: Open, Priority: Highest)\n\n## github_list_issues\nData unavailable: GitHub API rate limited\n\n## slack_search_messages\nData unavailable: Slack token expired\n\nCHECK INCOMPLETE",
+    "scores": [
+      {
+        "scorer_name": "route_accuracy",
+        "score": 1.0,
+        "passed": true,
+        "details": "Correct: {'github_agent', 'jira_agent', 'slack_agent'}",
+        "metadata": {
+          "expected": [
+            "github_agent",
+            "jira_agent",
+            "slack_agent"
+          ],
+          "invoked": [
+            "github_agent",
+            "jira_agent",
+            "slack_agent"
+          ],
+          "correct": [
+            "github_agent",
+            "jira_agent",
+            "slack_agent"
+          ],
+          "missed": [],
+          "extra": []
+        }
+      },
+      {
+        "scorer_name": "source_coverage",
+        "score": 1.0,
+        "passed": true,
+        "details": "All required sources checked: {'github', 'jira', 'slack'}",
+        "metadata": {
+          "expected": [
+            "github",
+            "jira",
+            "slack"
+          ],
+          "checked": [
+            "github",
+            "jira",
+            "slack"
+          ],
+          "covered": [
+            "github",
+            "jira",
+            "slack"
+          ],
+          "missed": []
+        }
+      },
+      {
+        "scorer_name": "hallucination_detector",
+        "score": 1.0,
+        "passed": true,
+        "details": "No hallucinations detected",
+        "metadata": {
+          "violations": [],
+          "found_jira_ids": [],
+          "found_github_ids": [],
+          "valid_jira_ids": [
+            "OPIK-PARTIAL-P0"
+          ],
+          "valid_github_ids": []
+        }
+      },
+      {
+        "scorer_name": "language_compliance",
+        "score": 1.0,
+        "passed": true,
+        "details": "Uses approved language: ['Data unavailable', 'Check incomplete']",
+        "metadata": {
+          "prohibited_found": [],
+          "approved_found": [
+            "Data unavailable",
+            "Check incomplete"
+          ]
+        }
+      },
+      {
+        "scorer_name": "structure_scorer",
+        "score": 0.5,
+        "passed": false,
+        "details": "Missing sections: ['Incomplete Check', 'Partial Results']; Missing required content: ['failed']",
+        "metadata": {
+          "issues": [
+            "Missing sections: ['Incomplete Check', 'Partial Results']",
+            "Missing required content: ['failed']"
+          ]
+        }
+      },
+      {
+        "scorer_name": "identifier_validator",
+        "score": 1.0,
+        "passed": true,
+        "details": "All expected identifiers found: {'OPIK-PARTIAL-P0'}",
+        "metadata": {
+          "expected": [
+            "OPIK-PARTIAL-P0"
+          ],
+          "found": [
+            "OPIK-PARTIAL-P0"
+          ],
+          "missing": []
+        }
+      },
+      {
+        "scorer_name": "alert_appropriateness",
+        "score": 1.0,
+        "passed": true,
+        "details": "Correctly did not send alert",
+        "metadata": {
+          "should_alert": false,
+          "did_alert": false
+        }
+      },
+      {
+        "scorer_name": "trust_score",
+        "score": 0.0,
+        "passed": false,
+        "details": "Trust score calculation failed: TrustScorer.__init__() got an unexpected keyword argument 'evidence_ledger'",
+        "metadata": {
+          "error": "TrustScorer.__init__() got an unexpected keyword argument 'evidence_ledger'"
+        }
+      }
+    ],
+    "overall_passed": false,
+    "trust_score": 0.0,
+    "latency_ms": 0.031232833862304688,
+    "timestamp": "2026-02-07T10:45:17.018598+00:00",
+    "error": null
+  },
+  {
+    "scenario_id": "alert_006",
+    "scenario_name": "Multiple P0s - should alert with highest priority",
+    "category": "alerts",
+    "query": "Critical status",
+    "output": "# Response to: Critical status\n\n\n## Jira\n- **OPIK-MULTI-P0-1**: Database cluster failure (Status: Open, Priority: Highest)\n- **OPIK-MULTI-P0-2**: Authentication service down (Status: Open, Priority: Highest)\n\n## GitHub\nNo GitHub items found.\n\n## Slack\n- #incidents: \"Major incident - multiple systems down\"\n\ndatabase",
+    "scores": [
+      {
+        "scorer_name": "route_accuracy",
+        "score": 1.0,
+        "passed": true,
+        "details": "Correct: {'github_agent', 'jira_agent', 'slack_agent'}",
+        "metadata": {
+          "expected": [
+            "github_agent",
+            "jira_agent",
+            "slack_agent"
+          ],
+          "invoked": [
+            "github_agent",
+            "jira_agent",
+            "slack_agent"
+          ],
+          "correct": [
+            "github_agent",
+            "jira_agent",
+            "slack_agent"
+          ],
+          "missed": [],
+          "extra": []
+        }
+      },
+      {
+        "scorer_name": "source_coverage",
+        "score": 1.0,
+        "passed": true,
+        "details": "All required sources checked: {'github', 'jira', 'slack'}",
+        "metadata": {
+          "expected": [
+            "github",
+            "jira",
+            "slack"
+          ],
+          "checked": [
+            "github",
+            "jira",
+            "slack"
+          ],
+          "covered": [
+            "github",
+            "jira",
+            "slack"
+          ],
+          "missed": []
+        }
+      },
+      {
+        "scorer_name": "hallucination_detector",
+        "score": 1.0,
+        "passed": true,
+        "details": "No hallucinations detected",
+        "metadata": {
+          "violations": [],
+          "found_jira_ids": [],
+          "found_github_ids": [],
+          "valid_jira_ids": [
+            "OPIK-MULTI-P0-1",
+            "OPIK-MULTI-P0-2"
+          ],
+          "valid_github_ids": []
+        }
+      },
+      {
+        "scorer_name": "language_compliance",
+        "score": 1.0,
+        "passed": true,
+        "details": "No prohibited phrases found",
+        "metadata": {
+          "prohibited_found": [],
+          "approved_found": []
+        }
+      },
+      {
+        "scorer_name": "structure_scorer",
+        "score": 0.75,
+        "passed": true,
+        "details": "Missing sections: ['Critical Alert', 'Multiple P0s']",
+        "metadata": {
+          "issues": [
+            "Missing sections: ['Critical Alert', 'Multiple P0s']"
+          ]
+        }
+      },
+      {
+        "scorer_name": "identifier_validator",
+        "score": 1.0,
+        "passed": true,
+        "details": "All expected identifiers found: {'OPIK-MULTI-P0-1', 'OPIK-MULTI-P0-2'}",
+        "metadata": {
+          "expected": [
+            "OPIK-MULTI-P0-1",
+            "OPIK-MULTI-P0-2"
+          ],
+          "found": [
+            "OPIK-MULTI-P0-1",
+            "OPIK-MULTI-P0-2"
+          ],
+          "missing": []
+        }
+      },
+      {
+        "scorer_name": "alert_appropriateness",
+        "score": 1.0,
+        "passed": true,
+        "details": "Correctly sent alert for critical issue",
+        "metadata": {
+          "should_alert": true,
+          "did_alert": true
+        }
+      },
+      {
+        "scorer_name": "trust_score",
+        "score": 0.0,
+        "passed": false,
+        "details": "Trust score calculation failed: TrustScorer.__init__() got an unexpected keyword argument 'evidence_ledger'",
+        "metadata": {
+          "error": "TrustScorer.__init__() got an unexpected keyword argument 'evidence_ledger'"
+        }
+      }
+    ],
+    "overall_passed": false,
+    "trust_score": 0.0,
+    "latency_ms": 0.047206878662109375,
+    "timestamp": "2026-02-07T10:45:17.018648+00:00",
+    "error": null
+  }
+]

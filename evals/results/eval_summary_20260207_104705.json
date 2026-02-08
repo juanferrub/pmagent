@@ -1,0 +1,48 @@
+{
+  "total_scenarios": 43,
+  "passed": 11,
+  "failed": 31,
+  "errors": 1,
+  "pass_rate": 0.2558139534883721,
+  "avg_trust_score": 0.7080952380952381,
+  "avg_latency_ms": 0.2981562947118005,
+  "by_category": {
+    "daily_digest": {
+      "total": 6,
+      "passed": 5,
+      "pass_rate": 0.8333333333333334,
+      "avg_trust_score": 0.7966666666666667
+    },
+    "critical_issues": {
+      "total": 8,
+      "passed": 2,
+      "pass_rate": 0.25,
+      "avg_trust_score": 0.7650000000000001
+    },
+    "competitor_research": {
+      "total": 5,
+      "passed": 0,
+      "pass_rate": 0.0,
+      "avg_trust_score": 0.57
+    },
+    "routing": {
+      "total": 8,
+      "passed": 1,
+      "pass_rate": 0.125,
+      "avg_trust_score": 0.7014285714285714
+    },
+    "hallucination": {
+      "total": 10,
+      "passed": 1,
+      "pass_rate": 0.1,
+      "avg_trust_score": 0.666
+    },
+    "alerts": {
+      "total": 6,
+      "passed": 2,
+      "pass_rate": 0.3333333333333333,
+      "avg_trust_score": 0.7366666666666668
+    }
+  },
+  "timestamp": "2026-02-07T10:47:05.094708+00:00"
+}

@@ -1,0 +1,345 @@
+{
+  "category": "alerts",
+  "description": "Alert appropriateness scenarios - testing when alerts should and should not be sent",
+  "scenarios": [
+    {
+      "id": "alert_001",
+      "name": "P0 with all required fields - SHOULD alert",
+      "description": "Verified P0 issue with complete information - alert is appropriate",
+      "category": "alerts",
+      "query": "Check for critical issues",
+      "expected_agents": ["jira_agent", "github_agent", "slack_agent"],
+      "expected_sources": ["jira", "github", "slack"],
+      "mock_responses": [
+        {
+          "tool_name": "jira_search",
+          "response": {
+            "issues": [
+              {
+                "key": "OPIK-ALERT-P0",
+                "summary": "PRODUCTION DOWN: All API endpoints returning 500",
+                "status": "Open",
+                "priority": "Highest",
+                "description": "Complete production outage. All users affected. Revenue impact estimated at $10K/hour.",
+                "assignee": "oncall@company.com",
+                "created": "2024-01-15T10:00:00Z"
+              }
+            ],
+            "total": 1
+          },
+          "success": true
+        },
+        {
+          "tool_name": "github_list_issues",
+          "response": {"items": []},
+          "success": true
+        },
+        {
+          "tool_name": "slack_search_messages",
+          "response": {
+            "messages": [
+              {"channel": "#incidents", "text": "Incident declared for OPIK-ALERT-P0", "ts": "1705312800.123"}
+            ]
+          },
+          "success": true
+        }
+      ],
+      "golden_output": {
+        "must_contain": ["OPIK-ALERT-P0", "P0", "production", "500", "alert", "immediate"],
+        "must_not_contain": ["no critical issues", "all clear"],
+        "expected_sections": ["Critical Alert", "P0"],
+        "expected_identifiers": ["OPIK-ALERT-P0"],
+        "should_alert": true,
+        "min_trust_score": 0.9
+      },
+      "quality_criteria": {
+        "relevance": "Must identify and escalate the P0",
+        "completeness": "Alert must include ID, impact, assignee",
+        "accuracy": "All alert details must match source",
+        "clarity": "Alert severity must be prominent",
+        "actionability": "Must recommend immediate action"
+      },
+      "tags": ["p0", "should-alert", "complete-data"]
+    },
+    {
+      "id": "alert_002",
+      "name": "P1 with all required fields - SHOULD alert",
+      "description": "Verified P1 issue with complete information - alert is appropriate",
+      "category": "alerts",
+      "query": "Any urgent issues?",
+      "expected_agents": ["jira_agent", "github_agent", "slack_agent"],
+      "expected_sources": ["jira", "github", "slack"],
+      "mock_responses": [
+        {
+          "tool_name": "jira_search",
+          "response": {"issues": [], "total": 0},
+          "success": true
+        },
+        {
+          "tool_name": "github_list_issues",
+          "response": {
+            "items": [
+              {
+                "number": 3000,
+                "title": "CRITICAL: Data corruption in trace storage",
+                "state": "open",
+                "labels": ["critical", "P1", "data-integrity"],
+                "body": "Traces are being corrupted during storage. Affects 5% of users. Data loss confirmed.",
+                "html_url": "https://github.com/comet-ml/opik/issues/3000"
+              }
+            ]
+          },
+          "success": true
+        },
+        {
+          "tool_name": "slack_search_messages",
+          "response": {"messages": []},
+          "success": true
+        }
+      ],
+      "golden_output": {
+        "must_contain": ["#3000", "P1", "data corruption", "5%", "alert"],
+        "must_not_contain": ["no urgent issues", "all clear"],
+        "expected_sections": ["Critical Alert", "P1"],
+        "expected_identifiers": ["3000"],
+        "should_alert": true,
+        "min_trust_score": 0.9
+      },
+      "quality_criteria": {
+        "relevance": "Must identify the P1 issue",
+        "completeness": "Alert must include issue details and impact",
+        "accuracy": "Impact percentage must match source",
+        "clarity": "P1 severity must be clear",
+        "actionability": "Must recommend investigation"
+      },
+      "tags": ["p1", "should-alert", "github"]
+    },
+    {
+      "id": "alert_003",
+      "name": "P2 issue - should NOT alert",
+      "description": "P2 issue exists but does not meet alert threshold",
+      "category": "alerts",
+      "query": "Check for issues",
+      "expected_agents": ["jira_agent", "github_agent", "slack_agent"],
+      "expected_sources": ["jira", "github", "slack"],
+      "mock_responses": [
+        {
+          "tool_name": "jira_search",
+          "response": {
+            "issues": [
+              {
+                "key": "OPIK-P2",
+                "summary": "Performance degradation in dashboard",
+                "status": "Open",
+                "priority": "High",
+                "description": "Dashboard loading slowly. Not blocking users."
+              }
+            ],
+            "total": 1
+          },
+          "success": true
+        },
+        {
+          "tool_name": "github_list_issues",
+          "response": {"items": []},
+          "success": true
+        },
+        {
+          "tool_name": "slack_search_messages",
+          "response": {"messages": []},
+          "success": true
+        }
+      ],
+      "golden_output": {
+        "must_contain": ["OPIK-P2", "performance"],
+        "must_not_contain": ["alert", "critical", "P0", "P1", "immediate action"],
+        "expected_sections": ["Issues"],
+        "expected_identifiers": ["OPIK-P2"],
+        "should_alert": false,
+        "min_trust_score": 0.85
+      },
+      "quality_criteria": {
+        "relevance": "Should report the P2 issue",
+        "completeness": "Should include issue details",
+        "accuracy": "Should correctly classify as non-critical",
+        "clarity": "Should not escalate unnecessarily",
+        "actionability": "May suggest prioritization"
+      },
+      "tags": ["p2", "no-alert", "correct-classification"]
+    },
+    {
+      "id": "alert_004",
+      "name": "P0 without impact description - should NOT alert",
+      "description": "P0 priority but missing impact details required for alert",
+      "category": "alerts",
+      "query": "Critical issue check",
+      "expected_agents": ["jira_agent", "github_agent", "slack_agent"],
+      "expected_sources": ["jira", "github", "slack"],
+      "mock_responses": [
+        {
+          "tool_name": "jira_search",
+          "response": {
+            "issues": [
+              {
+                "key": "OPIK-INCOMPLETE-P0",
+                "summary": "Something is broken",
+                "status": "Open",
+                "priority": "Highest",
+                "description": ""
+              }
+            ],
+            "total": 1
+          },
+          "success": true
+        },
+        {
+          "tool_name": "github_list_issues",
+          "response": {"items": []},
+          "success": true
+        },
+        {
+          "tool_name": "slack_search_messages",
+          "response": {"messages": []},
+          "success": true
+        }
+      ],
+      "golden_output": {
+        "must_contain": ["OPIK-INCOMPLETE-P0", "needs verification", "missing", "details"],
+        "must_not_contain": ["sending alert", "alerting now"],
+        "expected_sections": ["Needs Verification"],
+        "expected_identifiers": ["OPIK-INCOMPLETE-P0"],
+        "should_alert": false,
+        "min_trust_score": 0.7
+      },
+      "quality_criteria": {
+        "relevance": "Should flag the incomplete P0",
+        "completeness": "Should note what information is missing",
+        "accuracy": "Should not fabricate impact",
+        "clarity": "Should request human verification",
+        "actionability": "Should recommend updating ticket"
+      },
+      "tags": ["incomplete", "no-alert", "needs-details"]
+    },
+    {
+      "id": "alert_005",
+      "name": "Critical issue but incomplete checks - should NOT alert",
+      "description": "P0 found but not all sources were checked successfully",
+      "category": "alerts",
+      "query": "Full critical issue scan",
+      "expected_agents": ["jira_agent", "github_agent", "slack_agent"],
+      "expected_sources": ["jira", "github", "slack"],
+      "mock_responses": [
+        {
+          "tool_name": "jira_search",
+          "response": {
+            "issues": [
+              {
+                "key": "OPIK-PARTIAL-P0",
+                "summary": "Potential critical issue",
+                "status": "Open",
+                "priority": "Highest",
+                "description": "Investigating potential production impact."
+              }
+            ],
+            "total": 1
+          },
+          "success": true
+        },
+        {
+          "tool_name": "github_list_issues",
+          "response": null,
+          "success": false,
+          "error": "GitHub API rate limited"
+        },
+        {
+          "tool_name": "slack_search_messages",
+          "response": null,
+          "success": false,
+          "error": "Slack token expired"
+        }
+      ],
+      "golden_output": {
+        "must_contain": ["CHECK INCOMPLETE", "GitHub", "Slack", "failed", "OPIK-PARTIAL-P0"],
+        "must_not_contain": ["sending alert", "confirmed P0"],
+        "expected_sections": ["Incomplete Check", "Partial Results"],
+        "expected_identifiers": ["OPIK-PARTIAL-P0"],
+        "should_alert": false,
+        "min_trust_score": 0.5
+      },
+      "quality_criteria": {
+        "relevance": "Should report incomplete status",
+        "completeness": "Should list which checks failed",
+        "accuracy": "Should not confirm P0 with incomplete data",
+        "clarity": "Should use CHECK INCOMPLETE status",
+        "actionability": "Should recommend fixing integrations and retrying"
+      },
+      "tags": ["incomplete-checks", "no-alert", "partial-failure"]
+    },
+    {
+      "id": "alert_006",
+      "name": "Multiple P0s - should alert with highest priority",
+      "description": "Multiple P0 issues - should alert and prioritize correctly",
+      "category": "alerts",
+      "query": "Critical status",
+      "expected_agents": ["jira_agent", "github_agent", "slack_agent"],
+      "expected_sources": ["jira", "github", "slack"],
+      "mock_responses": [
+        {
+          "tool_name": "jira_search",
+          "response": {
+            "issues": [
+              {
+                "key": "OPIK-MULTI-P0-1",
+                "summary": "Database cluster failure",
+                "status": "Open",
+                "priority": "Highest",
+                "description": "Primary database unresponsive. Complete outage.",
+                "created": "2024-01-15T10:00:00Z"
+              },
+              {
+                "key": "OPIK-MULTI-P0-2",
+                "summary": "Authentication service down",
+                "status": "Open",
+                "priority": "Highest",
+                "description": "Users cannot log in. Blocked by database issue.",
+                "created": "2024-01-15T10:05:00Z"
+              }
+            ],
+            "total": 2
+          },
+          "success": true
+        },
+        {
+          "tool_name": "github_list_issues",
+          "response": {"items": []},
+          "success": true
+        },
+        {
+          "tool_name": "slack_search_messages",
+          "response": {
+            "messages": [
+              {"channel": "#incidents", "text": "Major incident - multiple systems down", "ts": "1705312800.123"}
+            ]
+          },
+          "success": true
+        }
+      ],
+      "golden_output": {
+        "must_contain": ["OPIK-MULTI-P0-1", "OPIK-MULTI-P0-2", "database", "authentication", "multiple", "P0"],
+        "must_not_contain": ["single issue", "minor"],
+        "expected_sections": ["Critical Alert", "Multiple P0s"],
+        "expected_identifiers": ["OPIK-MULTI-P0-1", "OPIK-MULTI-P0-2"],
+        "should_alert": true,
+        "min_trust_score": 0.9
+      },
+      "quality_criteria": {
+        "relevance": "Must identify all P0 issues",
+        "completeness": "Should list both issues with details",
+        "accuracy": "Should note potential relationship",
+        "clarity": "Should prioritize root cause (database)",
+        "actionability": "Should recommend addressing database first"
+      },
+      "tags": ["multiple-p0", "should-alert", "prioritization"]
+    }
+  ]
+}

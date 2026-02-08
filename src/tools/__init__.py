@@ -10,6 +10,7 @@ from src.tools.email_tools import email_tools
 from src.tools.competitor_tools import competitor_tools
 from src.tools.alert_tools import alert_tools
 from src.tools.pm_tools import pm_tools
+from src.tools.capabilities_tools import capabilities_tools
 
 ALL_TOOLS = (
     slack_tools
@@ -22,6 +23,7 @@ ALL_TOOLS = (
     + competitor_tools
     + alert_tools
     + pm_tools
+    + capabilities_tools
 )
 
 __all__ = [
@@ -35,5 +37,6 @@ __all__ = [
     "competitor_tools",
     "alert_tools",
     "pm_tools",
+    "capabilities_tools",
     "ALL_TOOLS",
 ]
